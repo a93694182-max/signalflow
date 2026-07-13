@@ -1,0 +1,23 @@
+# SignalFlow
+
+> Follow the Flow. Discover the Why.
+
+SignalFlow는 시장 데이터를 보여주는 것이 아니라,
+시장의 움직임을 근거(Evidence)와 흐름(Flow)으로 설명하는 경제 인텔리전스 플랫폼입니다.
+
+## Tech Stack
+
+- FastAPI
+- PostgreSQL
+- React (Planned)
+- Redis
+- OpenAI API
+
+## Progress
+
+- [x] Project Setup
+- [x] FastAPI
+- [x] Home API
+- [ ] Trace Flow API
+- [ ] PostgreSQL
+- [ ] Flow Discovery Engine
