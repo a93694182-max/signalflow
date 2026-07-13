@@ -10,6 +10,8 @@ env/
 
 # Environment
 .env
+backend/.env
+
 
 # VS Code
 .vscode/
@@ -28,3 +30,6 @@ Thumbs.db
 
 # Logs
 *.log
+
+.venv/
+backend/.venv/
