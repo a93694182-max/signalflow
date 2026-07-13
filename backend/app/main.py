@@ -1,4 +1,9 @@
 from fastapi import FastAPI
+from sqlalchemy import text
+from sqlalchemy.orm import Session
+
+from app.database import get_db
+from fastapi import Depends
 
 from app.routers.flows import router as flows_router
 from app.routers.home import router as home_router
@@ -19,4 +24,14 @@ def root():
     return {
         "message": "Welcome to SignalFlow",
         "docs": "/docs",
+    }
+
+@app.get("/api/health/db", tags=["Health"])
+def check_database(db: Session = Depends(get_db)):
+    result = db.execute(text("SELECT 1")).scalar_one()
+
+    return {
+        "status": "ok",
+        "database": "connected",
+        "result": result,
     }
