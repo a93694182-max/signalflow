@@ -1,6 +1,7 @@
 from fastapi import HTTPException, status
 from sqlalchemy import select
 from sqlalchemy.orm import Session, selectinload
+from app.models import Flow, FlowNode
 
 from app.models import Flow
 
@@ -8,8 +9,11 @@ from app.models import Flow
 def get_flow_trace(db: Session, flow_id: int) -> Flow:
     stmt = (
         select(Flow)
-        .options(selectinload(Flow.nodes))
         .where(Flow.id == flow_id)
+        .options(
+            selectinload(Flow.nodes)
+            .selectinload(FlowNode.evidences)
+        )
     )
 
     flow = db.scalar(stmt)

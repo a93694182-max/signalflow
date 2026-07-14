@@ -18,3 +18,10 @@ httpx
 openai
 
 apscheduler
+
+openai
+
+yfinance
+
+requests
+

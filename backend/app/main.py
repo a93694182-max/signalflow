@@ -1,12 +1,14 @@
-from fastapi import FastAPI
+from fastapi import Depends, FastAPI
 from sqlalchemy import text
 from sqlalchemy.orm import Session
 
 from app.database import get_db
-from fastapi import Depends
-
 from app.routers.flows import router as flows_router
 from app.routers.home import router as home_router
+from app.routers.evidence import router as evidence_router
+from app.routers.ask import router as ask_router
+from app.routers.market import router as market_router
+from app.routers.economic import router as economic_router
 
 
 app = FastAPI(
@@ -17,6 +19,10 @@ app = FastAPI(
 
 app.include_router(home_router)
 app.include_router(flows_router)
+app.include_router(evidence_router)
+app.include_router(ask_router)
+app.include_router(market_router)
+app.include_router(economic_router)
 
 
 @app.get("/", tags=["Root"])

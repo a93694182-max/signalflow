@@ -1,6 +1,7 @@
 from datetime import datetime
+from pydantic import BaseModel, ConfigDict, Field
+from app.schemas.evidence import EvidenceResponse
 
-from pydantic import BaseModel, ConfigDict
 
 
 class FlowNodeResponse(BaseModel):
@@ -13,6 +14,8 @@ class FlowNodeResponse(BaseModel):
     description: str | None
     occurred_at: datetime | None
     evidence_level: str
+    
+    evidences: list[EvidenceResponse] = Field(default_factory=list)
 
 
 class FlowTraceResponse(BaseModel):
