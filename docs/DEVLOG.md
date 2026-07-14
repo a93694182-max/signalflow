@@ -21,3 +21,23 @@
 - FastAPI + PostgreSQL + SQLAlchemy + Alembic 기반 백엔드 구축
 - SignalFlow 기본 데이터 흐름(Flow → Node → Evidence) 구현
 
+### 2026-07-14 | Sprint 2 진행
+
+- Evidence API 구현 (GET /api/evidence/{id})
+- Flow Trace API에 Evidence 포함
+- Ask API 구현 (POST /api/ask)
+- Yahoo Finance 연동
+- Market Price API 구현
+- Market Dashboard API 구현
+- Market History API 구현
+- FRED API 연동
+- Economic API 구현 (GET /api/economic/fred/{series_id})
+
+---
+
+#### Sprint 2 완료 ✅
+
+- 실시간 금융 데이터(Yahoo Finance) 연동
+- 미국 경제지표(FRED) 연동
+- Flow + Evidence 기반 API 완성
+- SignalFlow를 정적 데이터 프로젝트에서 실시간 데이터 플랫폼으로 확장
