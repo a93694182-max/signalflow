@@ -1,10 +1,18 @@
 from fastapi import HTTPException, status
+from sqlalchemy import select
+from sqlalchemy.orm import Session, selectinload
 
-from app.data.mock_flows import MOCK_FLOWS
+from app.models import Flow
 
 
-def get_flow_trace(flow_id: int) -> dict:
-    flow = MOCK_FLOWS.get(flow_id)
+def get_flow_trace(db: Session, flow_id: int) -> Flow:
+    stmt = (
+        select(Flow)
+        .options(selectinload(Flow.nodes))
+        .where(Flow.id == flow_id)
+    )
+
+    flow = db.scalar(stmt)
 
     if flow is None:
         raise HTTPException(
