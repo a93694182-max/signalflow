@@ -9,6 +9,9 @@ from app.routers.evidence import router as evidence_router
 from app.routers.ask import router as ask_router
 from app.routers.market import router as market_router
 from app.routers.economic import router as economic_router
+from app.routers import engine
+
+from app.services.scheduler_service import start_scheduler
 
 
 app = FastAPI(
@@ -17,12 +20,20 @@ app = FastAPI(
     version="0.1.0",
 )
 
+
+@app.on_event("startup")
+def startup():
+    start_scheduler()
+
+
+
 app.include_router(home_router)
 app.include_router(flows_router)
 app.include_router(evidence_router)
 app.include_router(ask_router)
 app.include_router(market_router)
 app.include_router(economic_router)
+app.include_router(engine.router)
 
 
 @app.get("/", tags=["Root"])

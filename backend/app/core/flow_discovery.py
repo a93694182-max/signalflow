@@ -1,0 +1,175 @@
+from collections import defaultdict
+
+from app.core.signal_normalizer import (
+    build_signal_summary,
+    build_signal_title,
+)
+from app.models import Evidence, Flow, FlowNode
+from app.models.signal import Signal
+
+
+EVIDENCE_LEVELS = {
+    "low": "weak",
+    "medium": "moderate",
+    "high": "strong",
+}
+
+IMPACT_SCORES = {
+    "low": 0.4,
+    "medium": 0.7,
+    "high": 1.0,
+}
+
+CATEGORY_NAMES = {
+    "domestic_stock": "국내 증시",
+    "currency": "환율",
+    "crypto": "가상자산",
+    "commodity": "원자재",
+    "economic": "경제지표",
+    "market": "시장",
+}
+
+
+def get_signal_category(signal: Signal) -> str:
+    if signal.signal_type == "economic_change":
+        return "economic"
+
+    return signal.category
+
+
+def get_evidence_type(signal: Signal) -> str:
+    if signal.signal_type == "market_change":
+        return "market_data"
+
+    if signal.signal_type == "economic_change":
+        return "economic_data"
+
+    return "external_data"
+
+
+def get_source_url(signal: Signal) -> str | None:
+    if signal.source == "yahoo_finance":
+        return f"https://finance.yahoo.com/quote/{signal.symbol}"
+
+    if signal.source == "fred":
+        return f"https://fred.stlouisfed.org/series/{signal.symbol}"
+
+    return None
+
+
+def determine_group_direction(signals: list[Signal]) -> str:
+    direction_score = 0
+
+    for signal in signals:
+        if signal.direction == "up":
+            direction_score += 1
+        elif signal.direction == "down":
+            direction_score -= 1
+
+    if direction_score > 0:
+        return "상승"
+
+    if direction_score < 0:
+        return "하락"
+
+    return "혼조"
+
+
+def build_flow_from_group(
+    category: str,
+    signals: list[Signal],
+) -> Flow:
+    category_name = CATEGORY_NAMES.get(category, category)
+    group_direction = determine_group_direction(signals)
+
+    strongest_signal = max(
+        signals,
+        key=lambda signal: abs(signal.change_percent),
+    )
+
+    flow = Flow(
+        title=f"{category_name} {group_direction} 흐름",
+        target_asset=strongest_signal.symbol,
+        summary=" ".join(
+            build_signal_summary(signal)
+            for signal in signals
+        ),
+    )
+
+    sorted_signals = sorted(
+        signals,
+        key=lambda signal: abs(signal.change_percent),
+        reverse=True,
+    )
+
+    for order_index, signal in enumerate(
+        sorted_signals,
+        start=1,
+    ):
+        node = FlowNode(
+            order_index=order_index,
+            title=build_signal_title(signal),
+            category=get_signal_category(signal),
+            description=build_signal_summary(signal),
+            occurred_at=signal.occurred_at,
+            evidence_level=EVIDENCE_LEVELS.get(
+                signal.severity,
+                "moderate",
+            ),
+        )
+
+        evidence = Evidence(
+            evidence_type=get_evidence_type(signal),
+            title=f"{signal.name} 원천 데이터",
+            source=signal.source,
+            url=get_source_url(signal),
+            content_summary=build_signal_summary(signal),
+            relation_score=1.0,
+            impact_score=IMPACT_SCORES.get(
+                signal.severity,
+                0.5,
+            ),
+            time_score=1.0,
+            reliability_score=0.9,
+            published_at=signal.occurred_at,
+        )
+
+        node.evidences.append(evidence)
+        flow.nodes.append(node)
+
+    return flow
+
+
+def discover_flows(signals: list[Signal]) -> list[Flow]:
+    if not signals:
+        raise ValueError(
+            "Flow를 생성하려면 Signal이 하나 이상 필요합니다."
+        )
+
+    grouped_signals: dict[str, list[Signal]] = defaultdict(list)
+
+    for signal in signals:
+        category = get_signal_category(signal)
+        grouped_signals[category].append(signal)
+
+    flows = []
+
+    for category, category_signals in grouped_signals.items():
+        flow = build_flow_from_group(
+            category=category,
+            signals=category_signals,
+        )
+        flows.append(flow)
+
+    return flows
+
+
+def discover_flow(signals: list[Signal]) -> Flow:
+    flows = discover_flows(signals)
+
+    if len(flows) != 1:
+        raise ValueError(
+            "discover_flow는 동일 카테고리 Signal에만 사용할 수 있습니다."
+        )
+
+    return flows[0]

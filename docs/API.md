@@ -12,7 +12,11 @@ Response
 - Flow
 - FlowNode
 
----
+
+
+-----------------------------------------------------
+
+
 
 ## Sprint 2
 
@@ -85,3 +89,60 @@ FRED 경제지표 조회
 - FEDFUNDS
 - UNRATE
 - GDP
+ 
+-----------------------------------------------------
+
+ # Sprint 3
+
+## Signal Engine
+
+### POST /api/engine/run
+
+Signal Engine를 실행하여 실시간 시장 데이터를 수집하고
+Flow를 자동 생성합니다.
+
+### Process
+
+Yahoo Finance
+↓
+
+FRED
+↓
+
+Signal 생성
+↓
+
+Signal Filtering
+↓
+
+Signal Grouping
+↓
+
+Flow 생성
+↓
+
+FlowNode 생성
+↓
+
+Evidence 생성
+↓
+
+PostgreSQL 저장
+
+---
+
+### Response
+
+{
+    "collected_count": 10,
+    "filtered_count": 8,
+    "flow_count": 5,
+    "flow_ids": [
+        3,
+        5,
+        6,
+        8,
+        9
+    ]
+}
+
