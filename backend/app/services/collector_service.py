@@ -1,10 +1,12 @@
 import logging
 
+import requests
 from fastapi import HTTPException
 
 from app.models.signal import Signal
 from app.services.economic_service import FRED_SERIES
 from app.services.market_service import SYMBOL_NAMES
+from app.services.news_service import generate_news_signals
 from app.services.signal_service import (
     generate_economic_signal,
     generate_market_signal,
@@ -48,8 +50,24 @@ def collect_economic_signals() -> list[Signal]:
     return signals
 
 
+def collect_news_signals() -> list[Signal]:
+    try:
+        return generate_news_signals(
+            category="general",
+            limit=20,
+        )
+    except (requests.RequestException, RuntimeError, ValueError) as exc:
+        logger.warning(
+            "뉴스 Signal 수집 실패: error=%s",
+            exc,
+        )
+
+        return []
+
+
 def collect_all_signals() -> list[Signal]:
     market_signals = collect_market_signals()
     economic_signals = collect_economic_signals()
+    news_signals = collect_news_signals()
 
-    return market_signals + economic_signals
+    return market_signals + economic_signals + news_signals

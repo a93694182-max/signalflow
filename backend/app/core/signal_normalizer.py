@@ -8,6 +8,7 @@ DIRECTION_LABELS = {
 }
 
 SEVERITY_LABELS = {
+    "info": "정보",
     "low": "낮음",
     "medium": "보통",
     "high": "높음",
@@ -36,13 +37,23 @@ def normalize_signal(signal: Signal) -> dict:
             signal.severity,
         ),
         "occurred_at": signal.occurred_at,
+        "title": signal.title,
+        "summary": signal.summary,
+        "url": signal.url,
+        "metadata": signal.metadata,
     }
 
 
 def build_signal_title(signal: Signal) -> str:
+    if signal.signal_type == "news":
+        return signal.title or signal.name
+
+    if signal.change_percent is None:
+        return signal.name
+
     direction_label = DIRECTION_LABELS.get(
         signal.direction,
-        signal.direction,
+        signal.direction or "",
     )
 
     return (
@@ -52,9 +63,24 @@ def build_signal_title(signal: Signal) -> str:
 
 
 def build_signal_summary(signal: Signal) -> str:
+    if signal.signal_type == "news":
+        return (
+            signal.summary
+            or signal.title
+            or signal.name
+        )
+
+    if (
+        signal.value is None
+        or signal.previous_value is None
+        or signal.change is None
+        or signal.change_percent is None
+    ):
+        return signal.name
+
     direction_label = DIRECTION_LABELS.get(
         signal.direction,
-        signal.direction,
+        signal.direction or "변화",
     )
 
     return (

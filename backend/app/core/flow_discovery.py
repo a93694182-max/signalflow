@@ -9,12 +9,14 @@ from app.models.signal import Signal
 
 
 EVIDENCE_LEVELS = {
+    "info": "moderate",
     "low": "weak",
     "medium": "moderate",
     "high": "strong",
 }
 
 IMPACT_SCORES = {
+    "info": 0.5,
     "low": 0.4,
     "medium": 0.7,
     "high": 1.0,
@@ -27,12 +29,16 @@ CATEGORY_NAMES = {
     "commodity": "원자재",
     "economic": "경제지표",
     "market": "시장",
+    "general": "주요 뉴스",
 }
 
 
 def get_signal_category(signal: Signal) -> str:
     if signal.signal_type == "economic_change":
         return "economic"
+
+    if signal.signal_type == "news":
+        return signal.category or "general"
 
     return signal.category
 
@@ -44,10 +50,16 @@ def get_evidence_type(signal: Signal) -> str:
     if signal.signal_type == "economic_change":
         return "economic_data"
 
+    if signal.signal_type == "news":
+        return "news"
+
     return "external_data"
 
 
 def get_source_url(signal: Signal) -> str | None:
+    if signal.url:
+        return signal.url
+
     if signal.source == "yahoo_finance":
         return f"https://finance.yahoo.com/quote/{signal.symbol}"
 
@@ -57,10 +69,29 @@ def get_source_url(signal: Signal) -> str | None:
     return None
 
 
+def get_signal_sort_score(signal: Signal) -> float:
+    if signal.change_percent is not None:
+        return abs(signal.change_percent)
+
+    if signal.signal_type == "news":
+        return IMPACT_SCORES.get(signal.severity, 0.5)
+
+    return 0.0
+
+
 def determine_group_direction(signals: list[Signal]) -> str:
+    comparable_signals = [
+        signal
+        for signal in signals
+        if signal.signal_type != "news"
+    ]
+
+    if not comparable_signals:
+        return "주요"
+
     direction_score = 0
 
-    for signal in signals:
+    for signal in comparable_signals:
         if signal.direction == "up":
             direction_score += 1
         elif signal.direction == "down":
@@ -82,35 +113,42 @@ def build_flow_from_group(
     category_name = CATEGORY_NAMES.get(category, category)
     group_direction = determine_group_direction(signals)
 
-    strongest_signal = max(
+    sorted_signals = sorted(
         signals,
-        key=lambda signal: abs(signal.change_percent),
+        key=get_signal_sort_score,
+        reverse=True,
     )
 
+    strongest_signal = sorted_signals[0]
+
+    if all(
+        signal.signal_type == "news"
+        for signal in signals
+    ):
+        flow_title = f"{category_name} 흐름"
+    else:
+        flow_title = f"{category_name} {group_direction} 흐름"
+
     flow = Flow(
-        title=f"{category_name} {group_direction} 흐름",
+        title=flow_title,
         target_asset=strongest_signal.symbol,
         summary=" ".join(
             build_signal_summary(signal)
-            for signal in signals
+            for signal in sorted_signals
         ),
-    )
-
-    sorted_signals = sorted(
-        signals,
-        key=lambda signal: abs(signal.change_percent),
-        reverse=True,
     )
 
     for order_index, signal in enumerate(
         sorted_signals,
         start=1,
     ):
+        signal_summary = build_signal_summary(signal)
+
         node = FlowNode(
             order_index=order_index,
             title=build_signal_title(signal),
             category=get_signal_category(signal),
-            description=build_signal_summary(signal),
+            description=signal_summary,
             occurred_at=signal.occurred_at,
             evidence_level=EVIDENCE_LEVELS.get(
                 signal.severity,
@@ -120,10 +158,14 @@ def build_flow_from_group(
 
         evidence = Evidence(
             evidence_type=get_evidence_type(signal),
-            title=f"{signal.name} 원천 데이터",
+            title=(
+                signal.title
+                if signal.signal_type == "news"
+                else f"{signal.name} 원천 데이터"
+            ),
             source=signal.source,
             url=get_source_url(signal),
-            content_summary=build_signal_summary(signal),
+            content_summary=signal_summary,
             relation_score=1.0,
             impact_score=IMPACT_SCORES.get(
                 signal.severity,

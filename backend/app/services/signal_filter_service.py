@@ -8,7 +8,13 @@ MINIMUM_CHANGE_PERCENT = {
 
 
 def is_meaningful_signal(signal: Signal) -> bool:
-    if signal.direction == "flat":
+    if signal.signal_type == "news":
+        return bool(signal.title or signal.name)
+
+    if signal.direction in (None, "flat"):
+        return False
+
+    if signal.change_percent is None:
         return False
 
     minimum_change = MINIMUM_CHANGE_PERCENT.get(

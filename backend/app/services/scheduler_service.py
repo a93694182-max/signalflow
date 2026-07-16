@@ -26,7 +26,7 @@ def start_scheduler():
     scheduler.add_job(
         scheduled_signal_engine,
         trigger="interval",
-        seconds=10, 
+        minutes=10, 
         id="signal_engine",
         replace_existing=True,
     )

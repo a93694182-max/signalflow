@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from datetime import datetime
+from typing import Any
 
 
 @dataclass(slots=True)
@@ -13,13 +14,18 @@ class Signal:
     symbol: str
     name: str
 
-    value: float
-    previous_value: float
+    value: float | None
+    previous_value: float | None
 
-    change: float
-    change_percent: float
+    change: float | None
+    change_percent: float | None
 
-    direction: str
+    direction: str | None
     severity: str
 
     occurred_at: datetime
+
+    title: str | None = None
+    summary: str | None = None
+    url: str | None = None
+    metadata: dict[str, Any] | None = None

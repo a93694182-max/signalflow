@@ -18,8 +18,12 @@ def run_engine(db: Session = Depends(get_db)) -> dict:
         "collected_count": result["collected_count"],
         "filtered_count": result["filtered_count"],
         "flow_count": result["flow_count"],
-        "flow_ids": [
-            flow.id
+        "flows": [
+            {
+                "id": flow.id,
+                "title": flow.title,
+                "target_asset": flow.target_asset,
+            }
             for flow in result["flows"]
         ],
     }
