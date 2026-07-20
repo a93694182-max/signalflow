@@ -38,3 +38,19 @@
 - Evidence Score를 Relation / Impact / Time / Reliability 기반으로 계산
 - Flow Ranking은 Evidence 평균 점수 기반으로 계산
 - Engine API는 Flow ID 대신 Flow 요약 정보를 반환
+
+## Sprint 5
+
+- Why Analysis는 OpenAI 없이 Evidence Score 기반의 결정적 로직으로 우선 구현
+- FlowNode를 원인 후보 단위로 사용
+- Node별 Evidence 평균점수를 원인 후보 점수로 사용
+- 전체 Evidence 가중평균을 Why Analysis 신뢰도로 사용
+- Confidence Level은 high / medium / low로 구분
+- Flow Timeline은 FlowNode의 occurred_at 기준으로 정렬
+- 뉴스 주제 분류는 키워드와 정규식 단어 경계를 사용
+- 스포츠 등 금융·경제 비관련 뉴스는 Signal 생성 전에 제외
+- Flow Ranking은 Evidence 품질 85%, 근거 개수 충족도 15%를 반영
+- Evidence 5개를 Coverage Score 1.0 기준으로 설정
+- Ask API는 Why Analysis 결과를 재사용
+- OpenAI 연동은 데이터 기반 Why 구조가 안정된 이후 진행
+

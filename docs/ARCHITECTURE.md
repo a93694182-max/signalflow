@@ -130,3 +130,47 @@ PostgreSQL
 ↓
 
 FastAPI API
+
+
+# Sprint 5
+
+External News
+
+↓
+
+News Relevance Filter
+
+↓
+
+News Topic Classifier
+
+↓
+
+Topic-based Signal Grouping
+
+↓
+
+Flow / FlowNode / Evidence
+
+↓
+
+Why Analysis Engine
+
+├── Cause Ranking
+├── Primary Cause
+└── Confidence Score
+
+↓
+
+Flow Timeline
+
+↓
+
+Flow Ranking v2
+
+├── Evidence Quality
+└── Evidence Coverage
+
+↓
+
+Ask API v2

@@ -2,8 +2,10 @@ from fastapi import HTTPException, status
 from sqlalchemy import and_, select
 from sqlalchemy.orm import Session, selectinload
 
-from app.core.flow_discovery import discover_flow
+from app.core.flow_discovery import discover_flow, discover_flows
 from app.core.flow_ranking import rank_flows
+from app.core.flow_timeline import build_flow_timeline
+from app.core.why_analysis import analyze_flow
 from app.models import Flow, FlowNode
 from app.models.signal import Signal
 
@@ -120,3 +122,28 @@ def get_ranked_flows(db: Session):
     flows = db.scalars(stmt).unique().all()
 
     return rank_flows(flows)
+
+
+def get_flow_why_analysis(
+    db: Session,
+    flow_id: int,
+):
+    flow = get_flow_trace(
+        db=db,
+        flow_id=flow_id,
+    )
+
+    return analyze_flow(flow)
+
+
+
+def get_flow_timeline(
+    db: Session,
+    flow_id: int,
+):
+    flow = get_flow_trace(
+        db=db,
+        flow_id=flow_id,
+    )
+
+    return build_flow_timeline(flow)

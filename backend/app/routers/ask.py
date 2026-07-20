@@ -20,7 +20,7 @@ def ask_question(
     request: AskRequest,
     db: Session = Depends(get_db),
 ):
-    answer = generate_flow_answer(
+    result = generate_flow_answer(
         db=db,
         flow_id=request.flow_id,
         question=request.question,
@@ -29,5 +29,10 @@ def ask_question(
     return AskResponse(
         flow_id=request.flow_id,
         question=request.question,
-        answer=answer,
+        answer=result.answer,
+        confidence_score=result.confidence_score,
+        confidence_level=result.confidence_level,
+        primary_cause=result.primary_cause,
+        flow_path=result.flow_path,
+        evidence_count=result.evidence_count,
     )

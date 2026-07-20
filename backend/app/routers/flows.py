@@ -3,9 +3,13 @@ from sqlalchemy.orm import Session
 
 from app.database import get_db
 from app.schemas.flow import FlowTraceResponse
+from app.schemas.why import WhyAnalysisResponse
+from app.schemas.timeline import FlowTimelineResponse
 from app.services.flow_service import (
     get_flow_trace,
+    get_flow_why_analysis,
     get_ranked_flows,
+    get_flow_timeline,
 )
 
 router = APIRouter(
@@ -39,6 +43,8 @@ def read_flow_ranking(
             "title": result.flow.title,
             "target_asset": result.flow.target_asset,
             "score": result.score,
+            "quality_score": result.quality_score,
+            "coverage_score": result.coverage_score,
             "evidence_count": result.evidence_count,
         }
         for index, result in enumerate(
@@ -46,3 +52,51 @@ def read_flow_ranking(
             start=1,
         )
     ]
+
+
+
+@router.get(
+    "/{flow_id}/why",
+    response_model=WhyAnalysisResponse,
+)
+def read_flow_why_analysis(
+    flow_id: int,
+    db: Session = Depends(get_db),
+):
+    result = get_flow_why_analysis(
+        db=db,
+        flow_id=flow_id,
+    )
+
+    return {
+        "flow_id": result.flow.id,
+        "title": result.flow.title,
+        "target_asset": result.flow.target_asset,
+        "summary": result.summary,
+        "confidence_score": result.confidence_score,
+        "confidence_level": result.confidence_level,
+        "primary_cause": result.primary_cause,
+        "causes": result.causes,
+    }
+
+
+@router.get(
+    "/{flow_id}/timeline",
+    response_model=FlowTimelineResponse,
+)
+def read_flow_timeline(
+    flow_id: int,
+    db: Session = Depends(get_db),
+):
+    result = get_flow_timeline(
+        db=db,
+        flow_id=flow_id,
+    )
+
+    return {
+        "flow_id": result.flow.id,
+        "title": result.flow.title,
+        "target_asset": result.flow.target_asset,
+        "event_count": len(result.events),
+        "timeline": result.events,
+    }

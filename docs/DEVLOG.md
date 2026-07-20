@@ -105,3 +105,31 @@
 - Flow Ranking 기능 구현
 - SignalFlow 데이터 파이프라인 완성
 
+
+---
+
+## 2026-07-20 | Sprint 5 진행
+
+- Why Analysis Engine 구현
+- FlowNode별 Evidence 평균점수 계산
+- Primary Cause 선정 로직 구현
+- Confidence Score 및 Confidence Level 구현
+- GET /api/flows/{flow_id}/why API 추가
+- Flow Timeline 구현
+- GET /api/flows/{flow_id}/timeline API 추가
+- 뉴스 자동 주제 분류 구현
+- 정규식 단어 경계 적용으로 부분 문자열 오분류 수정
+- 금융·경제 비관련 뉴스 필터 구현
+- Flow Ranking v2 구현
+- Evidence Quality 및 Coverage Score 반영
+- Ask API에 Why Analysis 결과 연결
+- Ask API 구조화 응답 추가
+- Swagger 및 단위 테스트 검증
+
+### Sprint 5 완료 ✅
+
+- Evidence 기반 Why Analysis 기능 완성
+- Flow Timeline 조회 기능 완성
+- 뉴스 주제별 Flow 생성 기반 마련
+- 근거 품질과 개수를 반영한 Ranking 완성
+- Why 기반 Ask API 완성

@@ -39,3 +39,23 @@
 - Why Analysis
 - Ask API 개선
 
+✅ Sprint 5
+
+- Why Analysis Engine
+- Primary Cause
+- Confidence Score
+- Flow Timeline
+- News Topic Classification
+- Irrelevant News Filtering
+- Flow Ranking v2
+- Ask API v2
+
+---
+
+⬜ Sprint 6
+
+- Cross-Flow Cause Linking
+- 뉴스와 시장 Flow 연결
+- 경제지표와 시장 Flow 연결
+- Why Trail 고도화
+- OpenAI 기반 설명 생성

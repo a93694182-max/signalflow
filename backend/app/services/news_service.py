@@ -4,6 +4,10 @@ from typing import Any
 import requests
 
 from app.config import FINNHUB_API_KEY
+from app.core.news_topic_classifier import (
+    classify_news_topic,
+    is_relevant_news,
+)
 from app.models.signal import Signal
 
 
@@ -53,6 +57,14 @@ def generate_news_signals(
         if not headline:
             continue
 
+        summary = item.get("summary")
+
+        if not is_relevant_news(
+            title=headline,
+            summary=summary,
+        ):
+            continue
+
         published_timestamp = item.get("datetime")
 
         if published_timestamp:
@@ -63,10 +75,17 @@ def generate_news_signals(
         else:
             occurred_at = datetime.now(timezone.utc)
 
+        summary = item.get("summary")
+
+        topic = classify_news_topic(
+            title=headline,
+            summary=summary,
+        )
+
         signal = Signal(
             source=item.get("source") or "Finnhub",
             signal_type="news",
-            category=category,
+            category=topic,
             symbol=item.get("related") or "MARKET",
             name=headline,
             value=None,
@@ -77,13 +96,14 @@ def generate_news_signals(
             severity="info",
             occurred_at=occurred_at,
             title=headline,
-            summary=item.get("summary"),
+            summary=summary,
             url=item.get("url"),
             metadata={
                 "news_id": item.get("id"),
                 "image": item.get("image"),
                 "related": item.get("related"),
                 "finnhub_category": item.get("category"),
+                "topic": topic,
             },
         )
 

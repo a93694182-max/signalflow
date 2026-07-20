@@ -32,6 +32,10 @@ CATEGORY_NAMES = {
     "economic": "경제지표",
     "market": "시장",
     "general": "주요 뉴스",
+    "monetary_policy": "통화정책 뉴스",
+    "geopolitics": "지정학 뉴스",
+    "technology": "기술 뉴스",
+    "corporate": "기업 뉴스",
 }
 
 

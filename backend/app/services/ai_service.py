@@ -1,52 +1,72 @@
-from fastapi import HTTPException, status
-from sqlalchemy import select
-from sqlalchemy.orm import Session, selectinload
+from __future__ import annotations
 
-from app.models import Flow, FlowNode
-from openai import OpenAI
-from app.config import OPENAI_API_KEY
+from dataclasses import dataclass
 
-client = OpenAI(api_key=OPENAI_API_KEY)
+from sqlalchemy.orm import Session
+
+from app.core.why_analysis import analyze_flow
+from app.services.flow_service import get_flow_trace
+
+
+@dataclass(frozen=True, slots=True)
+class FlowAnswer:
+    answer: str
+    confidence_score: float
+    confidence_level: str
+    primary_cause: str | None
+    flow_path: list[str]
+    evidence_count: int
 
 
 def generate_flow_answer(
     db: Session,
     flow_id: int,
     question: str,
-) -> str:
-    stmt = (
-        select(Flow)
-        .where(Flow.id == flow_id)
-        .options(
-            selectinload(Flow.nodes)
-            .selectinload(FlowNode.evidences)
-        )
+) -> FlowAnswer:
+    flow = get_flow_trace(
+        db=db,
+        flow_id=flow_id,
     )
 
-    flow = db.scalar(stmt)
-
-    if flow is None:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail=f"Flow {flow_id}를 찾을 수 없습니다.",
-        )
+    why_result = analyze_flow(flow)
 
     sorted_nodes = sorted(
         flow.nodes,
         key=lambda node: node.order_index,
     )
 
-    flow_path = " → ".join(node.title for node in sorted_nodes)
+    flow_path = [
+        node.title
+        for node in sorted_nodes
+    ]
 
     evidence_count = sum(
         len(node.evidences)
         for node in sorted_nodes
     )
 
-    answer = (
-        f"{flow.summary}\n\n"
-        f"주요 흐름: {flow_path}\n"
-        f"확인된 근거: {evidence_count}개"
-    )
+    if why_result.primary_cause is None:
+        answer = (
+            f"'{question}'에 답할 수 있는 "
+            "충분한 근거가 아직 없습니다."
+        )
+        primary_cause = None
+    else:
+        primary_cause = why_result.primary_cause.title
 
-    return answer
+        answer = (
+            f"{flow.title}의 가장 유력한 원인은 "
+            f"'{primary_cause}'입니다. "
+            f"현재 {evidence_count}개의 근거를 확인했으며, "
+            f"분석 신뢰도는 "
+            f"{why_result.confidence_score:.1%}입니다."
+        )
+
+    return FlowAnswer(
+        answer=answer,
+        confidence_score=why_result.confidence_score,
+        confidence_level=why_result.confidence_level,
+        primary_cause=primary_cause,
+        flow_path=flow_path,
+        evidence_count=evidence_count,
+    )
