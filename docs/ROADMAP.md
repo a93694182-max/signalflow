@@ -31,7 +31,7 @@
 
 ---
 
-🚀 Sprint 4
+✅ Sprint 4
 
 - News API
 - Flow Ranking

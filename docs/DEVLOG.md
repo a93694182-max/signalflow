@@ -82,3 +82,26 @@
 - Collector → Filter → Grouping → Flow Discovery → DB 저장 구조 확립
 - SignalFlow를 이벤트 기반 데이터 파이프라인으로 확장
 
+
+## 2026-07-20 | Sprint 4 진행
+
+- Finnhub News API 연동
+- news_service 구현
+- News Signal 생성
+- Signal 모델 일반화
+- Signal Filter 뉴스 지원
+- News Flow 생성
+- Evidence 생성 로직 개선
+- Evidence Scoring Engine 구현
+- Flow Ranking Engine 구현
+- GET /api/flows/ranking API 추가
+- Engine API 응답 개선
+- 테스트 코드 작성 및 검증
+
+### Sprint 4 완료 ✅
+
+- 뉴스 데이터 기반 Flow 자동 생성
+- Evidence Score 계산
+- Flow Ranking 기능 구현
+- SignalFlow 데이터 파이프라인 완성
+

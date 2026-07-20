@@ -30,3 +30,11 @@
 - Signal Engine을 API와 Scheduler 모두에서 재사용하도록 설계
 - 중복 Flow 생성 방지 로직 추가
 
+## Sprint 4
+
+- Finnhub를 뉴스 수집 API로 채택
+- News를 Signal로 변환하여 기존 파이프라인 재사용
+- Signal 모델을 범용 구조로 리팩터링
+- Evidence Score를 Relation / Impact / Time / Reliability 기반으로 계산
+- Flow Ranking은 Evidence 평균 점수 기반으로 계산
+- Engine API는 Flow ID 대신 Flow 요약 정보를 반환

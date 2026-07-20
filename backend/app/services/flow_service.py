@@ -2,7 +2,8 @@ from fastapi import HTTPException, status
 from sqlalchemy import and_, select
 from sqlalchemy.orm import Session, selectinload
 
-from app.core.flow_discovery import discover_flow, discover_flows
+from app.core.flow_discovery import discover_flow
+from app.core.flow_ranking import rank_flows
 from app.models import Flow, FlowNode
 from app.models.signal import Signal
 
@@ -106,3 +107,16 @@ def find_duplicate_flow(
     )
 
     return db.scalar(stmt)
+
+def get_ranked_flows(db: Session):
+    stmt = (
+        select(Flow)
+        .options(
+            selectinload(Flow.nodes)
+            .selectinload(FlowNode.evidences)
+        )
+    )
+
+    flows = db.scalars(stmt).unique().all()
+
+    return rank_flows(flows)

@@ -6,6 +6,8 @@ from app.core.signal_normalizer import (
 )
 from app.models import Evidence, Flow, FlowNode
 from app.models.signal import Signal
+from app.core.evidence_scoring import calculate_evidence_scores
+
 
 
 EVIDENCE_LEVELS = {
@@ -143,6 +145,7 @@ def build_flow_from_group(
         start=1,
     ):
         signal_summary = build_signal_summary(signal)
+        scores = calculate_evidence_scores(signal)
 
         node = FlowNode(
             order_index=order_index,
@@ -166,13 +169,10 @@ def build_flow_from_group(
             source=signal.source,
             url=get_source_url(signal),
             content_summary=signal_summary,
-            relation_score=1.0,
-            impact_score=IMPACT_SCORES.get(
-                signal.severity,
-                0.5,
-            ),
-            time_score=1.0,
-            reliability_score=0.9,
+            relation_score=scores.relation_score,
+            impact_score=scores.impact_score,
+            time_score=scores.time_score,
+            reliability_score=scores.reliability_score,
             published_at=signal.occurred_at,
         )
 
