@@ -1,13 +1,20 @@
 from fastapi import HTTPException, status
 from sqlalchemy import and_, select
 from sqlalchemy.orm import Session, selectinload
+from dataclasses import dataclass
+
 
 from app.core.flow_discovery import discover_flow, discover_flows
 from app.core.flow_ranking import rank_flows
 from app.core.flow_timeline import build_flow_timeline
-from app.core.why_analysis import analyze_flow
+from app.core.why_analysis import (
+    WhyAnalysisResult,
+    analyze_flow,
+)
 from app.models import Flow, FlowNode
 from app.models.signal import Signal
+from app.services.flow_link_service import get_why_trail
+
 
 
 def get_flow_trace(db: Session, flow_id: int) -> Flow:
@@ -124,18 +131,61 @@ def get_ranked_flows(db: Session):
     return rank_flows(flows)
 
 
+@dataclass(frozen=True, slots=True)
+class CrossFlowWhyAnalysisResult:
+    analysis: WhyAnalysisResult
+    summary: str
+    external_causes: list[dict]
+
+
+
+
 def get_flow_why_analysis(
     db: Session,
     flow_id: int,
-):
+) -> CrossFlowWhyAnalysisResult:
     flow = get_flow_trace(
         db=db,
         flow_id=flow_id,
     )
 
-    return analyze_flow(flow)
+    analysis = analyze_flow(flow)
 
+    trail_result = get_why_trail(
+        db=db,
+        flow_id=flow_id,
+    )
 
+    external_causes = (
+        trail_result["trail"][:3]
+    )
+
+    if external_causes:
+        cause_titles = ", ".join(
+            f"'{cause['source_title']}'"
+            for cause in external_causes
+        )
+
+        summary = (
+            f"{flow.title}과 연결된 외부 원인 후보는 "
+            f"{cause_titles}입니다."
+        )
+
+        if analysis.primary_cause is not None:
+            summary += (
+                f" 내부 신호 중에서는 "
+                f"'{analysis.primary_cause.title}'가 "
+                f"가장 강하게 나타났습니다."
+            )
+
+    else:
+        summary = analysis.summary
+
+    return CrossFlowWhyAnalysisResult(
+        analysis=analysis,
+        summary=summary,
+        external_causes=external_causes,
+    )
 
 def get_flow_timeline(
     db: Session,

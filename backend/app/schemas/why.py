@@ -1,8 +1,12 @@
 from pydantic import BaseModel, ConfigDict, Field
 
+from app.schemas.trail import WhyTrailStepResponse
+
 
 class WhyCauseResponse(BaseModel):
-    model_config = ConfigDict(from_attributes=True)
+    model_config = ConfigDict(
+        from_attributes=True,
+    )
 
     node_id: int
     title: str
@@ -19,7 +23,15 @@ class WhyAnalysisResponse(BaseModel):
     summary: str
     confidence_score: float
     confidence_level: str
+
     primary_cause: WhyCauseResponse | None
+
     causes: list[WhyCauseResponse] = Field(
+        default_factory=list,
+    )
+
+    external_causes: list[
+        WhyTrailStepResponse
+    ] = Field(
         default_factory=list,
     )

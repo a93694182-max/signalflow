@@ -72,16 +72,30 @@ def read_flow_why_analysis(
         flow_id=flow_id,
     )
 
+    analysis = result.analysis
+
     return {
-        "flow_id": result.flow.id,
-        "title": result.flow.title,
-        "target_asset": result.flow.target_asset,
+        "flow_id": analysis.flow.id,
+        "title": analysis.flow.title,
+        "target_asset": (
+            analysis.flow.target_asset
+        ),
         "summary": result.summary,
-        "confidence_score": result.confidence_score,
-        "confidence_level": result.confidence_level,
-        "primary_cause": result.primary_cause,
-        "causes": result.causes,
+        "confidence_score": (
+            analysis.confidence_score
+        ),
+        "confidence_level": (
+            analysis.confidence_level
+        ),
+        "primary_cause": (
+            analysis.primary_cause
+        ),
+        "causes": analysis.causes,
+        "external_causes": (
+            result.external_causes
+        ),
     }
+
 
 
 @router.get(
