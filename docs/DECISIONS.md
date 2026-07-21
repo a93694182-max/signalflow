@@ -54,3 +54,19 @@
 - Ask API는 Why Analysis 결과를 재사용
 - OpenAI 연동은 데이터 기반 Why 구조가 안정된 이후 진행
 
+
+
+## Sprint 6
+
+- Flow 간 관계를 저장하기 위해 FlowLink 테이블 도입
+- 원인 후보 Flow에서 시장 Flow 방향으로 연결
+- 인과관계를 확정하지 않고 potential_cause로 표현
+- 뉴스·경제지표 Evidence를 원인 후보로 사용
+- Market Evidence를 연결 대상으로 사용
+- 링크 점수는 카테고리 50%, 시간 30%, 근거 품질 20%로 계산
+- 최대 연결 시간 범위를 72시간으로 설정
+- 동일한 Flow 연결은 Unique Constraint로 중복 방지
+- Ask API에서 상위 3개의 외부 원인 후보 사용
+- OpenAI 호출 실패 시 템플릿 답변으로 대체
+- OpenAI 실제 API 호출 검증은 API Key 설정 후 진행
+

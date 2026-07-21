@@ -133,3 +133,32 @@
 - 뉴스 주제별 Flow 생성 기반 마련
 - 근거 품질과 개수를 반영한 Ranking 완성
 - Why 기반 Ask API 완성
+
+
+
+
+
+## 2026-07-21 | Sprint 6 진행
+
+- FlowLink 모델 추가
+- Alembic Migration 생성 및 PostgreSQL 적용
+- Cross-Flow Linking Engine 구현
+- 뉴스·경제지표 Flow와 시장 Flow 연결
+- 카테고리·시간·근거 품질 기반 연결 점수 계산
+- Signal Engine 응답에 link_count 추가
+- GET /api/flows/{flow_id}/trail API 구현
+- Ask API v3에 Why Trail 연결
+- 중복 원인 후보 제거 및 상위 3개 제한
+- OpenAI Responses API 연동 코드 구현
+- OpenAI 미설정 시 Template Fallback 구현
+- Cross-Flow Linking 테스트 작성
+- FlowLink 저장 및 Why Trail 조회 테스트 작성
+- 전체 테스트 통과
+
+### Sprint 6 완료 ✅
+
+- Flow 내부 분석을 Flow 간 원인 후보 분석으로 확장
+- 뉴스·경제지표 → 시장 반응 Why Trail 구현
+- OpenAI 설명 생성 구조 완성
+- OpenAI 실제 호출 검증은 API Key 설정 후 진행
+

@@ -33,3 +33,15 @@ class Flow(Base):
         cascade="all, delete-orphan",
         order_by="FlowNode.order_index",
     )
+
+    outgoing_links: Mapped[list["FlowLink"]] = relationship(
+        foreign_keys="FlowLink.source_flow_id",
+        back_populates="source_flow",
+        cascade="all, delete-orphan",
+    )
+
+    incoming_links: Mapped[list["FlowLink"]] = relationship(
+        foreign_keys="FlowLink.target_flow_id",
+        back_populates="target_flow",
+        cascade="all, delete-orphan",
+    )

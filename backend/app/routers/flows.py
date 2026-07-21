@@ -11,6 +11,10 @@ from app.services.flow_service import (
     get_ranked_flows,
     get_flow_timeline,
 )
+from app.schemas.trail import WhyTrailResponse
+from app.services.flow_link_service import get_why_trail
+
+
 
 router = APIRouter(
     prefix="/api/flows",
@@ -100,3 +104,17 @@ def read_flow_timeline(
         "event_count": len(result.events),
         "timeline": result.events,
     }
+
+
+@router.get(
+    "/{flow_id}/trail",
+    response_model=WhyTrailResponse,
+)
+def read_why_trail(
+    flow_id: int,
+    db: Session = Depends(get_db),
+):
+    return get_why_trail(
+        db=db,
+        flow_id=flow_id,
+    )

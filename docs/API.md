@@ -408,6 +408,38 @@ OpenAI는 아직 사용하지 않습니다.
 }
 ```
 
+
+
+## Sprint 6
+
+### Why Trail
+
+#### GET /api/flows/{flow_id}/trail
+
+시장 Flow와 연결된 뉴스·경제지표 원인 후보를 조회합니다.
+
+### Response
+
+```json
+{
+    "flow_id": 24,
+    "title": "국내 증시 혼조 흐름",
+    "trail_count": 3,
+    "trail": [
+        {
+            "source_flow_id": 28,
+            "source_title": "원자재 흐름",
+            "target_flow_id": 24,
+            "target_title": "국내 증시 혼조 흐름",
+            "relation_type": "potential_cause",
+            "score": 0.965,
+            "reason": "카테고리 연관성 1.00, 시간 근접성 1.00, 근거 품질 0.83"
+        }
+    ]
+}
+
+
+
 ---
 
 # API Index
@@ -425,3 +457,4 @@ OpenAI는 아직 사용하지 않습니다.
 | GET | `/api/market/history/{symbol}` | 시장 히스토리 조회 |
 | GET | `/api/economic/fred/{series_id}` | FRED 경제지표 조회 |
 | POST | `/api/engine/run` | Signal Engine 실행 |
+| GET | `/api/flows/{flow_id}/trail` | Why Trail 조회 |

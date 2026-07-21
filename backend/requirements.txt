@@ -26,3 +26,6 @@ yfinance
 requests
 
 apscheduler
+
+pytest
+

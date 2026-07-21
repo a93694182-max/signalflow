@@ -174,3 +174,39 @@ Flow Ranking v2
 ↓
 
 Ask API v2
+
+
+
+---
+
+# Sprint 6
+
+News / Economic Flow
+
+↓
+
+Cross-Flow Linking
+
+├── Category Score
+├── Time Score
+└── Evidence Quality Score
+
+↓
+
+FlowLink
+
+↓
+
+Market Flow
+
+↓
+
+Why Trail API
+
+↓
+
+Ask API v3
+
+├── OpenAI Explanation
+└── Template Fallback
+

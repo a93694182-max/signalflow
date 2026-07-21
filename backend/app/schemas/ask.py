@@ -18,3 +18,5 @@ class AskResponse(BaseModel):
     primary_cause: str | None
     flow_path: list[str]
     evidence_count: int
+    answer_source: str
+    why_trail: list[str]

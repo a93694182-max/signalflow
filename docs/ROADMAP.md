@@ -52,10 +52,11 @@
 
 ---
 
-⬜ Sprint 6
+✅ Sprint 6
 
 - Cross-Flow Cause Linking
 - 뉴스와 시장 Flow 연결
 - 경제지표와 시장 Flow 연결
 - Why Trail 고도화
-- OpenAI 기반 설명 생성
+- OpenAI 기반 설명 생성 구조
+- Template Fallback

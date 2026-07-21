@@ -18,6 +18,7 @@ def run_engine(db: Session = Depends(get_db)) -> dict:
         "collected_count": result["collected_count"],
         "filtered_count": result["filtered_count"],
         "flow_count": result["flow_count"],
+        "link_count": result["link_count"],
         "flows": [
             {
                 "id": flow.id,

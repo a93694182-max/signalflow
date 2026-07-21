@@ -35,4 +35,6 @@ def ask_question(
         primary_cause=result.primary_cause,
         flow_path=result.flow_path,
         evidence_count=result.evidence_count,
+        answer_source=result.answer_source,
+        why_trail=result.why_trail,
     )
