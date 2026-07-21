@@ -60,3 +60,7 @@
 - Why Trail 고도화
 - OpenAI 기반 설명 생성 구조
 - Template Fallback
+
+
+---
+

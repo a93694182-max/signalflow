@@ -1,11 +1,18 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, Query
 from sqlalchemy.orm import Session
+from datetime import date
+from typing import Literal
+
 
 from app.database import get_db
-from app.schemas.flow import FlowTraceResponse
+from app.schemas.flow import (
+    FlowFeedResponse,
+    FlowTraceResponse,
+)
 from app.schemas.why import WhyAnalysisResponse
 from app.schemas.timeline import FlowTimelineResponse
 from app.services.flow_service import (
+    get_flow_feed,
     get_flow_trace,
     get_flow_why_analysis,
     get_ranked_flows,
@@ -20,6 +27,59 @@ router = APIRouter(
     prefix="/api/flows",
     tags=["Flows"],
 )
+
+
+@router.get(
+    "",
+    response_model=FlowFeedResponse,
+)
+def read_flow_feed(
+    limit: int = Query(
+        default=20,
+        ge=1,
+        le=100,
+    ),
+    offset: int = Query(
+        default=0,
+        ge=0,
+    ),
+    target_asset: str | None = Query(
+        default=None,
+        max_length=50,
+    ),
+    include_news: bool = Query(
+        default=True,
+    ),
+    query: str | None = Query(
+        default=None,
+        min_length=1,
+        max_length=100,
+    ),
+    from_date: date | None = Query(
+        default=None,
+    ),
+    to_date: date | None = Query(
+        default=None,
+    ),
+    sort_by: Literal["latest", "score"] = Query(
+        default="latest",
+        alias="sort",
+    ),
+    db: Session = Depends(get_db),
+
+    
+):
+    return get_flow_feed(
+        db=db,
+        limit=limit,
+        offset=offset,
+        target_asset=target_asset,
+        include_news=include_news,
+        query=query,
+        from_date=from_date,
+        to_date=to_date,
+        sort_by=sort_by,
+    )
 
 
 @router.get(

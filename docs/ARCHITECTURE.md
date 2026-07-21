@@ -210,3 +210,51 @@ Ask API v3
 ├── OpenAI Explanation
 └── Template Fallback
 
+Why Analysis v2
+
+├── External Causes (FlowLink)
+├── Internal Causes (FlowNode)
+├── Primary Internal Signal
+└── Cross-Flow Summary
+
+
+---
+
+# Sprint 7
+
+PostgreSQL Flow Data
+
+↓
+
+Flow Ranking
+
+↓
+
+Recent Flow Filter
+
+├── 최근 24시간
+└── News Flow 제외
+
+↓
+
+Home Intelligence API
+
+├── Biggest Why
+└── Top Whys
+
+
+PostgreSQL Flow Data
+
+↓
+
+Flow Feed Query
+
+├── 최신순 정렬
+├── Pagination
+├── Target Asset Filter
+├── News Filter
+└── Title Search
+
+↓
+
+Flow Feed API

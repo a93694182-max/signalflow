@@ -136,7 +136,7 @@
 
 
 
-
+---
 
 ## 2026-07-21 | Sprint 6 진행
 
@@ -145,15 +145,24 @@
 - Cross-Flow Linking Engine 구현
 - 뉴스·경제지표 Flow와 시장 Flow 연결
 - 카테고리·시간·근거 품질 기반 연결 점수 계산
-- Signal Engine 응답에 link_count 추가
-- GET /api/flows/{flow_id}/trail API 구현
+- Signal Engine 응답에 `link_count` 추가
+- `GET /api/flows/{flow_id}/trail` API 구현
 - Ask API v3에 Why Trail 연결
 - 중복 원인 후보 제거 및 상위 3개 제한
 - OpenAI Responses API 연동 코드 구현
 - OpenAI 미설정 시 Template Fallback 구현
 - Cross-Flow Linking 테스트 작성
 - FlowLink 저장 및 Why Trail 조회 테스트 작성
-- 전체 테스트 통과
+
+---
+
+## 2026-07-21 | Sprint 6 고도화
+
+- Why Analysis v2 구현
+- `GET /api/flows/{flow_id}/why`에 `external_causes` 추가
+- 외부 원인 후보와 내부 시장 신호를 결합한 `summary` 생성
+- Cross-Flow Why Analysis 테스트 추가
+- 전체 테스트 5개 통과
 
 ### Sprint 6 완료 ✅
 
@@ -161,4 +170,31 @@
 - 뉴스·경제지표 → 시장 반응 Why Trail 구현
 - OpenAI 설명 생성 구조 완성
 - OpenAI 실제 호출 검증은 API Key 설정 후 진행
+
+
+
+
+---
+
+## 2026-07-21 | Sprint 7 진행
+
+- Home API Mock 제거
+- DB 기반 Home Intelligence Service 구현
+- Flow Ranking 기반 biggest_why 선정
+- Ranking 2~4위 기반 top_whys 구성
+- 최근 24시간 Flow 필터 구현
+- Home Ranking에서 뉴스 Flow 제외
+- Home API에 Why Analysis 요약 연결
+- Confidence Score 및 External Cause Count 추가
+- Flow 생성 시각 응답 추가
+- GET /api/flows Flow Feed API 구현
+- 최신 생성순 정렬 구현
+- limit 및 offset 페이지네이션 구현
+- Target Asset 필터 구현
+- 뉴스 Flow 포함 여부 필터 구현
+- Flow 제목 검색 구현
+- 필터 조합 및 필터별 total 계산 구현
+- Home Service 테스트 작성
+- Flow Feed 페이지네이션 및 필터 테스트 작성
+- 전체 테스트 통과
 

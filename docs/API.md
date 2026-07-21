@@ -438,6 +438,126 @@ OpenAI는 아직 사용하지 않습니다.
     ]
 }
 
+```
+### Why Analysis v2
+
+#### GET /api/flows/{flow_id}/why
+
+기존 FlowNode 기반 내부 원인 분석에 Cross-Flow 외부 원인 후보를 추가합니다.
+
+추가 응답:
+
+- `external_causes`: 연결 점수가 높은 외부 Flow 원인 후보
+- `summary`: 외부 원인 후보와 내부 시장 신호를 함께 설명
+
+외부 원인 후보는 연결 점수순 상위 3개를 반환합니다.
+
+
+
+
+---
+
+
+
+
+## Sprint 7
+
+### Home Intelligence
+
+#### GET /api/home
+
+최근 24시간 내 생성된 시장 Flow를 Ranking하여 홈 화면 데이터를 반환합니다.
+
+뉴스 Flow는 분석 대상에서 제외하고 시장 Flow의 외부 원인 후보로 사용합니다.
+
+#### Selection
+
+- Flow Ranking 1위: `biggest_why`
+- Flow Ranking 2~4위: `top_whys`
+- 최근 24시간 Flow만 사용
+- `target_asset=MARKET`인 뉴스 Flow 제외
+
+#### Response
+
+```json
+{
+    "biggest_why": {
+        "flow_id": 24,
+        "title": "국내 증시 상승 흐름",
+        "target_asset": "^KS11",
+        "score": 0.817,
+        "created_at": "2026-07-21T11:01:31+09:00",
+        "summary": "국내 증시 상승 흐름과 연결된 외부 원인 후보를 분석했습니다.",
+        "confidence_score": 0.89,
+        "confidence_level": "high",
+        "external_cause_count": 3
+    },
+    "top_whys": [
+        {
+            "flow_id": 25,
+            "title": "원달러 하락 흐름",
+            "target_asset": "KRW=X",
+            "score": 0.752,
+            "created_at": "2026-07-21T11:01:31+09:00"
+        }
+    ]
+}
+```
+
+Flow가 없으면 다음과 같이 반환합니다.
+
+```json
+{
+    "biggest_why": null,
+    "top_whys": []
+}
+```
+
+### Flow Feed
+
+#### GET /api/flows
+
+Flow 목록을 최신 생성순으로 조회합니다.
+
+#### Query Parameters
+
+| Parameter | Default | Description |
+|---|---:|---|
+| `limit` | `20` | 조회 개수, 1~100 |
+| `offset` | `0` | 건너뛸 개수 |
+| `target_asset` | `null` | 자산 코드 필터 |
+| `include_news` | `true` | 뉴스 Flow 포함 여부 |
+| `query` | `null` | Flow 제목 검색 |
+
+#### Examples
+
+```text
+GET /api/flows?limit=10&offset=0
+GET /api/flows?target_asset=%5EKS11
+GET /api/flows?include_news=false
+GET /api/flows?query=국내%20증시
+GET /api/flows?target_asset=%5EKS11&query=상승
+```
+
+#### Response
+
+```json
+{
+    "total": 6,
+    "limit": 20,
+    "offset": 0,
+    "flows": [
+        {
+            "flow_id": 24,
+            "title": "국내 증시 상승 흐름",
+            "target_asset": "^KS11",
+            "summary": "KOSPI와 KOSDAQ이 상승했습니다.",
+            "created_at": "2026-07-21T11:01:31+09:00",
+            "updated_at": "2026-07-21T11:01:31+09:00"
+        }
+    ]
+}
+```
 
 
 ---
@@ -458,3 +578,5 @@ OpenAI는 아직 사용하지 않습니다.
 | GET | `/api/economic/fred/{series_id}` | FRED 경제지표 조회 |
 | POST | `/api/engine/run` | Signal Engine 실행 |
 | GET | `/api/flows/{flow_id}/trail` | Why Trail 조회 |
+| GET | `/api/home` | Home Intelligence 조회 |
+| GET | `/api/flows` | Flow Feed 조회 |

@@ -27,3 +27,22 @@ class FlowTraceResponse(BaseModel):
     summary: str | None
     updated_at: datetime
     nodes: list[FlowNodeResponse]
+
+
+class FlowFeedItemResponse(BaseModel):
+    flow_id: int
+    title: str
+    target_asset: str
+    summary: str | None
+    score: float
+    created_at: datetime
+    updated_at: datetime
+    
+
+
+class FlowFeedResponse(BaseModel):
+    total: int
+    limit: int
+    offset: int
+    flows: list[FlowFeedItemResponse]
+
