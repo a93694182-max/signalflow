@@ -301,7 +301,9 @@ def get_flow_feed(
         .where(*conditions)
         .options(
             selectinload(Flow.nodes)
-            .selectinload(FlowNode.evidences)
+            .selectinload(FlowNode.evidences),
+            selectinload(Flow.incoming_links),
+            selectinload(Flow.outgoing_links),
         )
     )
 
@@ -325,17 +327,16 @@ def get_flow_feed(
             {
                 "flow_id": result.flow.id,
                 "title": result.flow.title,
-                "target_asset": (
-                    result.flow.target_asset
-                ),
+                "target_asset": result.flow.target_asset,
                 "summary": result.flow.summary,
                 "score": result.score,
-                "created_at": (
-                    result.flow.created_at
+                "evidence_count": result.evidence_count,
+                "link_count": (
+                    len(result.flow.incoming_links)
+                    + len(result.flow.outgoing_links)
                 ),
-                "updated_at": (
-                    result.flow.updated_at
-                ),
+                "created_at": result.flow.created_at,
+                "updated_at": result.flow.updated_at,
             }
             for result in page_results
         ]
@@ -368,8 +369,13 @@ def get_flow_feed(
                 "title": flow.title,
                 "target_asset": flow.target_asset,
                 "summary": flow.summary,
-                "score": (
-                    ranking_by_flow_id[flow.id].score
+                "score": ranking_by_flow_id[flow.id].score,
+                "evidence_count": (
+                    ranking_by_flow_id[flow.id].evidence_count
+                ),
+                "link_count": (
+                    len(flow.incoming_links)
+                    + len(flow.outgoing_links)
                 ),
                 "created_at": flow.created_at,
                 "updated_at": flow.updated_at,

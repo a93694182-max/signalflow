@@ -35,6 +35,8 @@ class FlowFeedItemResponse(BaseModel):
     target_asset: str
     summary: str | None
     score: float
+    evidence_count: int
+    link_count: int
     created_at: datetime
     updated_at: datetime
     

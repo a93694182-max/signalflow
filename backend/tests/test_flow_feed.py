@@ -8,7 +8,12 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import Session
 
 from app.database import Base
-from app.models import Evidence, Flow, FlowNode
+from app.models import (
+    Evidence,
+    Flow,
+    FlowLink,
+    FlowNode,
+)
 from app.services.flow_service import get_flow_feed
 
 
@@ -399,3 +404,64 @@ def test_flow_feed_rejects_invalid_sort():
         error.value.detail
         == "sort는 latest 또는 score만 사용할 수 있습니다."
     )
+
+
+
+
+def test_flow_feed_summary_counts():
+    engine = create_engine(
+        "sqlite:///:memory:",
+    )
+
+    Base.metadata.create_all(engine)
+
+    now = datetime.now(timezone.utc)
+
+    news_flow = create_scored_flow(
+        flow_id=1,
+        title="금리 인상 뉴스 흐름",
+        score=0.9,
+        created_at=now,
+    )
+    news_flow.target_asset = "MARKET"
+
+    market_flow = create_scored_flow(
+        flow_id=2,
+        title="국내 증시 하락 흐름",
+        score=0.8,
+        created_at=now,
+    )
+
+    flow_link = FlowLink(
+        source_flow=news_flow,
+        target_flow=market_flow,
+        relation_type="potential_cause",
+        score=0.9,
+        reason="테스트 연결",
+    )
+
+    with Session(engine) as db:
+        db.add_all([
+            news_flow,
+            market_flow,
+            flow_link,
+        ])
+        db.commit()
+
+        result = get_flow_feed(
+            db=db,
+            limit=20,
+            offset=0,
+            sort_by="latest",
+        )
+
+    items_by_id = {
+        flow["flow_id"]: flow
+        for flow in result["flows"]
+    }
+
+    assert items_by_id[1]["evidence_count"] == 1
+    assert items_by_id[2]["evidence_count"] == 1
+
+    assert items_by_id[1]["link_count"] == 1
+    assert items_by_id[2]["link_count"] == 1

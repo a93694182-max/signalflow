@@ -468,7 +468,7 @@ OpenAI는 아직 사용하지 않습니다.
 
 최근 24시간 내 생성된 시장 Flow를 Ranking하여 홈 화면 데이터를 반환합니다.
 
-뉴스 Flow는 분석 대상에서 제외하고 시장 Flow의 외부 원인 후보로 사용합니다.
+뉴스 Flow는 Home Ranking에서 제외하고 시장 Flow의 외부 원인 후보로 사용합니다.
 
 #### Selection
 
@@ -517,17 +517,22 @@ Flow가 없으면 다음과 같이 반환합니다.
 
 #### GET /api/flows
 
-Flow 목록을 최신 생성순으로 조회합니다.
+Flow 목록을 검색·필터링하고 최신순 또는 점수순으로 조회합니다.
 
 #### Query Parameters
 
 | Parameter | Default | Description |
 |---|---:|---|
 | `limit` | `20` | 조회 개수, 1~100 |
-| `offset` | `0` | 건너뛸 개수 |
+| `offset` | `0` | 건너뛸 Flow 개수 |
 | `target_asset` | `null` | 자산 코드 필터 |
 | `include_news` | `true` | 뉴스 Flow 포함 여부 |
 | `query` | `null` | Flow 제목 검색 |
+| `from_date` | `null` | 조회 시작일 |
+| `to_date` | `null` | 조회 종료일 |
+| `sort` | `latest` | `latest` 또는 `score` |
+
+날짜 필터는 `Asia/Seoul`을 기준으로 하며 `to_date` 당일 전체를 포함합니다.
 
 #### Examples
 
@@ -536,7 +541,9 @@ GET /api/flows?limit=10&offset=0
 GET /api/flows?target_asset=%5EKS11
 GET /api/flows?include_news=false
 GET /api/flows?query=국내%20증시
-GET /api/flows?target_asset=%5EKS11&query=상승
+GET /api/flows?from_date=2026-07-20&to_date=2026-07-21
+GET /api/flows?sort=score
+GET /api/flows?target_asset=%5EKS11&query=상승&sort=score
 ```
 
 #### Response
@@ -552,12 +559,22 @@ GET /api/flows?target_asset=%5EKS11&query=상승
             "title": "국내 증시 상승 흐름",
             "target_asset": "^KS11",
             "summary": "KOSPI와 KOSDAQ이 상승했습니다.",
+            "score": 0.817,
+            "evidence_count": 2,
+            "link_count": 3,
             "created_at": "2026-07-21T11:01:31+09:00",
             "updated_at": "2026-07-21T11:01:31+09:00"
         }
     ]
 }
 ```
+
+#### Validation
+
+- `limit`: 1~100
+- `offset`: 0 이상
+- `sort`: `latest`, `score`
+- `from_date`는 `to_date`보다 늦을 수 없음
 
 
 ---
@@ -579,4 +596,4 @@ GET /api/flows?target_asset=%5EKS11&query=상승
 | POST | `/api/engine/run` | Signal Engine 실행 |
 | GET | `/api/flows/{flow_id}/trail` | Why Trail 조회 |
 | GET | `/api/home` | Home Intelligence 조회 |
-| GET | `/api/flows` | Flow Feed 조회 |
+| GET | `/api/flows` | Flow Feed 검색·필터·정렬 |

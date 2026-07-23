@@ -176,25 +176,35 @@
 
 ---
 
-## 2026-07-21 | Sprint 7 진행
+
+
+## 2026-07-21 ~ 2026-07-23 | Sprint 7 진행
 
 - Home API Mock 제거
 - DB 기반 Home Intelligence Service 구현
-- Flow Ranking 기반 biggest_why 선정
-- Ranking 2~4위 기반 top_whys 구성
+- Flow Ranking 기반 biggest_why 및 top_whys 구성
 - 최근 24시간 Flow 필터 구현
 - Home Ranking에서 뉴스 Flow 제외
-- Home API에 Why Analysis 요약 연결
-- Confidence Score 및 External Cause Count 추가
-- Flow 생성 시각 응답 추가
+- Why Analysis 요약 및 Confidence 정보 연결
 - GET /api/flows Flow Feed API 구현
-- 최신 생성순 정렬 구현
 - limit 및 offset 페이지네이션 구현
-- Target Asset 필터 구현
-- 뉴스 Flow 포함 여부 필터 구현
+- Target Asset 및 뉴스 포함 여부 필터 구현
 - Flow 제목 검색 구현
-- 필터 조합 및 필터별 total 계산 구현
+- Asia/Seoul 기준 기간 필터 구현
+- 잘못된 날짜 범위 422 검증
+- latest 및 score 정렬 구현
+- 기존 Flow Ranking v2 점수 기준 재사용
+- Feed에 Score, Evidence Count, Link Count 추가
+- FastAPI startup 이벤트를 lifespan 방식으로 전환
 - Home Service 테스트 작성
-- Flow Feed 페이지네이션 및 필터 테스트 작성
-- 전체 테스트 통과
+- Flow Feed Service 테스트 7개 작성
+- Flow Feed API 테스트 3개 작성
+- 전체 테스트 17개 통과
+
+### Sprint 7 완료 ✅
+
+- 실제 데이터 기반 Home Intelligence API 완성
+- 프론트엔드용 Flow Feed API 완성
+- 검색·필터·기간 조회·정렬·페이지네이션 완성
+- 사용자 조회 계층 구축
 

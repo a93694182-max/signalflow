@@ -220,13 +220,13 @@ Why Analysis v2
 
 ---
 
+---
+
 # Sprint 7
 
+## Home Intelligence
+
 PostgreSQL Flow Data
-
-↓
-
-Flow Ranking
 
 ↓
 
@@ -237,11 +237,21 @@ Recent Flow Filter
 
 ↓
 
-Home Intelligence API
+Flow Ranking
+
+↓
+
+Why Analysis
+
+↓
+
+Home API
 
 ├── Biggest Why
 └── Top Whys
 
+
+## Flow Feed
 
 PostgreSQL Flow Data
 
@@ -249,11 +259,24 @@ PostgreSQL Flow Data
 
 Flow Feed Query
 
-├── 최신순 정렬
 ├── Pagination
 ├── Target Asset Filter
 ├── News Filter
-└── Title Search
+├── Title Search
+├── Date Filter
+└── Latest / Score Sort
+
+↓
+
+Flow Ranking v2
+
+↓
+
+Feed Summary
+
+├── Score
+├── Evidence Count
+└── Link Count
 
 ↓
 

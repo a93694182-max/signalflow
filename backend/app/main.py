@@ -1,6 +1,8 @@
 from fastapi import Depends, FastAPI
 from sqlalchemy import text
 from sqlalchemy.orm import Session
+from contextlib import asynccontextmanager
+
 
 from app.database import get_db
 from app.routers.flows import router as flows_router
@@ -14,17 +16,19 @@ from app.routers import engine
 from app.services.scheduler_service import start_scheduler
 
 
+
+@asynccontextmanager
+async def lifespan(_app: FastAPI):
+    start_scheduler()
+    yield
+
+
 app = FastAPI(
     title="SignalFlow API",
     description="시장의 흐름을 근거 기반으로 설명하는 경제 인텔리전스 플랫폼",
     version="0.1.0",
+    lifespan=lifespan,
 )
-
-
-@app.on_event("startup")
-def startup():
-    start_scheduler()
-
 
 
 app.include_router(home_router)

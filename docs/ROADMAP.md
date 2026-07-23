@@ -64,3 +64,20 @@
 
 ---
 
+
+
+✅ Sprint 7
+
+- Home Intelligence API
+- Dynamic Biggest Why
+- Top Whys
+- Recent Flow Filtering
+- Flow Feed API
+- Pagination
+- Target Asset Filtering
+- News Flow Filtering
+- Flow Title Search
+- Date Filtering
+- Latest / Score Sorting
+- Evidence / Link Summary
+- API-level Validation Tests

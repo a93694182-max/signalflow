@@ -82,11 +82,13 @@
 - Home API는 고정 Mock 대신 실제 Flow Ranking 결과를 사용
 - Ranking 1위를 biggest_why, 2~4위를 top_whys로 선정
 - 홈은 현재 상황을 보여주기 위해 최근 24시간 Flow만 사용
-- 뉴스 Flow는 분석 대상이 아닌 외부 원인 후보이므로 Home Ranking에서 제외
+- 뉴스 Flow는 외부 원인 후보이므로 Home Ranking에서 제외
 - 기존 Flow Ranking과 Why Analysis 로직을 Home API에서 재사용
-- Flow Feed는 created_at 내림차순과 id 내림차순으로 정렬
-- 페이지네이션은 limit과 offset 방식으로 구현
-- Flow Feed의 전체 개수에도 동일한 필터 조건 적용
-- 뉴스 포함 여부, 자산 코드, 제목 검색 조건을 조합 가능하도록 설계
-
+- Flow Feed 페이지네이션은 limit과 offset 방식으로 구현
+- 최신순은 created_at과 id 내림차순으로 정렬
+- 점수순은 기존 Flow Ranking v2 기준을 재사용
+- Flow Feed의 전체 개수에도 동일한 검색·필터 조건 적용
+- 기간 필터는 Asia/Seoul 기준이며 종료일 전체를 포함
+- Feed 항목에 Score, Evidence Count, Link Count 제공
+- FastAPI 애플리케이션 시작 처리를 lifespan 방식으로 전환
 
