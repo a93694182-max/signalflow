@@ -577,6 +577,139 @@ GET /api/flows?target_asset=%5EKS11&query=상승&sort=score
 - `from_date`는 `to_date`보다 늦을 수 없음
 
 
+
+
+---
+
+
+
+## Sprint 8
+
+### Market Timeline
+
+#### GET /api/timeline
+
+최근 Flow를 조회한 뒤 시간 오름차순으로 반환합니다.
+
+각 Flow의 Ranking Score, Evidence 요약, 연결된 외부 원인 후보를 함께 제공합니다.
+
+#### Query Parameters
+
+| Parameter | Default | Description |
+|---|---:|---|
+| `limit` | `20` | 최근 Flow 조회 개수, 1~100 |
+| `target_asset` | `null` | 자산 코드 필터 |
+| `from_date` | `null` | 조회 시작일 |
+| `to_date` | `null` | 조회 종료일 |
+| `include_causes` | `true` | 외부 원인 후보 포함 여부 |
+
+날짜 필터는 `Asia/Seoul`을 기준으로 하며 `to_date` 당일 전체를 포함합니다.
+
+#### Response
+
+```json
+{
+    "total": 6,
+    "limit": 20,
+    "target_asset": "^KS11",
+    "timeline": [
+        {
+            "flow_id": 24,
+            "title": "국내 증시 상승 흐름",
+            "target_asset": "^KS11",
+            "summary": "KOSPI와 KOSDAQ이 상승했습니다.",
+            "score": 0.817,
+            "event_at": "2026-07-21T11:01:31+09:00",
+            "evidence_count": 2,
+            "evidences": [
+                {
+                    "evidence_id": 24,
+                    "title": "KOSPI 실시간 데이터",
+                    "source": "yahoo_finance",
+                    "url": "https://finance.yahoo.com/"
+                }
+            ],
+            "causes": [
+                {
+                    "flow_id": 20,
+                    "title": "금리 인상 뉴스 흐름",
+                    "target_asset": "MARKET",
+                    "relation_type": "potential_cause",
+                    "score": 0.9,
+                    "reason": "금리 인상 우려가 증시에 영향을 줌"
+                }
+            ]
+        }
+    ]
+}
+```
+
+### Unified Search
+
+#### GET /api/search
+
+Flow와 Evidence를 통합 검색합니다.
+
+#### Query Parameters
+
+| Parameter | Default | Description |
+|---|---:|---|
+| `q` | 필수 | 검색어 |
+| `limit` | `20` | 유형별 최대 결과 개수, 1~100 |
+| `type` | `all` | `all`, `flow`, `evidence` |
+| `target_asset` | `null` | 자산 코드 필터 |
+| `from_date` | `null` | 조회 시작일 |
+| `to_date` | `null` | 조회 종료일 |
+
+#### Search Fields
+
+- Flow 제목
+- Flow 요약
+- Evidence 제목
+- Evidence 내용 요약
+- Evidence 출처
+
+#### Response
+
+```json
+{
+    "query": "KOSPI",
+    "total": 14,
+    "flow_count": 7,
+    "evidence_count": 7,
+    "flows": [
+        {
+            "flow_id": 24,
+            "title": "국내 증시 상승 흐름",
+            "target_asset": "^KS11",
+            "summary": "KOSPI와 KOSDAQ이 상승했습니다.",
+            "created_at": "2026-07-21T11:01:31+09:00"
+        }
+    ],
+    "evidences": [
+        {
+            "evidence_id": 24,
+            "flow_id": 24,
+            "flow_title": "국내 증시 상승 흐름",
+            "target_asset": "^KS11",
+            "title": "KOSPI 실시간 데이터",
+            "source": "yahoo_finance",
+            "content_summary": "KOSPI 상승 데이터",
+            "url": "https://finance.yahoo.com/",
+            "published_at": "2026-07-21T11:01:31+09:00"
+        }
+    ]
+}
+```
+
+#### Validation
+
+- `q`: 1~100자이며 공백만 입력할 수 없음
+- `limit`: 1~100
+- `type`: `all`, `flow`, `evidence`
+- `from_date`는 `to_date`보다 늦을 수 없음
+
+
 ---
 
 # API Index
@@ -597,3 +730,5 @@ GET /api/flows?target_asset=%5EKS11&query=상승&sort=score
 | GET | `/api/flows/{flow_id}/trail` | Why Trail 조회 |
 | GET | `/api/home` | Home Intelligence 조회 |
 | GET | `/api/flows` | Flow Feed 검색·필터·정렬 |
+| GET | `/api/timeline` | 여러 Flow의 Market Timeline 조회 |
+| GET | `/api/search` | Flow·Evidence 통합 검색 |

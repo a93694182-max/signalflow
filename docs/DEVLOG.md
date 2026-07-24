@@ -208,3 +208,34 @@
 - 검색·필터·기간 조회·정렬·페이지네이션 완성
 - 사용자 조회 계층 구축
 
+
+
+---
+
+## 2026-07-24 | Sprint 8 진행
+
+- Market Timeline 응답 Schema 구현
+- Market Timeline Service 구현
+- `GET /api/timeline` API 추가
+- 최근 Flow 선택 및 시간 오름차순 반환
+- Target Asset 및 기간 필터 구현
+- Flow Ranking v2 Score 연결
+- Timeline에 Evidence 요약 추가
+- FlowLink 기반 외부 원인 후보 추가
+- 외부 원인 후보 포함 여부 옵션 구현
+- Flow·Evidence Unified Search 구현
+- `GET /api/search` API 추가
+- Flow 제목·요약 검색 구현
+- Evidence 제목·내용·출처 검색 구현
+- 검색 유형·자산·기간 필터 구현
+- 공백 검색어 및 잘못된 날짜 범위 검증
+- Market Timeline 테스트 6개 작성
+- Unified Search 테스트 6개 작성
+- 전체 테스트 29개 통과
+
+### Sprint 8 완료 ✅
+
+- 여러 시장 Flow의 시간 흐름을 조회하는 Market Timeline 완성
+- Flow Ranking, Evidence, 외부 원인을 결합한 Timeline 응답 완성
+- Flow와 Evidence를 한 번에 조회하는 통합 검색 완성
+- SignalFlow의 탐색 및 시장 흐름 조회 계층 구축

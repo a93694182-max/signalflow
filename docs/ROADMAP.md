@@ -81,3 +81,24 @@
 - Latest / Score Sorting
 - Evidence / Link Summary
 - API-level Validation Tests
+
+
+
+
+---
+
+✅ Sprint 8
+
+- Market Timeline API
+- Multi-Flow Timeline
+- Target Asset Filtering
+- Date Filtering
+- Flow Ranking Summary
+- Evidence Summary
+- External Cause Summary
+- Unified Search API
+- Flow Search
+- Evidence Search
+- Search Type Filtering
+- Search Validation
+- API-level Tests

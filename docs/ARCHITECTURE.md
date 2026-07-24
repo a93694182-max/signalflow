@@ -281,3 +281,65 @@ Feed Summary
 ↓
 
 Flow Feed API
+
+
+
+---
+
+
+# Sprint 8
+
+## Market Timeline
+
+PostgreSQL Flow Data
+
+↓
+
+Target Asset / Date Filter
+
+↓
+
+Recent Flow Selection
+
+↓
+
+Time Order
+
+↓
+
+Flow Ranking v2
+
+↓
+
+Timeline Enrichment
+
+├── Evidence Summary
+└── External Causes (FlowLink)
+
+↓
+
+Market Timeline API
+
+
+## Unified Search
+
+Search Query
+
+↓
+
+Unified Search Service
+
+├── Flow Title / Summary
+└── Evidence Title / Summary / Source
+
+↓
+
+Target Asset / Date / Type Filter
+
+↓
+
+Flow Results + Evidence Results
+
+↓
+
+Unified Search API

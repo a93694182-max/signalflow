@@ -12,6 +12,8 @@ from app.routers.ask import router as ask_router
 from app.routers.market import router as market_router
 from app.routers.economic import router as economic_router
 from app.routers import engine
+from app.routers.timeline import router as timeline_router
+from app.routers.search import router as search_router
 
 from app.services.scheduler_service import start_scheduler
 
@@ -33,11 +35,14 @@ app = FastAPI(
 
 app.include_router(home_router)
 app.include_router(flows_router)
+app.include_router(timeline_router)
+app.include_router(search_router)
 app.include_router(evidence_router)
 app.include_router(ask_router)
 app.include_router(market_router)
 app.include_router(economic_router)
 app.include_router(engine.router)
+
 
 
 @app.get("/", tags=["Root"])

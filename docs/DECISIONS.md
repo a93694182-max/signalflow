@@ -92,3 +92,18 @@
 - Feed 항목에 Score, Evidence Count, Link Count 제공
 - FastAPI 애플리케이션 시작 처리를 lifespan 방식으로 전환
 
+
+
+## Sprint 8
+
+- 기존 Flow Timeline은 단일 Flow 내부의 FlowNode 시간 흐름으로 유지
+- Market Timeline은 여러 Flow 사이의 시장 흐름을 조회하는 별도 API로 분리
+- Market Timeline은 최근 Flow를 선택한 뒤 시간 오름차순으로 반환
+- Timeline Ranking Score는 기존 Flow Ranking v2를 재사용
+- Timeline Evidence 요약과 외부 원인 후보는 각각 상위 3개로 제한
+- 외부 원인 후보는 FlowLink의 incoming link를 사용
+- Market Timeline과 Unified Search는 기존 테이블을 조합하여 구현
+- Unified Search는 Flow와 Evidence 결과를 유형별로 분리하여 반환
+- 검색 범위는 Flow 제목·요약과 Evidence 제목·내용·출처로 설정
+- 기간 필터는 Asia/Seoul 기준이며 종료일 전체를 포함
+- 공백 검색어는 전체 데이터 노출 방지를 위해 422로 거부
