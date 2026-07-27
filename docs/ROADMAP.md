@@ -102,3 +102,37 @@
 - Search Type Filtering
 - Search Validation
 - API-level Tests
+
+---
+
+✅ Sprint 9
+
+- React + TypeScript + Vite Frontend
+- FastAPI CORS
+- Environment-based API Configuration
+- Common Layout and Header
+- Market Overview
+- Biggest Why Card
+- Top Whys
+- Flow Feed UI
+- Search and Asset Filtering
+- News and Date Filtering
+- Latest / Score Sorting
+- Offset Pagination
+- Loading / Error / Empty States
+- Responsive Home Dashboard
+- Frontend Lint and Production Build
+
+---
+
+🚀 Sprint 10
+
+- Market Timeline Page
+- Unified Search Page
+- Flow Detail Page
+- Why Analysis UI
+- Why Trail UI
+- Flow Timeline UI
+- Page Navigation
+- Detail Loading / Error / Empty States
+- Responsive Detail Views

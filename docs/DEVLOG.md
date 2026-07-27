@@ -239,3 +239,34 @@
 - Flow Ranking, Evidence, 외부 원인을 결합한 Timeline 응답 완성
 - Flow와 Evidence를 한 번에 조회하는 통합 검색 완성
 - SignalFlow의 탐색 및 시장 흐름 조회 계층 구축
+
+
+---
+
+## 2026-07-24 ~ 2026-07-27 | Sprint 9 진행
+
+- React + TypeScript + Vite 프론트엔드 프로젝트 구축
+- ESLint 기반 코드 검사 환경 구성
+- 환경변수 기반 FastAPI 주소 관리
+- FastAPI CORS 설정
+- 공통 레이아웃 및 헤더 구현
+- 주요 시장 데이터 카드 구현
+- biggest_why 메인 카드 구현
+- top_whys 목록 구현
+- Flow Feed 목록 구현
+- Flow Feed 검색 및 자산 필터 구현
+- 뉴스 포함 여부 및 기간 필터 구현
+- 최신순 및 중요도순 정렬 구현
+- limit 및 offset 기반 페이지네이션 연결
+- 로딩·오류·빈 데이터 상태 처리
+- 데스크톱·태블릿·모바일 반응형 UI 구현
+- 프론트엔드 ESLint 검사 통과
+- 프론트엔드 Production Build 통과
+- 백엔드 전체 테스트 29개 통과
+
+### Sprint 9 완료 ✅
+
+- React 기반 SignalFlow 첫 사용자 화면 구축
+- Home·Market·Flow Feed API와 프론트엔드 연결
+- 실시간 시장 데이터와 Why 분석 결과 시각화
+- 검색·필터·정렬·페이지네이션이 가능한 Home Dashboard 완성

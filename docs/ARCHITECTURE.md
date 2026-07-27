@@ -343,3 +343,90 @@ Flow Results + Evidence Results
 ↓
 
 Unified Search API
+
+
+
+---
+
+# Sprint 9
+
+## Frontend Foundation
+
+Browser
+
+↓
+
+React + TypeScript + Vite
+
+↓
+
+Environment Configuration
+
+└── VITE_API_BASE_URL
+
+↓
+
+API Client
+
+↓
+
+FastAPI CORS Middleware
+
+↓
+
+FastAPI API
+
+
+## Home Dashboard
+
+Home Page
+
+├── Common Layout
+├── Header
+├── Market Overview
+├── Biggest Why
+├── Top Whys
+└── Flow Feed
+
+↓
+
+Frontend API Layer
+
+├── Home API
+├── Market Dashboard API
+└── Flow Feed API
+
+↓
+
+UI State
+
+├── Loading
+├── Error
+└── Empty Data
+
+
+## Flow Feed UI
+
+Flow Filters
+
+├── Search Query
+├── Target Asset
+├── News Inclusion
+├── Date Range
+└── Latest / Score Sort
+
+↓
+
+Flow Feed API
+
+↓
+
+Flow Cards
+
+├── Score
+├── Evidence Count
+└── Link Count
+
+↓
+
+Offset Pagination

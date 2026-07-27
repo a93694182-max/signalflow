@@ -710,7 +710,107 @@ Flow와 Evidence를 통합 검색합니다.
 - `from_date`는 `to_date`보다 늦을 수 없음
 
 
+
 ---
+
+
+
+## Sprint 9
+
+### Frontend API Integration
+
+React Home Dashboard에서 기존 SignalFlow API를 호출합니다.
+
+API 주소는 프론트엔드의 `VITE_API_BASE_URL` 환경변수로 관리합니다.
+
+```env
+VITE_API_BASE_URL=http://localhost:8000/api
+```
+
+### Home Dashboard
+
+#### GET /api/home
+
+최근 시장 Flow를 기반으로 Home Dashboard의 Why 데이터를 조회합니다.
+
+#### Frontend Usage
+
+- `biggest_why` 메인 카드
+- `top_whys` 주요 시장 흐름 목록
+- 중요도 점수
+- Confidence Score
+- 외부 원인 후보 개수
+- 로딩·오류·빈 데이터 상태
+
+---
+
+### Market Overview
+
+#### GET /api/market/dashboard
+
+주요 금융자산의 실시간 데이터를 조회하여 시장 카드로 표시합니다.
+
+#### Displayed Markets
+
+- KOSPI
+- KOSDAQ
+- 원/달러 환율
+- Bitcoin
+- Gold
+- WTI
+
+#### Displayed Data
+
+- 현재 가격
+- 전일 종가
+- 변동값
+- 변동률
+- 시장 기준 시각
+
+---
+
+### Flow Feed
+
+#### GET /api/flows
+
+Flow 목록을 Home Dashboard에 표시합니다.
+
+#### Frontend Query Parameters
+
+| Parameter | Description |
+|---|---|
+| `limit` | 페이지당 Flow 개수 |
+| `offset` | 건너뛸 Flow 개수 |
+| `target_asset` | 자산 필터 |
+| `include_news` | 뉴스 Flow 포함 여부 |
+| `query` | 제목 및 내용 검색 |
+| `from_date` | 조회 시작일 |
+| `to_date` | 조회 종료일 |
+| `sort` | `latest` 또는 `score` |
+
+#### Frontend Features
+
+- Flow 카드 목록
+- 제목 및 내용 검색
+- 자산 필터
+- 뉴스 포함 여부
+- 기간 필터
+- 최신순 및 중요도순 정렬
+- limit·offset 기반 페이지네이션
+- 로딩·오류·빈 데이터 상태 처리
+
+---
+
+### CORS
+
+FastAPI에서 개발 환경의 React Origin을 허용합니다.
+
+```text
+http://localhost:5173
+```
+
+Sprint 9에서는 새로운 API를 추가하거나 기존 API의 요청·응답 구조를 변경하지 않습니다.
+
 
 # API Index
 

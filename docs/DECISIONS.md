@@ -107,3 +107,24 @@
 - 검색 범위는 Flow 제목·요약과 Evidence 제목·내용·출처로 설정
 - 기간 필터는 Asia/Seoul 기준이며 종료일 전체를 포함
 - 공백 검색어는 전체 데이터 노출 방지를 위해 422로 거부
+
+
+---
+
+## Sprint 9
+
+- 프론트엔드는 React + TypeScript + Vite 조합으로 구축
+- 타입 검사를 통해 백엔드 API 응답 구조를 명시적으로 관리
+- ESLint를 기본 코드 검사 도구로 사용
+- API 주소는 VITE_API_BASE_URL 환경변수로 관리
+- 공통 fetch 로직은 API Client로 분리
+- API별 요청 함수와 응답 타입을 각각 api 및 types 계층으로 분리
+- FastAPI CORS는 개발 프론트엔드 주소인 http://localhost:5173만 허용
+- Home Dashboard는 기존 Home·Market·Flow Feed API를 재사용
+- Home과 Market 데이터는 병렬 요청
+- Flow Feed는 독립적으로 데이터를 요청하여 필터와 페이지 상태 관리
+- 검색 조건은 입력 즉시 요청하지 않고 적용 버튼을 통해 반영
+- Flow Feed 페이지네이션은 백엔드와 동일한 limit·offset 방식 사용
+- 로딩·오류·빈 데이터 상태를 각 데이터 영역에서 명시적으로 처리
+- 별도 UI 라이브러리 없이 CSS Grid와 Media Query로 반응형 UI 구현
+- Sprint 9에서는 새로운 DB 테이블과 백엔드 API를 추가하지 않음
