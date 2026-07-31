@@ -4,6 +4,8 @@ import { getFlowFeed } from '../api/flows'
 import FlowFilters from './FlowFilters'
 import type { FlowFilterValues } from './FlowFilters'
 import type { FlowFeedResponse } from '../types/flow'
+import { Link } from 'react-router-dom'
+
 
 const PAGE_SIZE = 6
 
@@ -112,33 +114,37 @@ function FlowFeed() {
         <>
           <div className="flow-feed__list">
             {feed.flows.map((flow) => (
-              <article className="flow-card" key={flow.flow_id}>
-                <div className="flow-card__top">
-                  <span className="asset-badge">
-                    {flow.target_asset}
-                  </span>
+              <Link
+                className="flow-card-link"
+                key={flow.flow_id}
+                to={`/flows/${flow.flow_id}`}
+              >
+                <article className="flow-card">
+                  <div className="flow-card__top">
+                    <span className="asset-badge">
+                      {flow.target_asset}
+                    </span>
 
-                  <time dateTime={flow.created_at}>
-                    {new Intl.DateTimeFormat('ko-KR', {
-                      month: 'short',
-                      day: 'numeric',
-                      hour: '2-digit',
-                      minute: '2-digit',
-                    }).format(new Date(flow.created_at))}
-                  </time>
-                </div>
+                    <time dateTime={flow.created_at}>
+                      {new Intl.DateTimeFormat('ko-KR', {
+                        month: 'short',
+                        day: 'numeric',
+                        hour: '2-digit',
+                        minute: '2-digit',
+                      }).format(new Date(flow.created_at))}
+                    </time>
+                  </div>
 
-                <h3>{flow.title}</h3>
-                <p>{flow.summary}</p>
+                  <h3>{flow.title}</h3>
+                  <p>{flow.summary}</p>
 
-                <div className="flow-card__metrics">
-                  <span>
-                    중요도 {Math.round(flow.score * 100)}점
-                  </span>
-                  <span>근거 {flow.evidence_count}개</span>
-                  <span>연결 {flow.link_count}개</span>
-                </div>
-              </article>
+                  <div className="flow-card__metrics">
+                    <span>중요도 {Math.round(flow.score * 100)}점</span>
+                    <span>근거 {flow.evidence_count}개</span>
+                    <span>연결 {flow.link_count}개</span>
+                  </div>
+                </article>
+              </Link>
             ))}
           </div>
 

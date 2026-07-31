@@ -27,3 +27,58 @@ export interface FlowFeedParams {
   to_date?: string
   sort?: 'latest' | 'score'
 }
+
+
+export interface FlowEvidence {
+  id: number
+  flow_node_id: number
+  evidence_type: string
+  title: string
+  source: string
+  url: string | null
+  content_summary: string
+  relation_score: number
+  impact_score: number
+  time_score: number
+  reliability_score: number
+  published_at: string
+}
+
+export interface FlowNode {
+  id: number
+  order_index: number
+  title: string
+  category: string
+  description: string
+  occurred_at: string
+  evidence_level: string
+  evidences: FlowEvidence[]
+}
+
+export interface FlowTrace {
+  id: number
+  title: string
+  target_asset: string
+  summary: string
+  nodes: FlowNode[]
+}
+
+export interface WhyCause {
+  node_id: number
+  title: string
+  category: string
+  description: string
+  score: number
+  evidence_count: number
+}
+
+export interface FlowWhyAnalysis {
+  flow_id: number
+  title: string
+  target_asset: string
+  summary: string
+  primary_cause: WhyCause | null
+  causes: WhyCause[]
+  external_causes: unknown[]
+}
+
