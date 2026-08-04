@@ -4,6 +4,7 @@ import type {
   FlowFeedResponse,
   FlowTrace,
   FlowWhyAnalysis,
+  FlowWhyTrail,
 } from '../types/flow'
 
 export function getFlowFeed(
@@ -31,4 +32,10 @@ export function getFlowWhy(
   flowId: number,
 ): Promise<FlowWhyAnalysis> {
   return apiGet<FlowWhyAnalysis>(`/flows/${flowId}/why`)
+}
+
+export function getFlowTrail(
+  flowId: number,
+): Promise<FlowWhyTrail> {
+  return apiGet<FlowWhyTrail>(`/flows/${flowId}/trail`)
 }

@@ -270,3 +270,57 @@
 - Home·Market·Flow Feed API와 프론트엔드 연결
 - 실시간 시장 데이터와 Why 분석 결과 시각화
 - 검색·필터·정렬·페이지네이션이 가능한 Home Dashboard 완성
+
+
+
+---
+
+## 2026-07-27 ~ 2026-08-04 | Sprint 10 진행
+
+- React Router 설치 및 페이지 라우팅 구성
+- Home, Flow Detail, Market Timeline, Unified Search 경로 구현
+- Header에 Home, Timeline, Search 내비게이션 추가
+- Flow Feed 카드를 Flow Detail 페이지와 연결
+- Flow Trace API 프론트엔드 연동
+- Flow 상세 제목·대상 자산·요약 표시
+- FlowNode 기반 세로 Timeline 구현
+- Node별 Evidence 카드 구현
+- Why Analysis API 프론트엔드 연동
+- 핵심 원인·추가 원인·점수·근거 개수 표시
+- Why Trail API 프론트엔드 연동
+- 외부 원인 Flow·관계 유형·연결 점수·연결 이유 표시
+- Why Trail에서 연결된 Flow 상세 페이지 이동 구현
+- Ask API 프론트엔드 연동
+- 공통 API Client에 POST 요청 기능 추가
+- Flow별 질문 입력 및 답변 UI 구현
+- Answer Source, Confidence, Primary Cause 표시
+- Flow Path, Why Trail, Evidence Count 표시
+- Market Timeline 페이지 구현
+- 자산·기간·외부 원인 포함 여부 필터 구현
+- Timeline에 Flow Score·Evidence 개수·외부 원인 표시
+- Timeline Flow 및 연결 원인의 상세 페이지 이동 구현
+- Unified Search 페이지 구현
+- Flow·Evidence 통합 검색 구현
+- 검색 유형·자산·기간 필터 구현
+- Flow 검색 결과 상세 페이지 이동 구현
+- Evidence 검색 결과 원문 링크 구현
+- 페이지별 로딩·오류·빈 데이터 상태 처리
+- 잘못된 Flow ID 프론트엔드 검증
+- 데스크톱·태블릿·모바일 반응형 UI 구현
+- PostgreSQL 누락 Migration 적용
+- Seed Data 삽입 후 PostgreSQL Sequence 동기화
+- Signal Engine 실행 및 Flow 9개·FlowLink 11개 생성 확인
+- 실제 Why Trail 연결 데이터 UI 검증
+- Flow 검색 및 Evidence 검색 UI 검증
+- 프론트엔드 ESLint 검사 통과
+- 프론트엔드 Production Build 통과
+- 백엔드 전체 테스트 29개 통과
+
+### Sprint 10 완료 ✅
+
+- Flow의 내부 흐름·내부 원인·외부 원인을 한 화면에서 확인하는 상세 페이지 완성
+- Flow 기반 질문과 구조화된 답변을 제공하는 Ask UI 완성
+- 여러 시장 Flow를 시간순으로 탐색하는 Market Timeline 화면 완성
+- Flow와 Evidence를 조회하는 Unified Search 화면 완성
+- Home → Detail → Timeline → Search로 이어지는 사용자 탐색 구조 완성
+- Sprint 5~8에서 구현한 핵심 백엔드 API의 프론트엔드 연결 완료

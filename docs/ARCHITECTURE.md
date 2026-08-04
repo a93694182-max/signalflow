@@ -430,3 +430,241 @@ Flow Cards
 ↓
 
 Offset Pagination
+
+
+
+---
+
+# Sprint 10
+
+## Frontend Routing
+
+Browser
+
+↓
+
+React Router
+
+├── `/` Home Dashboard
+├── `/flows/{flow_id}` Flow Detail
+├── `/timeline` Market Timeline
+└── `/search` Unified Search
+
+↓
+
+Common Layout
+
+├── Header
+├── Navigation
+└── Page Content
+
+
+## Flow Detail Page
+
+Flow Feed Card
+
+↓
+
+Flow Detail Route
+
+↓
+
+Parallel API Requests
+
+├── Flow Trace API
+├── Why Analysis API
+└── Why Trail API
+
+↓
+
+Flow Detail UI
+
+├── Flow Summary
+├── Why Analysis
+├── Why Trail
+├── Ask Flow
+├── Flow Timeline
+└── Evidence Cards
+
+
+## Why Analysis UI
+
+Why Analysis API
+
+↓
+
+Internal Cause Data
+
+├── Primary Cause
+├── Additional Causes
+├── Cause Score
+└── Evidence Count
+
+↓
+
+Why Analysis Component
+
+
+## Why Trail UI
+
+Why Trail API
+
+↓
+
+External Cause Data
+
+├── Source Flow
+├── Target Flow
+├── Relation Type
+├── Link Score
+└── Link Reason
+
+↓
+
+Why Trail Component
+
+↓
+
+Connected Flow Detail Route
+
+
+## Ask Flow UI
+
+User Question
+
+↓
+
+Ask Flow Component
+
+↓
+
+API Client POST Request
+
+↓
+
+Ask API
+
+↓
+
+Answer Result
+
+├── Answer
+├── Confidence Score
+├── Confidence Level
+├── Answer Source
+├── Primary Cause
+├── Flow Path
+├── Why Trail
+└── Evidence Count
+
+
+## Market Timeline Page
+
+Timeline Filters
+
+├── Target Asset
+├── Date Range
+└── External Cause Inclusion
+
+↓
+
+Market Timeline API
+
+↓
+
+Timeline Items
+
+├── Event Time
+├── Flow Score
+├── Evidence Count
+└── External Causes
+
+↓
+
+Flow Detail Route
+
+
+## Unified Search Page
+
+Search Form
+
+├── Search Query
+├── Search Type
+├── Target Asset
+└── Date Range
+
+↓
+
+Unified Search API
+
+↓
+
+Search Results
+
+├── Flow Results
+└── Evidence Results
+
+↓
+
+Result Navigation
+
+├── Flow Detail Route
+└── Evidence Original URL
+
+
+## Frontend API Layer
+
+API Client
+
+├── GET Request
+└── POST Request
+
+↓
+
+Feature API Modules
+
+├── Flow API
+├── Timeline API
+├── Search API
+└── Ask API
+
+↓
+
+TypeScript Response Types
+
+├── Flow Types
+├── Timeline Types
+├── Search Types
+└── Ask Types
+
+
+## UI State
+
+Frontend Pages
+
+↓
+
+State Handling
+
+├── Loading
+├── Error
+├── Empty Data
+├── Invalid Route Parameter
+└── API Response Data
+
+
+## Responsive UI
+
+Desktop Layout
+
+↓
+
+CSS Grid / Flexbox / Vertical Timeline
+
+↓
+
+Media Query
+
+↓
+
+Mobile Layout

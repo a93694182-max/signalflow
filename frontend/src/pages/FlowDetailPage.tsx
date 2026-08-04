@@ -1,17 +1,30 @@
 import { useEffect, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
 
-import { getFlowTrace, getFlowWhy } from '../api/flows'
+import {
+    getFlowTrace,
+    getFlowTrail,
+    getFlowWhy,
+} from '../api/flows'
 import WhyAnalysis from '../components/WhyAnalysis'
-import type { FlowTrace, FlowWhyAnalysis } from '../types/flow'
+import WhyTrail from '../components/WhyTrail'
+import AskFlow from '../components/AskFlow'
+import type {
+    FlowTrace,
+    FlowWhyAnalysis,
+    FlowWhyTrail,
+} from '../types/flow'
 
 function FlowDetailPage() {
     const { flowId } = useParams()
     const [flow, setFlow] = useState<FlowTrace | null>(null)
     const [whyAnalysis, setWhyAnalysis] =
         useState<FlowWhyAnalysis | null>(null)
+    const [whyTrail, setWhyTrail] =
+        useState<FlowWhyTrail | null>(null)
     const [isLoading, setIsLoading] = useState(true)
     const [error, setError] = useState('')
+
     const id = Number(flowId)
     const isInvalidFlowId = !Number.isInteger(id) || id <= 0
 
@@ -20,10 +33,15 @@ function FlowDetailPage() {
             return
         }
 
-        Promise.all([getFlowTrace(id), getFlowWhy(id)])
-            .then(([traceData, whyData]) => {
+        Promise.all([
+            getFlowTrace(id),
+            getFlowWhy(id),
+            getFlowTrail(id),
+        ])
+            .then(([traceData, whyData, trailData]) => {
                 setFlow(traceData)
                 setWhyAnalysis(whyData)
+                setWhyTrail(trailData)
             })
             .catch(() => {
                 setError('Flow 상세 데이터를 불러오지 못했습니다.')
@@ -41,7 +59,7 @@ function FlowDetailPage() {
             </section>
         )
     }
-    
+
     if (isLoading) {
         return <p>Flow 상세 데이터를 불러오는 중입니다.</p>
     }
@@ -76,6 +94,10 @@ function FlowDetailPage() {
 
             {whyAnalysis && <WhyAnalysis analysis={whyAnalysis} />}
 
+            {whyTrail && <WhyTrail trail={whyTrail} />}
+
+            <AskFlow flowId={flow.id} />
+            
             <div className="flow-detail__timeline">
                 <h2>Flow Timeline</h2>
 

@@ -128,3 +128,31 @@
 - 로딩·오류·빈 데이터 상태를 각 데이터 영역에서 명시적으로 처리
 - 별도 UI 라이브러리 없이 CSS Grid와 Media Query로 반응형 UI 구현
 - Sprint 9에서는 새로운 DB 테이블과 백엔드 API를 추가하지 않음
+
+---
+
+## Sprint 10
+
+- React Router를 도입하여 Home, Flow Detail, Market Timeline, Unified Search 페이지를 분리
+- Flow Feed 카드를 Flow Detail 페이지의 진입점으로 사용
+- Flow Detail 데이터는 Trace, Why Analysis, Why Trail API를 병렬 요청
+- URL의 flow_id는 양의 정수인지 프론트엔드에서 검증
+- Flow 상세 조회 실패 시 Trace·Why·Trail을 하나의 오류 상태로 처리
+- Why Analysis는 내부 원인, Why Trail은 외부 Flow 원인으로 구분하여 표시
+- Why Trail 원인 제목을 선택하면 해당 Flow 상세 페이지로 이동
+- Flow Timeline은 Trace API의 FlowNode를 세로 Timeline 형태로 표시
+- Evidence는 해당 FlowNode 내부에 포함하여 원인과 근거의 관계를 유지
+- Ask UI는 현재 Flow ID를 자동으로 요청에 포함
+- Ask API 응답의 Answer Source, Confidence, Primary Cause, Flow Path, Why Trail을 구분하여 표시
+- 공통 API Client에 POST 요청 기능 추가
+- Market Timeline은 기존 GET /api/timeline을 재사용
+- Market Timeline 필터는 입력 즉시 요청하지 않고 적용 버튼으로 반영
+- Market Timeline은 시간, Flow Score, Evidence 개수, 외부 원인을 함께 표시
+- Unified Search는 Flow와 Evidence 결과를 별도 영역으로 구분
+- 검색 요청은 공백 제거 후 빈 검색어를 프론트엔드에서 차단
+- Flow 검색 결과는 상세 페이지로 연결
+- Evidence 검색 결과는 연결 Flow와 원문 URL을 함께 제공
+- Header에 Home, Timeline, Search 내비게이션 추가
+- 페이지별 로딩·오류·빈 데이터 상태를 명시적으로 처리
+- CSS Grid, Flexbox, Media Query를 사용하여 상세·Timeline·검색 화면을 반응형으로 구현
+- Sprint 10에서는 새로운 DB 테이블과 백엔드 API를 추가하지 않음

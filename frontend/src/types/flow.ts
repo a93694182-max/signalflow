@@ -82,3 +82,20 @@ export interface FlowWhyAnalysis {
   external_causes: unknown[]
 }
 
+
+export interface WhyTrailStep {
+  source_flow_id: number
+  source_title: string
+  target_flow_id: number
+  target_title: string
+  relation_type: string
+  score: number
+  reason: string
+}
+
+export interface FlowWhyTrail {
+  flow_id: number
+  title: string
+  trail_count: number
+  trail: WhyTrailStep[]
+}
