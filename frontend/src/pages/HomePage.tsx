@@ -8,6 +8,7 @@ import TopWhysList from '../components/TopWhysList'
 import type { HomeResponse } from '../types/home'
 import type { MarketItem } from '../types/market'
 import FlowFeed from '../components/FlowFeed'
+import MarketTimeline from '../components/MarketTimeline'
 
 
 function HomePage() {
@@ -58,7 +59,7 @@ function HomePage() {
                     최근 24시간 동안 감지된 시장 흐름이 없습니다.
                 </div>
             )}
-
+            <MarketTimeline />
             <FlowFeed />
         </main>
     )

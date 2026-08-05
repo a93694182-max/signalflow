@@ -717,99 +717,139 @@ Flow와 Evidence를 통합 검색합니다.
 
 ## Sprint 9
 
-### Frontend API Integration
-
-React Home Dashboard에서 기존 SignalFlow API를 호출합니다.
-
-API 주소는 프론트엔드의 `VITE_API_BASE_URL` 환경변수로 관리합니다.
-
-```env
-VITE_API_BASE_URL=http://localhost:8000/api
-```
-
 ### Home Dashboard
 
-#### GET /api/home
+#### Route
 
-최근 시장 Flow를 기반으로 Home Dashboard의 Why 데이터를 조회합니다.
+/
 
-#### Frontend Usage
+#### 사용 API
 
-- `biggest_why` 메인 카드
-- `top_whys` 주요 시장 흐름 목록
-- 중요도 점수
-- Confidence Score
-- 외부 원인 후보 개수
-- 로딩·오류·빈 데이터 상태
+- GET /api/home
+- GET /api/market/dashboard
+- GET /api/flows
 
----
+#### 주요 기능
 
-### Market Overview
-
-#### GET /api/market/dashboard
-
-주요 금융자산의 실시간 데이터를 조회하여 시장 카드로 표시합니다.
-
-#### Displayed Markets
-
-- KOSPI
-- KOSDAQ
-- 원/달러 환율
-- Bitcoin
-- Gold
-- WTI
-
-#### Displayed Data
-
-- 현재 가격
-- 전일 종가
-- 변동값
-- 변동률
-- 시장 기준 시각
+- 시장 Overview
+- Biggest Why
+- Top Whys
+- Flow Feed
+- 검색 및 필터
+- 페이지네이션
 
 ---
 
-### Flow Feed
+### Frontend
 
-#### GET /api/flows
+#### Environment
 
-Flow 목록을 Home Dashboard에 표시합니다.
-
-#### Frontend Query Parameters
-
-| Parameter | Description |
-|---|---|
-| `limit` | 페이지당 Flow 개수 |
-| `offset` | 건너뛸 Flow 개수 |
-| `target_asset` | 자산 필터 |
-| `include_news` | 뉴스 Flow 포함 여부 |
-| `query` | 제목 및 내용 검색 |
-| `from_date` | 조회 시작일 |
-| `to_date` | 조회 종료일 |
-| `sort` | `latest` 또는 `score` |
-
-#### Frontend Features
-
-- Flow 카드 목록
-- 제목 및 내용 검색
-- 자산 필터
-- 뉴스 포함 여부
-- 기간 필터
-- 최신순 및 중요도순 정렬
-- limit·offset 기반 페이지네이션
-- 로딩·오류·빈 데이터 상태 처리
+- React
+- Vite
+- React Router
+- VITE_API_BASE_URL
 
 ---
 
 ### CORS
 
-FastAPI에서 개발 환경의 React Origin을 허용합니다.
+개발 환경에서 React(`http://localhost:5173`)와 FastAPI 간 통신을 허용합니다.
 
-```text
-http://localhost:5173
-```
+Sprint 9에서는 새로운 API를 추가하지 않고 기존 API를 React Home 화면과 연동합니다.
 
-Sprint 9에서는 새로운 API를 추가하거나 기존 API의 요청·응답 구조를 변경하지 않습니다.
+
+---
+
+
+## Sprint 10
+
+### Flow Detail Page
+
+#### Route
+
+/flows/{flow_id}
+
+#### 사용 API
+
+- GET /api/flows/{flow_id}/trace
+- GET /api/flows/{flow_id}/why
+- GET /api/flows/{flow_id}/trail
+- POST /api/ask
+
+#### 주요 기능
+
+- Flow 상세 정보
+- Flow Timeline
+- Evidence 목록
+- Why Analysis
+- Why Trail
+- Ask 기능
+
+---
+
+### Market Timeline Page
+
+#### Route
+
+/timeline
+
+#### 사용 API
+
+- GET /api/timeline
+
+#### 주요 기능
+
+- Timeline 조회
+- 자산 필터
+- 기간 필터
+- 원인 포함 여부
+- Flow 상세 이동
+
+Sprint 10에서는 기존 API를 활용하여 Flow 상세 화면과 Timeline 화면을 구현합니다. 
+
+
+---
+
+
+## Sprint 11
+
+### Unified Search
+
+#### Route
+
+/search
+
+#### 사용 API
+
+- GET /api/search
+
+#### 주요 기능
+
+- Flow 검색
+- Evidence 검색
+- 검색 유형 선택
+- 자산 필터
+- 기간 필터
+- Flow 상세 이동
+- Evidence 원문 링크
+
+---
+
+### Frontend Navigation
+
+#### Routes
+
+| Route | Page |
+|-------|------|
+| `/` | Home Dashboard |
+| `/flows/{flow_id}` | Flow Detail |
+| `/timeline` | Market Timeline |
+| `/search` | Unified Search |
+
+Sprint 11에서는 React Router 기반의 페이지 이동과 통합 검색 기능을 완성합니다.
+
+
+---
 
 
 # API Index

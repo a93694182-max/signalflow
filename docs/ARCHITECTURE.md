@@ -350,8 +350,6 @@ Unified Search API
 
 # Sprint 9
 
-## Frontend Foundation
-
 Browser
 
 ↓
@@ -360,9 +358,7 @@ React + TypeScript + Vite
 
 ↓
 
-Environment Configuration
-
-└── VITE_API_BASE_URL
+React Router
 
 ↓
 
@@ -370,19 +366,12 @@ API Client
 
 ↓
 
-FastAPI CORS Middleware
+FastAPI
 
 ↓
 
-FastAPI API
+Home Dashboard
 
-
-## Home Dashboard
-
-Home Page
-
-├── Common Layout
-├── Header
 ├── Market Overview
 ├── Biggest Why
 ├── Top Whys
@@ -390,208 +379,51 @@ Home Page
 
 ↓
 
-Frontend API Layer
-
-├── Home API
-├── Market Dashboard API
-└── Flow Feed API
-
-↓
-
-UI State
-
-├── Loading
-├── Error
-└── Empty Data
-
-
-## Flow Feed UI
-
-Flow Filters
-
-├── Search Query
-├── Target Asset
-├── News Inclusion
-├── Date Range
-└── Latest / Score Sort
+Flow Feed Filter
 
 ↓
 
 Flow Feed API
 
-↓
-
-Flow Cards
-
-├── Score
-├── Evidence Count
-└── Link Count
-
-↓
-
-Offset Pagination
-
-
-
 ---
 
 # Sprint 10
 
-## Frontend Routing
-
-Browser
-
-↓
-
 React Router
 
-├── `/` Home Dashboard
-├── `/flows/{flow_id}` Flow Detail
-├── `/timeline` Market Timeline
-└── `/search` Unified Search
+├── /
+├── /flows/{flow_id}
+├── /timeline
+└── /search
 
 ↓
 
-Common Layout
+Flow Detail
 
-├── Header
-├── Navigation
-└── Page Content
-
-
-## Flow Detail Page
-
-Flow Feed Card
-
-↓
-
-Flow Detail Route
-
-↓
-
-Parallel API Requests
-
-├── Flow Trace API
-├── Why Analysis API
-└── Why Trail API
-
-↓
-
-Flow Detail UI
-
-├── Flow Summary
+├── Trace
 ├── Why Analysis
 ├── Why Trail
-├── Ask Flow
-├── Flow Timeline
-└── Evidence Cards
-
-
-## Why Analysis UI
-
-Why Analysis API
+└── Ask
 
 ↓
 
-Internal Cause Data
-
-├── Primary Cause
-├── Additional Causes
-├── Cause Score
-└── Evidence Count
+Market Timeline
 
 ↓
 
-Why Analysis Component
-
-
-## Why Trail UI
-
-Why Trail API
+Timeline API
 
 ↓
 
-External Cause Data
-
-├── Source Flow
-├── Target Flow
-├── Relation Type
-├── Link Score
-└── Link Reason
+Timeline UI
 
 ↓
 
-Why Trail Component
+Flow Detail
 
 ↓
 
-Connected Flow Detail Route
-
-
-## Ask Flow UI
-
-User Question
-
-↓
-
-Ask Flow Component
-
-↓
-
-API Client POST Request
-
-↓
-
-Ask API
-
-↓
-
-Answer Result
-
-├── Answer
-├── Confidence Score
-├── Confidence Level
-├── Answer Source
-├── Primary Cause
-├── Flow Path
-├── Why Trail
-└── Evidence Count
-
-
-## Market Timeline Page
-
-Timeline Filters
-
-├── Target Asset
-├── Date Range
-└── External Cause Inclusion
-
-↓
-
-Market Timeline API
-
-↓
-
-Timeline Items
-
-├── Event Time
-├── Flow Score
-├── Evidence Count
-└── External Causes
-
-↓
-
-Flow Detail Route
-
-
-## Unified Search Page
-
-Search Form
-
-├── Search Query
-├── Search Type
-├── Target Asset
-└── Date Range
+Search Page
 
 ↓
 
@@ -599,72 +431,34 @@ Unified Search API
 
 ↓
 
-Search Results
+Search Result
 
-├── Flow Results
-└── Evidence Results
+---
 
-↓
+# Sprint 11
 
-Result Navigation
+Home
 
-├── Flow Detail Route
-└── Evidence Original URL
-
-
-## Frontend API Layer
-
-API Client
-
-├── GET Request
-└── POST Request
+├── Dashboard
+├── Market Timeline
+└── Flow Feed
 
 ↓
 
-Feature API Modules
+Timeline
 
-├── Flow API
-├── Timeline API
-├── Search API
-└── Ask API
-
-↓
-
-TypeScript Response Types
-
-├── Flow Types
-├── Timeline Types
-├── Search Types
-└── Ask Types
-
-
-## UI State
-
-Frontend Pages
+├── Asset Filter
+├── Date Filter
+└── Related Causes
 
 ↓
 
-State Handling
+Search
 
-├── Loading
-├── Error
-├── Empty Data
-├── Invalid Route Parameter
-└── API Response Data
-
-
-## Responsive UI
-
-Desktop Layout
+├── Unified Search
+├── Flow Result
+└── Evidence Result
 
 ↓
 
-CSS Grid / Flexbox / Vertical Timeline
-
-↓
-
-Media Query
-
-↓
-
-Mobile Layout
+Flow Detail

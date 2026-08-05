@@ -114,45 +114,41 @@
 ## Sprint 9
 
 - 프론트엔드는 React + TypeScript + Vite 조합으로 구축
-- 타입 검사를 통해 백엔드 API 응답 구조를 명시적으로 관리
 - ESLint를 기본 코드 검사 도구로 사용
-- API 주소는 VITE_API_BASE_URL 환경변수로 관리
-- 공통 fetch 로직은 API Client로 분리
-- API별 요청 함수와 응답 타입을 각각 api 및 types 계층으로 분리
-- FastAPI CORS는 개발 프론트엔드 주소인 http://localhost:5173만 허용
+- API 주소는 `VITE_API_BASE_URL` 환경변수로 관리
+- 공통 요청 로직은 API Client로 분리
+- API 요청 함수와 응답 타입을 `api` 및 `types` 계층으로 분리
 - Home Dashboard는 기존 Home·Market·Flow Feed API를 재사용
 - Home과 Market 데이터는 병렬 요청
-- Flow Feed는 독립적으로 데이터를 요청하여 필터와 페이지 상태 관리
-- 검색 조건은 입력 즉시 요청하지 않고 적용 버튼을 통해 반영
-- Flow Feed 페이지네이션은 백엔드와 동일한 limit·offset 방식 사용
-- 로딩·오류·빈 데이터 상태를 각 데이터 영역에서 명시적으로 처리
-- 별도 UI 라이브러리 없이 CSS Grid와 Media Query로 반응형 UI 구현
-- Sprint 9에서는 새로운 DB 테이블과 백엔드 API를 추가하지 않음
+- Flow Feed는 독립 상태로 필터와 페이지네이션을 관리
+- 검색 조건은 입력 즉시 요청하지 않고 적용 버튼으로 반영
+- UI 라이브러리 없이 CSS Grid와 Media Query로 반응형 UI 구현
+- 새로운 DB 테이블과 백엔드 API는 추가하지 않음
 
 ---
 
 ## Sprint 10
 
-- React Router를 도입하여 Home, Flow Detail, Market Timeline, Unified Search 페이지를 분리
+- React Router를 도입하여 Home과 Flow Detail 페이지를 분리
 - Flow Feed 카드를 Flow Detail 페이지의 진입점으로 사용
 - Flow Detail 데이터는 Trace, Why Analysis, Why Trail API를 병렬 요청
-- URL의 flow_id는 양의 정수인지 프론트엔드에서 검증
-- Flow 상세 조회 실패 시 Trace·Why·Trail을 하나의 오류 상태로 처리
-- Why Analysis는 내부 원인, Why Trail은 외부 Flow 원인으로 구분하여 표시
-- Why Trail 원인 제목을 선택하면 해당 Flow 상세 페이지로 이동
-- Flow Timeline은 Trace API의 FlowNode를 세로 Timeline 형태로 표시
-- Evidence는 해당 FlowNode 내부에 포함하여 원인과 근거의 관계를 유지
+- URL의 `flow_id`는 프론트엔드에서 양의 정수로 검증
+- Why Analysis는 내부 원인, Why Trail은 외부 Flow 원인으로 구분
+- FlowNode 내부에 Evidence를 표시하여 원인과 근거의 관계를 유지
 - Ask UI는 현재 Flow ID를 자동으로 요청에 포함
-- Ask API 응답의 Answer Source, Confidence, Primary Cause, Flow Path, Why Trail을 구분하여 표시
 - 공통 API Client에 POST 요청 기능 추가
-- Market Timeline은 기존 GET /api/timeline을 재사용
-- Market Timeline 필터는 입력 즉시 요청하지 않고 적용 버튼으로 반영
-- Market Timeline은 시간, Flow Score, Evidence 개수, 외부 원인을 함께 표시
-- Unified Search는 Flow와 Evidence 결과를 별도 영역으로 구분
-- 검색 요청은 공백 제거 후 빈 검색어를 프론트엔드에서 차단
-- Flow 검색 결과는 상세 페이지로 연결
-- Evidence 검색 결과는 연결 Flow와 원문 URL을 함께 제공
-- Header에 Home, Timeline, Search 내비게이션 추가
-- 페이지별 로딩·오류·빈 데이터 상태를 명시적으로 처리
-- CSS Grid, Flexbox, Media Query를 사용하여 상세·Timeline·검색 화면을 반응형으로 구현
-- Sprint 10에서는 새로운 DB 테이블과 백엔드 API를 추가하지 않음
+- Header에 주요 페이지 내비게이션 추가
+- 새로운 DB 테이블과 백엔드 API는 추가하지 않음
+
+---
+
+## Sprint 11
+
+- Market Timeline과 Unified Search를 독립 페이지로 제공
+- Timeline과 Home의 시장 흐름 UI는 공통 카드 스타일을 재사용
+- Timeline 필터는 적용 버튼을 통해 요청에 반영
+- Unified Search는 기존 Search API 하나로 Flow와 Evidence를 함께 조회
+- Flow와 Evidence 결과는 유형별 영역으로 구분하여 표시
+- 공백 검색어와 잘못된 날짜 범위는 프론트엔드에서 사전 차단
+- 검색 결과는 Flow 상세 페이지와 Evidence 원문으로 연결
+- 새로운 DB 테이블과 백엔드 API는 추가하지 않음

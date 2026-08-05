@@ -1,4 +1,3 @@
-
 # Progress
 
 ✅ Sprint 1
@@ -39,6 +38,8 @@
 - Why Analysis
 - Ask API 개선
 
+---
+
 ✅ Sprint 5
 
 - Why Analysis Engine
@@ -57,71 +58,40 @@
 - Cross-Flow Cause Linking
 - 뉴스와 시장 Flow 연결
 - 경제지표와 시장 Flow 연결
-- Why Trail 고도화
-- OpenAI 기반 설명 생성 구조
+- Why Trail
+- OpenAI Explanation Structure
 - Template Fallback
 
-
 ---
-
-
 
 ✅ Sprint 7
 
 - Home Intelligence API
-- Dynamic Biggest Why
-- Top Whys
-- Recent Flow Filtering
 - Flow Feed API
+- Search / Filter / Sort
 - Pagination
-- Target Asset Filtering
-- News Flow Filtering
-- Flow Title Search
-- Date Filtering
-- Latest / Score Sorting
-- Evidence / Link Summary
-- API-level Validation Tests
-
-
-
+- Validation Tests
 
 ---
 
 ✅ Sprint 8
 
 - Market Timeline API
-- Multi-Flow Timeline
-- Target Asset Filtering
-- Date Filtering
-- Flow Ranking Summary
-- Evidence Summary
-- External Cause Summary
 - Unified Search API
-- Flow Search
-- Evidence Search
-- Search Type Filtering
-- Search Validation
+- Multi-Flow Timeline
+- Flow / Evidence Search
 - API-level Tests
 
 ---
 
 ✅ Sprint 9
 
-- React + TypeScript + Vite Frontend
-- FastAPI CORS
-- Environment-based API Configuration
-- Common Layout and Header
-- Market Overview
-- Biggest Why Card
-- Top Whys
+- React + TypeScript + Vite
+- Home Dashboard
 - Flow Feed UI
-- Search and Asset Filtering
-- News and Date Filtering
-- Latest / Score Sorting
-- Offset Pagination
-- Loading / Error / Empty States
-- Responsive Home Dashboard
-- Frontend Lint and Production Build
+- API Integration
+- Filtering & Pagination
+- Responsive UI
 
 ---
 
@@ -129,24 +99,19 @@
 
 - React Router
 - Flow Detail Page
-- Flow Trace UI
 - Why Analysis UI
 - Why Trail UI
-- Flow Timeline UI
-- Evidence Cards
-- Ask Flow UI
-- Confidence and Answer Source
-- Flow Path and Why Trail Answer
+- Ask UI
 - Market Timeline Page
-- Timeline Asset and Date Filtering
-- Timeline External Cause Links
 - Unified Search Page
-- Flow and Evidence Search
-- Search Type and Asset Filtering
-- Evidence Original Links
-- Home / Timeline / Search Navigation
-- Loading / Error / Empty States
-- Invalid Flow ID Validation
-- Responsive Detail, Timeline, Search Views
-- Frontend Lint and Production Build
-- Backend Regression Tests
+- Responsive UI
+
+---
+
+✅ Sprint 11
+
+- Timeline UI 개선
+- Timeline Filtering
+- Unified Search 개선
+- Flow / Evidence Search
+- UI 개선 및 검증
