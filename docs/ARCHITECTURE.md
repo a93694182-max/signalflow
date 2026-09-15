@@ -462,3 +462,38 @@ Search
 ↓
 
 Flow Detail
+
+
+---
+
+## Sprint 12
+
+Flow / Evidence
+
+↓
+
+Flow Ranking
+
+↓
+
+Why Analysis
+
+↓
+
+Daily Briefing Service
+
+↓
+
+GET /api/briefing/daily
+
+↓
+
+Daily Briefing UI
+
+↓
+
+Home Dashboard
+
+↓
+
+60s Auto Refresh

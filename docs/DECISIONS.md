@@ -152,3 +152,17 @@
 - 공백 검색어와 잘못된 날짜 범위는 프론트엔드에서 사전 차단
 - 검색 결과는 Flow 상세 페이지와 Evidence 원문으로 연결
 - 새로운 DB 테이블과 백엔드 API는 추가하지 않음
+
+
+---
+
+## Sprint 12
+
+- Daily Briefing은 기존 Flow Ranking과 Why Analysis를 재사용
+- 최근 24시간 Flow를 브리핑 분석 범위로 사용
+- MARKET Flow는 주요 시장 자산 Flow 선정에서 제외
+- 상위 3개 Flow를 Daily Briefing에 제공
+- 외부 연결 원인을 우선 Key Cause로 사용
+- 외부 원인이 없으면 내부 Primary Cause를 사용
+- Home Dashboard 데이터는 60초 주기로 자동 갱신
+- 새로운 DB 테이블은 추가하지 않음

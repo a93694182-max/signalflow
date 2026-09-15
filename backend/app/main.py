@@ -15,6 +15,7 @@ from app.routers.economic import router as economic_router
 from app.routers import engine
 from app.routers.timeline import router as timeline_router
 from app.routers.search import router as search_router
+from app.routers import briefing
 
 from app.services.scheduler_service import start_scheduler
 
@@ -51,7 +52,7 @@ app.include_router(ask_router)
 app.include_router(market_router)
 app.include_router(economic_router)
 app.include_router(engine.router)
-
+app.include_router(briefing.router)
 
 
 @app.get("/", tags=["Root"])

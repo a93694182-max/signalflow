@@ -311,3 +311,26 @@
 - Timeline 화면 개선 및 필터 기능 완성
 - Unified Search 기반 검색 화면 완성
 - Home · Timeline · Search UI 통일
+
+
+
+---
+
+## 2026-09-15 | Sprint 12 진행
+
+- Daily Market Briefing Schema 구현
+- Daily Briefing Service 구현
+- Daily Briefing API 추가
+- Flow Ranking 및 Why Analysis 연동
+- Daily Briefing UI 구현
+- Home Dashboard 연동
+- 60초 자동 갱신 추가
+- Daily Briefing Service 테스트 추가
+- 백엔드 전체 테스트 31개 통과
+- 프론트엔드 ESLint 및 Production Build 통과
+
+### Sprint 12 완료 ✅
+
+- 기존 Flow 분석 데이터를 종합하는 Daily Market Briefing 완성
+- Home Dashboard에 시장 브리핑 통합
+- Dashboard 자동 갱신 적용

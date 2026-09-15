@@ -849,6 +849,37 @@ Sprint 10에서는 기존 API를 활용하여 Flow 상세 화면과 Timeline 화
 Sprint 11에서는 React Router 기반의 페이지 이동과 통합 검색 기능을 완성합니다.
 
 
+
+---
+
+## Sprint 12
+
+### Daily Market Briefing
+
+#### Route
+
+GET /api/briefing/daily
+
+#### 주요 기능
+
+- 최근 24시간 주요 Flow 분석
+- Flow Ranking 기반 Top Flow 선정
+- Why Analysis 기반 시장 요약
+- 주요 원인(Key Causes) 제공
+- Top Flows 제공
+
+---
+
+### Home Dashboard
+
+#### 추가 기능
+
+- Daily Market Briefing 표시
+- 60초 주기 Dashboard 자동 갱신
+
+Sprint 12에서는 기존 Flow Ranking과 Why Analysis를 활용하여 일일 시장 브리핑을 제공하고 Home Dashboard의 최신 데이터를 자동 갱신합니다.
+
+
 ---
 
 

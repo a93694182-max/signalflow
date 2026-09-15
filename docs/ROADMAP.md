@@ -115,3 +115,15 @@
 - Unified Search 개선
 - Flow / Evidence Search
 - UI 개선 및 검증
+
+
+✅ Sprint 12
+
+- Daily Market Briefing
+- Flow Ranking 기반 Top Flow 선정
+- Why Analysis 기반 시장 요약
+- Key Causes
+- Daily Briefing UI
+- Home Dashboard 연동
+- 60초 Auto Refresh
+- Backend Tests
