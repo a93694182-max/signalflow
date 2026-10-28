@@ -380,3 +380,54 @@ Ask UI (AI 분석 / 기본 분석 배지)
 - 프론트엔드 ESLint 및 Production Build 통과
 - OpenAI 성공·실패 경로는 Mock 테스트로 검증
 - 실제 OpenAI 응답은 API 크레딧 부족으로 미검증
+
+
+
+---
+
+## Sprint 14 — Data Quality & Reliability
+
+### Signal Processing Pipeline
+
+```text
+Yahoo Finance / FRED / Finnhub
+  ↓
+Signal Collection
+  ↓
+Signal Filter
+  ├── Meaningful Change Filter
+  ├── News Relevance Filter
+  └── News Deduplication
+        ├── News ID
+        ├── URL
+        └── Title
+  ↓
+Flow Discovery
+  ↓
+Flow Deduplication
+  ├── Title / Target Asset
+  ├── Occurred At
+  └── FlowNode Signature
+  ↓
+New Flow Persistence
+  ↓
+Cross-Flow Linking
+  ↓
+PostgreSQL
+```
+
+### 주요 구성
+
+- `signal_filter_service.py`: 뉴스 ID, URL, 제목 기반 중복 Signal 제거
+- `news_topic_classifier.py`: 경제·금융 키워드 기반 뉴스 관련성 판단
+- `flow_service.py`: FlowNode 내용 기반 중복 Flow 판정
+- `engine_service.py`: 신규 Flow만 반환하고 Cross-Flow Linking 수행
+- 발생 시각 비교 시 UTC 정규화
+- 기존 데이터베이스 스키마 유지
+
+### 검증 범위
+
+- 백엔드 테스트 48개 통과
+- 중복 Flow 생성 방지 검증
+- 뉴스 중복 제거 및 관련성 필터링 검증
+- 외부 뉴스 API에 의존하지 않는 Flow 테스트

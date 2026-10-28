@@ -26,8 +26,44 @@ def is_meaningful_signal(signal: Signal) -> bool:
 
 
 def filter_signals(signals: list[Signal]) -> list[Signal]:
-    return [
-        signal
-        for signal in signals
-        if is_meaningful_signal(signal)
-    ]
+    filtered_signals: list[Signal] = []
+
+    seen_ids = set()
+    seen_urls = set()
+    seen_titles = set()
+
+    for signal in signals:
+        if not is_meaningful_signal(signal):
+            continue
+
+        if signal.signal_type != "news":
+            filtered_signals.append(signal)
+            continue
+
+        metadata = signal.metadata or {}
+        news_id = metadata.get("news_id")
+
+        url = (signal.url or "").strip().lower()
+        title = " ".join(
+            (signal.title or signal.name).split()
+        ).casefold()
+
+        if (
+            (news_id is not None and news_id in seen_ids)
+            or (url and url in seen_urls)
+            or (title and title in seen_titles)
+        ):
+            continue
+
+        filtered_signals.append(signal)
+
+        if news_id is not None:
+            seen_ids.add(news_id)
+
+        if url:
+            seen_urls.add(url)
+
+        if title:
+            seen_titles.add(title)
+
+    return filtered_signals

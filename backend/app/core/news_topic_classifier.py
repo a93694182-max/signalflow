@@ -138,7 +138,13 @@ def is_relevant_news(
 ) -> bool:
     text = f"{title} {summary or ''}"
 
-    return not any(
+    has_financial_keyword = any(
         contains_keyword(text, keyword)
-        for keyword in IRRELEVANT_NEWS_KEYWORDS
+        for keywords in TOPIC_KEYWORDS.values()
+        for keyword in keywords
     )
+
+    if not has_financial_keyword:
+        return False
+
+    return True

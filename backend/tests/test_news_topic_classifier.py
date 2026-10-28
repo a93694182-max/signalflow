@@ -60,3 +60,35 @@ assert is_relevant_news(
 
 
 print("News Topic Classifier 테스트 통과")
+
+
+def test_irrelevant_general_news():
+    assert not is_relevant_news(
+        "Celebrity announces new movie"
+    )
+
+    assert not is_relevant_news(
+        "Local restaurant opens downtown"
+    )
+
+
+def test_financial_news_is_relevant():
+    assert is_relevant_news(
+        "Fed signals another interest rate cut"
+    )
+
+    assert is_relevant_news(
+        "Oil prices rise after supply concerns"
+    )
+
+
+def test_sports_news_with_economic_impact():
+    assert is_relevant_news(
+        "World Cup boosts tourism revenue and economic growth"
+    )
+
+
+def test_pure_sports_news_is_irrelevant():
+    assert not is_relevant_news(
+        "Spain beat Argentina to win World Cup"
+    )

@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from datetime import date, datetime, time, timedelta
+from datetime import date, datetime, time, timedelta, timezone
 from zoneinfo import ZoneInfo
 
 from fastapi import HTTPException, status
@@ -18,21 +18,14 @@ from app.models import Flow, FlowNode
 from app.models.signal import Signal
 from app.services.flow_link_service import get_why_trail
 
-
-
 KOREA_TIMEZONE = ZoneInfo("Asia/Seoul")
-
-
 
 
 def get_flow_trace(db: Session, flow_id: int) -> Flow:
     stmt = (
         select(Flow)
         .where(Flow.id == flow_id)
-        .options(
-            selectinload(Flow.nodes)
-            .selectinload(FlowNode.evidences)
-        )
+        .options(selectinload(Flow.nodes).selectinload(FlowNode.evidences))
     )
 
     flow = db.scalar(stmt)
@@ -62,7 +55,6 @@ def create_flow_from_signals(
     return get_flow_trace(db, flow.id)
 
 
-
 def create_flows_from_signals(
     db: Session,
     signals: list[Signal],
@@ -76,7 +68,6 @@ def create_flows_from_signals(
             duplicate = find_duplicate_flow(db, flow)
 
             if duplicate is not None:
-                saved_flows.append(duplicate)
                 continue
 
             db.add(flow)
@@ -91,21 +82,17 @@ def create_flows_from_signals(
         db.rollback()
         raise
 
-    return [
-        get_flow_trace(db, flow_id)
-        for flow_id in flow_ids
-    ]
+    return [get_flow_trace(db, flow_id) for flow_id in flow_ids]
 
 
 def find_duplicate_flow(
     db: Session,
     flow: Flow,
 ) -> Flow | None:
-    occurred_at = (
-        flow.nodes[0].occurred_at
-        if flow.nodes
-        else None
-    )
+    if not flow.nodes:
+        return None
+
+    occurred_at = flow.nodes[0].occurred_at
 
     stmt = (
         select(Flow)
@@ -117,33 +104,58 @@ def find_duplicate_flow(
                 FlowNode.occurred_at == occurred_at,
             )
         )
-        .options(
-            selectinload(Flow.nodes)
-            .selectinload(FlowNode.evidences)
-        )
+        .options(selectinload(Flow.nodes).selectinload(FlowNode.evidences))
     )
 
-    return db.scalar(stmt)
+    candidates = db.scalars(stmt).unique().all()
+
+    def node_signature(node: FlowNode) -> tuple:
+        occurred_at = node.occurred_at
+
+        if occurred_at is not None and occurred_at.tzinfo is not None:
+            occurred_at = occurred_at.astimezone(timezone.utc).replace(
+                tzinfo=None
+            )
+
+        return (
+            node.title,
+            node.category,
+            node.description,
+            occurred_at,
+        )
+
+    def flow_signature(target: Flow) -> tuple:
+        return tuple(
+            sorted(
+                (node_signature(node) for node in target.nodes),
+                key=repr,
+            )
+        )
+
+    target_signature = flow_signature(flow)
+
+    for candidate in candidates:
+        if flow_signature(candidate) == target_signature:
+            return candidate
+
+    return None
+
 
 def get_ranked_flows(
     db: Session,
     created_after: datetime | None = None,
 ):
     stmt = select(Flow).options(
-        selectinload(Flow.nodes)
-        .selectinload(FlowNode.evidences)
+        selectinload(Flow.nodes).selectinload(FlowNode.evidences)
     )
 
     # 최신성 기준 적용
     if created_after is not None:
-        stmt = stmt.where(
-            Flow.created_at >= created_after
-        )
+        stmt = stmt.where(Flow.created_at >= created_after)
 
     flows = db.scalars(stmt).unique().all()
 
     return rank_flows(flows)
-
 
 
 @dataclass(frozen=True, slots=True)
@@ -151,8 +163,6 @@ class CrossFlowWhyAnalysisResult:
     analysis: WhyAnalysisResult
     summary: str
     external_causes: list[dict]
-
-
 
 
 def get_flow_why_analysis(
@@ -171,20 +181,14 @@ def get_flow_why_analysis(
         flow_id=flow_id,
     )
 
-    external_causes = (
-        trail_result["trail"][:3]
-    )
+    external_causes = trail_result["trail"][:3]
 
     if external_causes:
         cause_titles = ", ".join(
-            f"'{cause['source_title']}'"
-            for cause in external_causes
+            f"'{cause['source_title']}'" for cause in external_causes
         )
 
-        summary = (
-            f"{flow.title}과 연결된 외부 원인 후보는 "
-            f"{cause_titles}입니다."
-        )
+        summary = f"{flow.title}과 연결된 외부 원인 후보는 " f"{cause_titles}입니다."
 
         if analysis.primary_cause is not None:
             summary += (
@@ -201,6 +205,7 @@ def get_flow_why_analysis(
         summary=summary,
         external_causes=external_causes,
     )
+
 
 def get_flow_timeline(
     db: Session,
@@ -227,43 +232,29 @@ def get_flow_feed(
 ) -> dict:
     conditions = []
 
-    if (
-        from_date is not None
-        and to_date is not None
-        and from_date > to_date
-    ):
+    if from_date is not None and to_date is not None and from_date > to_date:
         raise HTTPException(
             status_code=status.HTTP_422_UNPROCESSABLE_CONTENT,
             detail="from_date는 to_date보다 늦을 수 없습니다.",
         )
-    
+
     if sort_by not in {"latest", "score"}:
         raise HTTPException(
             status_code=status.HTTP_422_UNPROCESSABLE_CONTENT,
             detail="sort는 latest 또는 score만 사용할 수 있습니다.",
         )
 
-
     if target_asset is not None:
-        conditions.append(
-            Flow.target_asset == target_asset
-        )
+        conditions.append(Flow.target_asset == target_asset)
 
     if not include_news:
-        conditions.append(
-            Flow.target_asset != "MARKET"
-        )
+        conditions.append(Flow.target_asset != "MARKET")
 
     if query is not None:
         search_query = query.strip()
 
         if search_query:
-            conditions.append(
-                Flow.title.ilike(
-                    f"%{search_query}%"
-                )
-            )
-
+            conditions.append(Flow.title.ilike(f"%{search_query}%"))
 
     if from_date is not None:
         from_datetime = datetime.combine(
@@ -272,9 +263,7 @@ def get_flow_feed(
             tzinfo=KOREA_TIMEZONE,
         )
 
-        conditions.append(
-            Flow.created_at >= from_datetime
-        )
+        conditions.append(Flow.created_at >= from_datetime)
 
     if to_date is not None:
         # 종료일 전체 포함
@@ -284,15 +273,9 @@ def get_flow_feed(
             tzinfo=KOREA_TIMEZONE,
         )
 
-        conditions.append(
-            Flow.created_at < to_datetime
-        )
+        conditions.append(Flow.created_at < to_datetime)
 
-    count_stmt = (
-        select(func.count())
-        .select_from(Flow)
-        .where(*conditions)
-    )
+    count_stmt = select(func.count()).select_from(Flow).where(*conditions)
 
     total = db.scalar(count_stmt) or 0
 
@@ -300,8 +283,7 @@ def get_flow_feed(
         select(Flow)
         .where(*conditions)
         .options(
-            selectinload(Flow.nodes)
-            .selectinload(FlowNode.evidences),
+            selectinload(Flow.nodes).selectinload(FlowNode.evidences),
             selectinload(Flow.incoming_links),
             selectinload(Flow.outgoing_links),
         )
@@ -309,19 +291,11 @@ def get_flow_feed(
 
     if sort_by == "score":
         # 기존 Flow Ranking 기준 재사용
-        matching_flows = (
-            db.scalars(base_stmt)
-            .unique()
-            .all()
-        )
+        matching_flows = db.scalars(base_stmt).unique().all()
 
-        ranked_results = rank_flows(
-            matching_flows
-        )
+        ranked_results = rank_flows(matching_flows)
 
-        page_results = ranked_results[
-            offset:offset + limit
-        ]
+        page_results = ranked_results[offset : offset + limit]
 
         flow_items = [
             {
@@ -332,8 +306,7 @@ def get_flow_feed(
                 "score": result.score,
                 "evidence_count": result.evidence_count,
                 "link_count": (
-                    len(result.flow.incoming_links)
-                    + len(result.flow.outgoing_links)
+                    len(result.flow.incoming_links) + len(result.flow.outgoing_links)
                 ),
                 "created_at": result.flow.created_at,
                 "updated_at": result.flow.updated_at,
@@ -343,8 +316,7 @@ def get_flow_feed(
 
     else:
         stmt = (
-            base_stmt
-            .order_by(
+            base_stmt.order_by(
                 Flow.created_at.desc(),
                 Flow.id.desc(),
             )
@@ -352,16 +324,9 @@ def get_flow_feed(
             .offset(offset)
         )
 
-        flows = (
-            db.scalars(stmt)
-            .unique()
-            .all()
-        )
+        flows = db.scalars(stmt).unique().all()
 
-        ranking_by_flow_id = {
-            result.flow.id: result
-            for result in rank_flows(flows)
-        }
+        ranking_by_flow_id = {result.flow.id: result for result in rank_flows(flows)}
 
         flow_items = [
             {
@@ -370,13 +335,8 @@ def get_flow_feed(
                 "target_asset": flow.target_asset,
                 "summary": flow.summary,
                 "score": ranking_by_flow_id[flow.id].score,
-                "evidence_count": (
-                    ranking_by_flow_id[flow.id].evidence_count
-                ),
-                "link_count": (
-                    len(flow.incoming_links)
-                    + len(flow.outgoing_links)
-                ),
+                "evidence_count": (ranking_by_flow_id[flow.id].evidence_count),
+                "link_count": (len(flow.incoming_links) + len(flow.outgoing_links)),
                 "created_at": flow.created_at,
                 "updated_at": flow.updated_at,
             }
