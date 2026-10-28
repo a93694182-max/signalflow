@@ -8,6 +8,7 @@ from sqlalchemy.orm import Session
 from app.config import (
     OPENAI_API_KEY,
     OPENAI_MODEL,
+    OPENAI_ENABLED,
 )
 from app.core.why_analysis import analyze_flow
 from app.services.flow_link_service import get_why_trail
@@ -32,39 +33,60 @@ def generate_openai_answer(
     primary_cause: str,
     confidence_score: float,
     why_trail: list[str],
+    evidences: list[str],
 ) -> str | None:
-    if not OPENAI_API_KEY:
+    if not OPENAI_ENABLED or not OPENAI_API_KEY:
         return None
 
-    trail_text = " → ".join(why_trail)
+    trail_text = "\n".join(f"- {cause}" for cause in why_trail)
 
-    prompt = (
-        "아래의 구조화된 근거만 사용해서 질문에 답하세요.\n"
-        "인과관계를 확정하지 말고 원인 후보라고 표현하세요.\n"
-        "한국어로 이해하기 쉽게 3문장 이내로 설명하세요.\n\n"
-        f"질문: {question}\n"
-        f"분석 대상: {flow_title}\n"
-        f"가장 강한 내부 시장 신호: {primary_cause}\n"
-        f"분석 신뢰도: {confidence_score:.3f}\n"
-        f"Why Trail: {trail_text}"
-    )
+    evidence_text = "\n".join(f"- {evidence}" for evidence in evidences[:10])
+
+    prompt = f"""
+당신은 경제·금융 시장 분석 보조 AI입니다.
+
+다음에 제공된 분석 결과와 근거만 사용하여 질문에 답변하세요.
+
+규칙:
+1. 제공되지 않은 사실을 만들어내지 마세요.
+2. 인과관계가 확실하지 않으면 원인 후보라고 표현하세요.
+3. 근거가 부족하면 불확실성을 명시하세요.
+4. 한국어로 간결하게 설명하세요.
+5. 최대 5문장으로 답변하세요.
+
+[질문]
+{question}
+
+[분석 대상]
+{flow_title}
+
+[주요 원인 후보]
+{primary_cause}
+
+[분석 신뢰도]
+{confidence_score:.1%}
+
+[Why Trail]
+{trail_text}
+
+[Evidence]
+{evidence_text}
+"""
 
     try:
-        client = OpenAI(
-            api_key=OPENAI_API_KEY,
-        )
+        client = OpenAI(api_key=OPENAI_API_KEY)
 
         response = client.responses.create(
             model=OPENAI_MODEL,
             input=prompt,
         )
 
-        return response.output_text.strip()
+        answer = response.output_text.strip()
+
+        return answer or None
 
     except Exception as error:
-        print(
-            f"[OpenAI] 설명 생성 실패: {error}"
-        )
+        print(f"[OpenAI ERROR] {type(error).__name__}: {error}")
         return None
 
 
@@ -85,7 +107,6 @@ def generate_flow_answer(
         flow_id=flow_id,
     )
 
-   
     why_trail = []
 
     for step in trail_result["trail"]:
@@ -94,10 +115,8 @@ def generate_flow_answer(
         if source_title not in why_trail:
             why_trail.append(source_title)
 
-   
     why_trail = why_trail[:3]
 
-    
     why_trail.append(flow.title)
 
     sorted_nodes = sorted(
@@ -105,38 +124,25 @@ def generate_flow_answer(
         key=lambda node: node.order_index,
     )
 
-    flow_path = [
-        node.title
-        for node in sorted_nodes
-    ]
+    flow_path = [node.title for node in sorted_nodes]
 
-    evidence_count = sum(
-        len(node.evidences)
-        for node in sorted_nodes
-    )
+    evidences = [evidence.title for node in sorted_nodes for evidence in node.evidences]
+
+    evidence_count = len(evidences)
 
     if why_result.primary_cause is None:
-        answer = (
-            f"'{question}'에 답할 수 있는 "
-            "충분한 근거가 아직 없습니다."
-        )
+        answer = f"'{question}'에 답할 수 있는 충분한 근거가 아직 없습니다."
 
         primary_cause = None
         answer_source = "template"
 
     else:
-        primary_cause = (
-            why_result.primary_cause.title
-        )
+        primary_cause = why_result.primary_cause.title
 
-       
         external_causes = why_trail[:-1]
 
         if external_causes:
-            cause_text = ", ".join(
-                f"'{cause}'"
-                for cause in external_causes
-            )
+            cause_text = ", ".join(f"'{cause}'" for cause in external_causes)
 
             template_answer = (
                 f"{flow.title}과 연결된 외부 원인 후보는 "
@@ -160,10 +166,9 @@ def generate_flow_answer(
             question=question,
             flow_title=flow.title,
             primary_cause=primary_cause,
-            confidence_score=(
-                why_result.confidence_score
-            ),
+            confidence_score=(why_result.confidence_score),
             why_trail=why_trail,
+            evidences=evidences,
         )
 
         if openai_answer is not None:

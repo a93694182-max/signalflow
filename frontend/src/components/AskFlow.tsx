@@ -74,10 +74,21 @@ function AskFlow({ flowId }: AskFlowProps) {
       {response && (
         <article className="ask-flow__answer">
           <div className="ask-flow__answer-meta">
-            <span>{response.answer_source}</span>
+            <span
+              className={`ask-flow__source ${response.answer_source === 'openai'
+                  ? 'ask-flow__source--ai'
+                  : 'ask-flow__source--template'
+                }`}
+            >
+              {response.answer_source === 'openai'
+                ? 'AI 분석'
+                : '기본 분석'}
+            </span>
+
             <strong>
-              신뢰도 {Math.round(response.confidence_score * 100)}점
+              분석 신뢰도 {Math.round(response.confidence_score * 100)}점
             </strong>
+
             <span>{response.confidence_level}</span>
           </div>
 

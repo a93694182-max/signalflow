@@ -334,3 +334,26 @@
 - 기존 Flow 분석 데이터를 종합하는 Daily Market Briefing 완성
 - Home Dashboard에 시장 브리핑 통합
 - Dashboard 자동 갱신 적용
+---
+
+## 2026-10-28 | Sprint 13
+
+- Evidence 기반 AI 프롬프트 개선
+- Flow Trace / Why Analysis / Why Trail 연동
+- OpenAI 답변 생성 로직 개선
+- AI 호출 실패 시 Template Fallback 유지
+- `OPENAI_ENABLED` 환경변수 추가
+- API 비활성화 시 실제 OpenAI 호출 방지
+- OpenAI 성공 / 실패 Mock 테스트 추가
+- AI 답변 / 기본 답변 / 원인 부재 테스트 추가
+- Ask UI에 분석 유형 배지 추가
+- 백엔드 전체 테스트 36개 통과
+- 프론트엔드 ESLint 및 Production Build 통과
+- 실제 OpenAI API 응답은 크레딧 부족으로 미검증
+
+### Sprint 13 완료 ✅
+
+- Evidence 기반 AI 설명 구조 개선
+- AI 호출 활성화 설정 및 Fallback 처리
+- Ask UI 분석 유형 구분
+- Mock 기반 AI 로직 검증 완료

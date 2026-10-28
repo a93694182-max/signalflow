@@ -166,3 +166,17 @@
 - 외부 원인이 없으면 내부 Primary Cause를 사용
 - Home Dashboard 데이터는 60초 주기로 자동 갱신
 - 새로운 DB 테이블은 추가하지 않음
+---
+
+## Sprint 13
+
+- 기존 Ask API를 유지하면서 AI 설명 생성 로직 개선
+- AI 설명은 Flow Trace, Why Analysis, Why Trail을 기반으로 생성
+- Evidence 제목 최대 10개를 프롬프트에 포함
+- 근거 없는 단정과 불확실한 인과관계 표현을 제한
+- OpenAI 호출은 `OPENAI_ENABLED` 환경변수로 제어
+- 기본값은 `false`로 설정하여 불필요한 API 비용 방지
+- API 비활성화 또는 호출 실패 시 Template Fallback 사용
+- 외부 API 비용 없이 검증할 수 있도록 Mock 테스트 활용
+- 프론트엔드에 AI 분석 / 기본 분석 배지 추가
+- 새로운 DB 테이블 및 API Endpoint는 추가하지 않음

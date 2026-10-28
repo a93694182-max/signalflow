@@ -13,6 +13,7 @@ REDIS_URL = os.getenv("REDIS_URL")
 FRED_API_KEY = os.getenv("FRED_API_KEY")
 FINNHUB_API_KEY = os.getenv("FINNHUB_API_KEY")
 
-
 if not DATABASE_URL:
     raise RuntimeError("DATABASE_URL 환경변수가 설정되지 않았습니다.")
+
+OPENAI_ENABLED = os.getenv("OPENAI_ENABLED", "false").lower() == "true"

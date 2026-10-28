@@ -127,3 +127,16 @@
 - Home Dashboard 연동
 - 60초 Auto Refresh
 - Backend Tests
+---
+
+✅ Sprint 13
+
+- AI Intelligence
+- Evidence-based AI Prompt
+- Why Analysis / Why Trail Integration
+- OpenAI Configuration
+- Template Fallback
+- AI / Template Source Badge
+- Mock-based AI Tests
+- Backend 36 Tests Passed
+- Frontend Build / Lint Passed
