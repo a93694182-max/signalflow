@@ -116,6 +116,7 @@
 - Flow / Evidence Search
 - UI 개선 및 검증
 
+---
 
 ✅ Sprint 12
 
@@ -140,3 +141,20 @@
 - Mock-based AI Tests
 - Backend 36 Tests Passed
 - Frontend Build / Lint Passed
+
+---
+
+
+✅ Sprint 14
+
+- Flow Deduplication
+- FlowNode Signature-based Duplicate Detection
+- UTC Timestamp Normalization
+- News ID Deduplication
+- News URL Deduplication
+- News Title Deduplication
+- Financial News Relevance Filtering
+- News Flow Test Stabilization
+- Backend Tests (48 Passed)
+
+---

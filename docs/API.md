@@ -1209,6 +1209,43 @@ Sprint 12에서는 기존 Flow Ranking과 Why Analysis를 활용하여 일일 �
 
 ---
 
+
+
+## Sprint 14
+
+### Signal Engine — Data Quality
+
+#### POST /api/engine/run
+
+기존 Signal Engine API의 데이터 품질 처리 방식을 개선합니다.
+
+#### 주요 변경 사항
+
+- 중복 Flow는 새로 생성하지 않음
+- `flow_count`는 신규 생성된 Flow 개수만 반환
+- 신규 Flow만 Cross-Flow Linking 대상으로 사용
+- 동일 실행 내 뉴스 ID, URL, 제목 기반 중복 제거
+- 경제·금융 관련성이 있는 뉴스 Signal만 유지
+
+#### Response
+
+기존 응답 구조를 유지합니다.
+
+- `collected_count`: 수집한 Signal 개수
+- `filtered_count`: 필터링 후 Signal 개수
+- `flow_count`: 신규 생성한 Flow 개수
+- `link_count`: 생성한 FlowLink 개수
+- `flows`: 신규 생성한 Flow 목록
+
+#### Compatibility
+
+- 기존 Endpoint 유지
+- Response 필드 구조 유지
+- 데이터베이스 스키마 변경 없음
+
+---
+
+
 # API Index
 
 | Method | Endpoint | Description |

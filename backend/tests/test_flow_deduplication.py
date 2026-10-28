@@ -12,11 +12,7 @@ def test_duplicate_flow_is_not_returned(monkeypatch):
     engine = create_engine("sqlite:///:memory:")
     Base.metadata.create_all(engine)
 
-    occurred_at = datetime(
-        2026, 10, 28, 12, 0, tzinfo=timezone.utc
-    )
-
-   
+    occurred_at = datetime(2026, 10, 28, 12, 0, tzinfo=timezone.utc)
 
     def fake_discover_flows(signals):
         from app.models import FlowNode
@@ -56,9 +52,7 @@ def test_duplicate_flow_is_not_returned(monkeypatch):
             signals=[],
         )
 
-        flow_count = db.scalar(
-            select(func.count()).select_from(Flow)
-        )
+        flow_count = db.scalar(select(func.count()).select_from(Flow))
 
     assert len(first_result) == 1
     assert len(second_result) == 0
@@ -69,14 +63,14 @@ def test_same_timestamp_different_node_is_not_duplicate(monkeypatch):
     engine = create_engine("sqlite:///:memory:")
     Base.metadata.create_all(engine)
 
-    occurred_at = datetime(
-        2026, 10, 28, 12, 0, tzinfo=timezone.utc
-    )
+    occurred_at = datetime(2026, 10, 28, 12, 0, tzinfo=timezone.utc)
 
-    node_titles = iter([
-        "코스피 1% 상승",
-        "코스피 2% 상승",
-    ])
+    node_titles = iter(
+        [
+            "코스피 1% 상승",
+            "코스피 2% 상승",
+        ]
+    )
 
     def fake_discover_flows(signals):
         from app.models import FlowNode
@@ -109,9 +103,7 @@ def test_same_timestamp_different_node_is_not_duplicate(monkeypatch):
         first_result = create_flows_from_signals(db, [])
         second_result = create_flows_from_signals(db, [])
 
-        flow_count = db.scalar(
-            select(func.count()).select_from(Flow)
-        )
+        flow_count = db.scalar(select(func.count()).select_from(Flow))
 
     assert len(first_result) == 1
     assert len(second_result) == 1
