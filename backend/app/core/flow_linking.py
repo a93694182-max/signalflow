@@ -9,6 +9,7 @@ from app.models import Flow
 
 MAX_LINK_HOURS = 72
 MIN_LINK_SCORE = 0.5
+MIN_EVIDENCE_QUALITY = 0.5
 
 MARKET_CATEGORIES = {
     "domestic_stock",
@@ -48,7 +49,7 @@ CATEGORY_LINKS = {
         "domestic_stock",
         "market",
     },
-    "general": MARKET_CATEGORIES,
+    
 }
 
 
@@ -89,6 +90,7 @@ def get_flow_time(flow: Flow) -> datetime | None:
     return min(occurred_times)
 
 
+
 def calculate_category_score(
     source_flow: Flow,
     target_flow: Flow,
@@ -119,26 +121,25 @@ def calculate_time_score(
         return 0.0
 
     if source_time.tzinfo is None:
-        source_time = source_time.replace(
-            tzinfo=timezone.utc,
-        )
+        source_time = source_time.replace(tzinfo=timezone.utc)
 
     if target_time.tzinfo is None:
-        target_time = target_time.replace(
-            tzinfo=timezone.utc,
-        )
+        target_time = target_time.replace(tzinfo=timezone.utc)
 
-    difference_hours = abs(
-        (target_time - source_time).total_seconds()
-    ) / 3600
+    difference_hours = (
+        target_time - source_time
+    ).total_seconds() / 3600
 
-    if difference_hours > MAX_LINK_HOURS:
+    if difference_hours < 0 or difference_hours > MAX_LINK_HOURS:
         return 0.0
 
     return round(
         1.0 - difference_hours / MAX_LINK_HOURS,
         3,
     )
+
+
+
 
 
 def build_flow_link_candidate(
@@ -172,6 +173,8 @@ def build_flow_link_candidate(
     quality_score = calculate_flow_quality_score(
         source_flow,
     )
+    if quality_score < MIN_EVIDENCE_QUALITY:
+        return None
 
     score = round(
         category_score * 0.5

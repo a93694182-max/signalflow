@@ -197,3 +197,24 @@
 - 키워드 기반 필터링의 오탐 및 누락 가능성은 향후 개선 대상으로 유지
 - 외부 API에 의존하는 테스트는 고정 Signal 기반으로 변경
 - 기존 데이터베이스 스키마 유지
+
+
+---
+
+## Sprint 16
+
+- 기존 Evidence Score 계산 로직을 유지하고 점수 구성 요소를 별도로 제공
+- Evidence Score 가중치는 Relation 0.3, Impact 0.2, Time 0.2, Reliability 0.3으로 유지
+- Confidence Score는 Quality Score와 Coverage Score의 가중합을 사용
+- Confidence Score 계산 과정과 최종 결과를 함께 제공
+- Evidence 개수에 따른 Confidence Score 상한 정책 유지
+- Evidence가 없으면 Confidence Score를 0으로 처리
+- Cause Ranking은 Evidence 평균 점수와 Evidence 개수를 기준으로 정렬
+- Cause Ranking에 순위 및 선정 이유 추가
+- Primary Cause는 기존 Why Analysis 결과를 유지
+- Explainability 기능은 기존 계산 로직을 재사용하도록 구성
+- 새로운 API Endpoint를 추가하지 않고 기존 Why Analysis API 확장
+- 기존 Response 필드를 유지하여 하위 호환성 확보
+- 새로운 데이터베이스 테이블 및 컬럼 추가 없음
+
+---

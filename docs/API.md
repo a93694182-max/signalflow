@@ -1243,6 +1243,114 @@ Sprint 12에서는 기존 Flow Ranking과 Why Analysis를 활용하여 일일 �
 - Response 필드 구조 유지
 - 데이터베이스 스키마 변경 없음
 
+
+---
+
+
+## Sprint 15
+
+### Analysis Engine — Reliability Enhancement
+
+#### GET /api/flows/{flow_id}/why
+
+기존 Why Analysis API의 Confidence Score 계산 방식을 개선합니다.
+
+#### 주요 변경 사항
+
+- Evidence Quality와 Evidence Coverage를 결합하여 Confidence Score 계산
+- Evidence Quality 가중치 85% 적용
+- Evidence Coverage 가중치 15% 적용
+- Evidence 1개일 때 Confidence Score 최대 0.59
+- Evidence 2~4개일 때 Confidence Score 최대 0.79
+- Evidence 5개 이상일 때 근거 개수에 따른 상한 해제
+- 내부 Confidence Score와 외부 원인 연결 점수 분리 유지
+
+#### GET /api/flows/{flow_id}/trail
+
+기존 Cross-Flow Linking의 원인 후보 연결 기준을 개선합니다.
+
+#### 주요 변경 사항
+
+- 원인 Flow와 결과 Flow의 시간 순서 검증
+- 72시간을 초과하는 Flow 연결 제외
+- general 카테고리의 무분별한 시장 Flow 연결 방지
+- Evidence Quality가 0.5 미만인 Flow 연결 제외
+- 기존 potential_cause 관계 유형 유지
+
+#### Response
+
+기존 응답 구조를 유지합니다.
+
+- `confidence_score`: Evidence Quality와 Coverage를 반영한 분석 신뢰도
+- `confidence_level`: low, medium, high
+- `primary_cause`: 가장 높은 점수의 내부 원인 후보
+- `external_causes`: 외부 원인 후보 목록
+
+#### Compatibility
+
+- 기존 Endpoint 유지
+- Response 필드 구조 유지
+- 데이터베이스 스키마 변경 없음
+
+---
+
+
+## Sprint 16
+
+### Why Analysis Explainability
+
+#### GET /api/flows/{flow_id}/why
+
+기존 Why Analysis API에 분석 점수와 원인 순위를 설명하는 정보를 추가합니다.
+
+#### 주요 변경 사항
+
+- Evidence별 점수 구성 요소 및 가중치 제공
+- Confidence Score 계산 과정 제공
+- Cause Ranking 순위 및 선정 이유 제공
+- 기존 Why Analysis 응답 구조 유지
+
+#### 추가 Response Fields
+
+- `evidence_breakdowns`: Evidence별 점수 및 가중치 상세 정보
+- `confidence_breakdown`: Confidence Score 계산 과정
+- `cause_ranking`: 내부 원인 후보의 순위 및 선정 이유
+
+#### Evidence Score Breakdown
+
+- `scores`: Relation, Impact, Time, Reliability 원본 점수
+- `weights`: 각 점수의 가중치
+- `weighted_scores`: 가중치가 반영된 점수
+- `total_score`: 최종 Evidence Score
+
+#### Confidence Score Breakdown
+
+- `quality_score`: Evidence 품질 점수
+- `coverage_score`: Evidence 개수 충족도
+- `quality_weight`: 품질 점수 가중치 0.85
+- `coverage_weight`: 근거 충족도 가중치 0.15
+- `evidence_count`: 전체 Evidence 개수
+- `raw_score`: 상한 적용 전 점수
+- `confidence_cap`: Evidence 개수에 따른 점수 상한
+- `confidence_score`: 최종 Confidence Score
+- `confidence_level`: Confidence 등급
+
+#### Cause Ranking
+
+- `rank`: 원인 후보 순위
+- `node_id`: FlowNode ID
+- `title`: 원인 후보 제목
+- `score`: Evidence 평균 점수
+- `evidence_count`: Evidence 개수
+- `reason`: 순위 선정 이유
+
+#### Compatibility
+
+- 기존 Endpoint 유지
+- 기존 Response 필드 유지
+- 새로운 설명 필드만 추가
+- 데이터베이스 스키마 변경 없음
+
 ---
 
 

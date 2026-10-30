@@ -431,3 +431,148 @@ PostgreSQL
 - 중복 Flow 생성 방지 검증
 - 뉴스 중복 제거 및 관련성 필터링 검증
 - 외부 뉴스 API에 의존하지 않는 Flow 테스트
+
+---
+
+## Sprint 15
+
+### Cross-Flow Linking Enhancement
+
+Flow 간 원인 후보 연결의 시간 순서와 근거 품질을 검증합니다.
+
+#### Process
+
+```text
+Source Flow / Target Flow
+            ↓
+      Category Validation
+            ↓
+       Time Validation
+            ↓
+   Evidence Quality Validation
+            ↓
+       Link Score 계산
+            ↓
+       FlowLink 생성
+```
+
+#### 주요 변경 사항
+
+- 원인 Flow가 결과 Flow보다 늦게 발생한 경우 연결 제외
+- 최대 연결 시간 72시간 유지
+- general 카테고리의 시장 Flow 연결 제한
+- 최소 Evidence Quality 0.5 적용
+
+### Evidence Scoring Enhancement
+
+Evidence의 관련성, 영향도, 시간, 출처 신뢰도 평가 방식을 개선합니다.
+
+#### Evidence Score
+
+- Relation Score: 30%
+- Impact Score: 20%
+- Time Score: 20%
+- Reliability Score: 30%
+
+#### 주요 변경 사항
+
+- 뉴스 관련성 기반 Relation Score 계산
+- 시장 변동률 기반 Impact Score 계산
+- 미래 시각 Evidence의 Time Score 0.0 처리
+- 출처 이름의 정확한 일치 기반 Reliability Score 계산
+
+### Why Analysis Confidence Enhancement
+
+Evidence Quality와 Coverage를 결합하여 Confidence Score를 계산합니다.
+
+#### Process
+
+```text
+Flow 조회
+    ↓
+FlowNode별 Evidence Score 계산
+    ↓
+Evidence Quality 계산
+    ↓
+Evidence Coverage 계산
+    ↓
+Confidence Score 계산
+    ↓
+Evidence 개수별 상한 적용
+    ↓
+Confidence Level 결정
+```
+
+#### Confidence Score
+
+- Evidence Quality: 85%
+- Evidence Coverage: 15%
+- Evidence Coverage Target: 5
+- Evidence 1개: 최대 0.59
+- Evidence 2~4개: 최대 0.79
+- Evidence 5개 이상: 근거 개수에 따른 상한 없음
+
+### Cross-Flow Why Analysis
+
+- 내부 Why Analysis는 Flow 내부 Evidence를 기반으로 계산
+- 외부 원인 후보는 FlowLink를 통해 별도 조회
+- 외부 원인 후보는 최대 3개 사용
+- 외부 FlowLink Score는 내부 Confidence Score에 합산하지 않음
+
+### Database
+
+- 기존 Flow, FlowNode, Evidence, FlowLink 모델 유지
+- 데이터베이스 스키마 변경 없음
+
+---
+
+---
+
+## Sprint 16
+
+### Analysis Explainability
+
+```text
+Flow / FlowNode / Evidence
+  ↓
+Evidence Scoring
+  ├── Relation Score
+  ├── Impact Score
+  ├── Time Score
+  └── Reliability Score
+  ↓
+Evidence Score Breakdown
+  ├── Original Scores
+  ├── Score Weights
+  └── Weighted Scores
+  ↓
+Why Analysis Engine
+  ├── Cause Ranking
+  ├── Primary Cause
+  └── Confidence Score
+  ↓
+Analysis Explainability
+  ├── Confidence Breakdown
+  └── Cause Ranking Explanation
+  ↓
+Why Analysis API
+  ├── evidence_breakdowns
+  ├── confidence_breakdown
+  └── cause_ranking
+```
+
+### Analysis Validation
+
+```text
+Evidence Score Validation
+  ↓
+Confidence Breakdown Validation
+  ↓
+Cause Ranking Validation
+  ↓
+Why Analysis Consistency Validation
+  ↓
+Why API Response Validation
+```
+
+---

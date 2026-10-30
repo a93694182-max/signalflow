@@ -2,8 +2,8 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from datetime import datetime, timezone
-
 from app.models.signal import Signal
+from app.core.news_topic_classifier import is_relevant_news
 
 
 SOURCE_RELIABILITY_SCORES = {
@@ -59,20 +59,47 @@ def calculate_relation_score(signal: Signal) -> float:
         return 1.0
 
     if signal.signal_type == "news":
-        if signal.summary and signal.title:
+        title = signal.title or signal.name or ""
+        summary = signal.summary or ""
+
+        if not is_relevant_news(title, summary):
+            return 0.3
+
+        if title and summary:
             return 0.85
 
-        if signal.title or signal.name:
-            return 0.75
+        return 0.75
 
     return 0.5
 
 
 def calculate_impact_score(signal: Signal) -> float:
-    return SEVERITY_IMPACT_SCORES.get(
+    severity_score = SEVERITY_IMPACT_SCORES.get(
         signal.severity,
         0.5,
     )
+
+    if signal.signal_type != "market_change":
+        return severity_score
+
+    if signal.change_percent is None:
+        return severity_score
+
+    change_percent = abs(signal.change_percent)
+
+    if change_percent >= 5.0:
+        return 1.0
+
+    if change_percent >= 3.0:
+        return 0.9
+
+    if change_percent >= 1.0:
+        return 0.7
+
+    if change_percent >= 0.5:
+        return 0.5
+
+    return 0.3
 
 
 def calculate_time_score(
@@ -87,10 +114,12 @@ def calculate_time_score(
     if current_time.tzinfo is None:
         current_time = current_time.replace(tzinfo=timezone.utc)
 
-    age_hours = max(
-        0.0,
-        (current_time - occurred_at).total_seconds() / 3600,
-    )
+    age_hours = (
+        current_time - occurred_at
+    ).total_seconds() / 3600
+
+    if age_hours < 0:
+        return 0.0
 
     if age_hours <= 6:
         return 1.0
@@ -111,16 +140,14 @@ def calculate_time_score(
 
 
 def calculate_reliability_score(source: str) -> float:
-    normalized_source = source.strip().lower()
+    normalized_source = " ".join(
+        source.strip().lower().split()
+    )
 
-    if normalized_source in SOURCE_RELIABILITY_SCORES:
-        return SOURCE_RELIABILITY_SCORES[normalized_source]
-
-    for known_source, score in SOURCE_RELIABILITY_SCORES.items():
-        if known_source in normalized_source:
-            return score
-
-    return 0.6
+    return SOURCE_RELIABILITY_SCORES.get(
+        normalized_source,
+        0.6,
+    )
 
 
 def calculate_evidence_scores(

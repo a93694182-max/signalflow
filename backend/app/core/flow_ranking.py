@@ -50,6 +50,31 @@ def calculate_evidence_total_score(
 
     return round(total_score, 3)
 
+def calculate_evidence_score_breakdown(
+    evidence: Evidence,
+) -> dict:
+    scores = {
+        "relation": evidence.relation_score or 0.0,
+        "impact": evidence.impact_score or 0.0,
+        "time": evidence.time_score or 0.0,
+        "reliability": evidence.reliability_score or 0.0,
+    }
+
+    weighted_scores = {
+        key: round(
+            score * EVIDENCE_SCORE_WEIGHTS[key],
+            3,
+        )
+        for key, score in scores.items()
+    }
+
+    return {
+        "total_score": calculate_evidence_total_score(evidence),
+        "scores": scores,
+        "weights": EVIDENCE_SCORE_WEIGHTS.copy(),
+        "weighted_scores": weighted_scores,
+    }
+
 
 def get_flow_evidences(
     flow: Flow,

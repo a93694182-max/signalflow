@@ -1,4 +1,4 @@
-from app.core.flow_ranking import rank_flows
+from app.core.flow_ranking import rank_flows, calculate_evidence_score_breakdown
 from app.models import Evidence, Flow, FlowNode
 
 
@@ -70,3 +70,23 @@ for rank, result in enumerate(ranked_flows, start=1):
     print(f"title: {result.flow.title}")
     print(f"score: {result.score}")
     print(f"evidence_count: {result.evidence_count}")
+
+
+def test_evidence_score_breakdown():
+    evidence = Evidence(
+        evidence_type="news",
+        title="금리 인상",
+        source="Reuters",
+        relation_score=0.9,
+        impact_score=0.7,
+        time_score=0.8,
+        reliability_score=0.8,
+    )
+
+    result = calculate_evidence_score_breakdown(evidence)
+
+    assert result["total_score"] == 0.81
+    assert result["scores"]["relation"] == 0.9
+    assert result["weights"]["relation"] == 0.3
+    assert result["weighted_scores"]["relation"] == 0.27
+    assert result["weighted_scores"]["reliability"] == 0.24

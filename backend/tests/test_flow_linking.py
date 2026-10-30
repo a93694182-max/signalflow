@@ -141,3 +141,90 @@ def test_discovers_links_in_score_order():
     assert len(links) == 2
     assert links[0].target_flow.id == 2
     assert links[0].score > links[1].score
+
+
+def test_later_news_is_not_linked():
+    now = datetime.now(timezone.utc)
+
+    news_flow = create_test_flow(
+        flow_id=1,
+        title="금리 인상 가능성",
+        category="monetary_policy",
+        evidence_type="news",
+        occurred_at=now + timedelta(hours=2),
+    )
+
+    market_flow = create_test_flow(
+        flow_id=2,
+        title="국내 증시 하락",
+        category="domestic_stock",
+        evidence_type="market_data",
+        occurred_at=now,
+    )
+
+    candidate = build_flow_link_candidate(
+        news_flow,
+        market_flow,
+    )
+
+    assert candidate is None
+
+
+def test_general_news_is_not_linked():
+    now = datetime.now(timezone.utc)
+
+    news_flow = create_test_flow(
+        flow_id=1,
+        title="일반 뉴스",
+        category="general",
+        evidence_type="news",
+        occurred_at=now,
+    )
+
+    market_flow = create_test_flow(
+        flow_id=2,
+        title="국내 증시 하락",
+        category="domestic_stock",
+        evidence_type="market_data",
+        occurred_at=now + timedelta(hours=1),
+    )
+
+    candidate = build_flow_link_candidate(
+        news_flow,
+        market_flow,
+    )
+
+    assert candidate is None
+
+def test_low_quality_evidence_is_not_linked():
+    now = datetime.now(timezone.utc)
+
+    news_flow = create_test_flow(
+        flow_id=1,
+        title="금리 인상 가능성",
+        category="monetary_policy",
+        evidence_type="news",
+        occurred_at=now,
+    )
+
+    market_flow = create_test_flow(
+        flow_id=2,
+        title="국내 증시 하락",
+        category="domestic_stock",
+        evidence_type="market_data",
+        occurred_at=now + timedelta(hours=1),
+    )
+
+    for node in news_flow.nodes:
+        for evidence in node.evidences:
+            evidence.relation_score = 0.1
+            evidence.impact_score = 0.1
+            evidence.time_score = 0.1
+            evidence.reliability_score = 0.1
+
+    candidate = build_flow_link_candidate(
+        news_flow,
+        market_flow,
+    )
+
+    assert candidate is None

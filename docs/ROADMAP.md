@@ -158,3 +158,33 @@
 - Backend Tests (48 Passed)
 
 ---
+
+✅ Sprint 15
+- Cross-Flow Cause Linking Enhancement
+- Cause and Effect Time Order Validation
+- General News Linking Restriction
+- Minimum Evidence Quality Validation
+- Evidence Relation Score Enhancement
+- Evidence Impact Score Enhancement
+- Evidence Time Score Enhancement
+- Evidence Reliability Score Enhancement
+- Why Analysis Confidence Score Enhancement
+- Evidence Coverage-based Confidence Calculation
+- Cross-Flow Why Analysis Integration Review
+- Analysis Reliability Tests
+- Backend Tests (64 Passed)
+
+---
+
+✅ Sprint 16
+
+- Analysis Explainability
+- Evidence Score Breakdown
+- Confidence Score Breakdown
+- Cause Ranking Explanation
+- Analysis Validation
+- Why Analysis API Extension
+- API Response Validation
+- Backend Tests (75 Passed)
+
+---

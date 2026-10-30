@@ -336,7 +336,9 @@
 - Dashboard 자동 갱신 적용
 ---
 
-## 2026-10-28 | Sprint 13
+
+
+## 2026-10-28 | Sprint 13 진행
 
 - Evidence 기반 AI 프롬프트 개선
 - Flow Trace / Why Analysis / Why Trail 연동
@@ -384,3 +386,43 @@
 - 경제·금융 관련 뉴스 중심의 Signal 수집 체계 강화
 - 외부 API 상태와 무관한 테스트 환경 개선
 - 기존 API 및 데이터베이스 구조 유지
+
+
+
+---
+
+
+---
+
+## 2026-10-30 | Sprint 16 진행
+
+- Evidence Score Breakdown 구현
+- Evidence 원본 점수 및 가중치 제공
+- Evidence 가중 점수 계산 결과 제공
+- Confidence Score Breakdown 구현
+- Quality Score 및 Coverage Score 계산 과정 제공
+- Evidence 개수별 Confidence Score 상한 정보 제공
+- Cause Ranking Explanation 구현
+- 원인 후보별 순위 및 선정 이유 제공
+- Evidence 개수가 없는 원인 후보 처리
+- Cause Ranking 동점 처리 테스트 추가
+- Primary Cause와 Cause Ranking 일치 여부 검증
+- Confidence Breakdown과 Why Analysis 결과 일치 여부 검증
+- Why Analysis API 응답 Schema 확장
+- Evidence Breakdown API 응답 추가
+- Confidence Breakdown API 응답 추가
+- Cause Ranking API 응답 추가
+- Why API 응답 테스트 2개 추가
+- Evidence가 없는 Flow의 API 응답 검증
+- 백엔드 전체 테스트 75개 통과
+
+### Sprint 16 완료 ✅
+
+- Evidence Score 계산 과정 설명 기능 완성
+- Confidence Score 계산 근거 제공
+- Cause Ranking 선정 이유 제공
+- Why Analysis 결과 일관성 검증
+- 기존 Why Analysis API의 Explainability 확장
+- 기존 데이터베이스 구조 유지
+
+---

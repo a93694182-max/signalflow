@@ -35,3 +35,16 @@ class WhyAnalysisResponse(BaseModel):
     ] = Field(
         default_factory=list,
     )
+
+    evidence_breakdowns: list[dict] = Field(
+        default_factory=list,
+    )
+
+    confidence_breakdown: dict = Field(
+        default_factory=dict,
+    )
+
+    cause_ranking: list[dict] = Field(
+        default_factory=list,
+    )
+

@@ -1,16 +1,23 @@
-from fastapi import APIRouter, Depends, Query
-from sqlalchemy.orm import Session
 from datetime import date
 from typing import Literal
 
+from fastapi import APIRouter, Depends, Query
+from sqlalchemy.orm import Session
 
+from app.core.flow_ranking import calculate_evidence_score_breakdown
+from app.core.why_analysis import (
+    calculate_confidence_breakdown,
+    explain_cause_ranking,
+)
 from app.database import get_db
 from app.schemas.flow import (
     FlowFeedResponse,
     FlowTraceResponse,
 )
-from app.schemas.why import WhyAnalysisResponse
 from app.schemas.timeline import FlowTimelineResponse
+from app.schemas.trail import WhyTrailResponse
+from app.schemas.why import WhyAnalysisResponse
+from app.services.flow_link_service import get_why_trail
 from app.services.flow_service import (
     get_flow_feed,
     get_flow_trace,
@@ -18,9 +25,6 @@ from app.services.flow_service import (
     get_ranked_flows,
     get_flow_timeline,
 )
-from app.schemas.trail import WhyTrailResponse
-from app.services.flow_link_service import get_why_trail
-
 
 
 router = APIRouter(
@@ -66,8 +70,6 @@ def read_flow_feed(
         alias="sort",
     ),
     db: Session = Depends(get_db),
-
-    
 ):
     return get_flow_feed(
         db=db,
@@ -91,7 +93,6 @@ def read_flow_trace(
     db: Session = Depends(get_db),
 ):
     return get_flow_trace(db, flow_id)
-
 
 
 @router.get("/ranking")
@@ -118,7 +119,6 @@ def read_flow_ranking(
     ]
 
 
-
 @router.get(
     "/{flow_id}/why",
     response_model=WhyAnalysisResponse,
@@ -134,28 +134,55 @@ def read_flow_why_analysis(
 
     analysis = result.analysis
 
+    evidences = [
+        evidence
+        for node in analysis.flow.nodes
+        for evidence in node.evidences
+    ]
+
+    evidence_count = len(evidences)
+
+    quality_score = (
+        sum(
+            cause.score * cause.evidence_count
+            for cause in analysis.causes
+        ) / evidence_count
+        if evidence_count
+        else 0.0
+    )
+
+    evidence_breakdowns = [
+        {
+            "evidence_id": evidence.id,
+            "title": evidence.title,
+            **calculate_evidence_score_breakdown(evidence),
+        }
+        for evidence in evidences
+    ]
+
+    confidence_breakdown = calculate_confidence_breakdown(
+        quality_score=quality_score,
+        evidence_count=evidence_count,
+    )
+
+    cause_ranking = explain_cause_ranking(
+        analysis.causes,
+    )
+
     return {
         "flow_id": analysis.flow.id,
         "title": analysis.flow.title,
-        "target_asset": (
-            analysis.flow.target_asset
-        ),
+        "target_asset": analysis.flow.target_asset,
         "summary": result.summary,
-        "confidence_score": (
-            analysis.confidence_score
-        ),
-        "confidence_level": (
-            analysis.confidence_level
-        ),
-        "primary_cause": (
-            analysis.primary_cause
-        ),
+        "confidence_score": analysis.confidence_score,
+        "confidence_level": analysis.confidence_level,
+        "primary_cause": analysis.primary_cause,
         "causes": analysis.causes,
-        "external_causes": (
-            result.external_causes
-        ),
+        "external_causes": result.external_causes,
+        "evidence_breakdowns": evidence_breakdowns,
+        "confidence_breakdown": confidence_breakdown,
+        "cause_ranking": cause_ranking,
     }
-
 
 
 @router.get(
