@@ -559,3 +559,30 @@
 - 기존 API 및 데이터베이스 구조 유지
 
 ---
+
+## 2026-10-31 | Sprint 22 진행
+
+- Docker Desktop 및 WSL2 개발 환경 구성
+- FastAPI 백엔드 Dockerfile 추가
+- Docker Compose 기반 PostgreSQL 17 및 FastAPI 실행 환경 구축
+- PostgreSQL 데이터 영속성을 위한 Docker Volume 구성
+- PostgreSQL 및 FastAPI Healthcheck 설정
+- 컨테이너 자동 재시작 정책 적용
+- 로컬 개발용 .env와 Docker 전용 .env.docker 분리
+- .dockerignore 및 .gitignore 보안 설정 점검
+- Alembic Migration 적용 및 DB 연결 검증
+- 컨테이너 재시작 후 API 및 DB 연결 검증
+- API 순차 요청 30회 성공
+- API 평균 응답 시간 88.47ms 확인
+- API 최대 응답 시간 2084.24ms 확인
+- 백엔드 전체 테스트 85개 통과
+- 프론트엔드 테스트 10개 통과
+- 프론트엔드 Production Build 및 ESLint 통과
+
+### Sprint 22 완료 ✅
+
+- Docker Compose 기반 백엔드 실행 환경 구축
+- 개발 환경과 Docker 환경변수 분리
+- 컨테이너 재시작 및 서비스 상태 검증
+- 기존 API 및 데이터베이스 스키마 유지
+- 배포 준비를 위한 실행 환경 기반 마련

@@ -767,3 +767,51 @@ Backend Tests
 - 백엔드 전체 테스트 85개 통과
 - 외부 API 및 실제 스케줄러 실행 없이 Mock 기반 검증
 - 기존 API 및 데이터베이스 스키마 변경 없음
+
+---
+
+## Sprint 22
+
+### Docker Infrastructure
+
+```text
+Host Machine
+  ↓
+Docker Desktop / WSL2
+  ↓
+Docker Compose
+  ├── FastAPI Backend
+  │     ├── Python 3.13
+  │     ├── Uvicorn
+  │     ├── Alembic
+  │     └── Healthcheck
+  │
+  └── PostgreSQL 17
+        ├── Healthcheck
+        └── Docker Named Volume
+```
+
+### Environment Configuration
+
+```text
+Local Development
+  └── .env
+
+Docker Development
+  ├── .env.docker
+  └── compose.yaml
+        ↓
+  Container Environment Variables
+```
+
+### Validation
+
+- PostgreSQL 및 FastAPI 컨테이너 정상 실행
+- 컨테이너 재시작 후 API 및 DB 연결 확인
+- API 순차 요청 30회 성공, 실패 0회
+- 평균 응답 시간 88.47ms
+- 최대 응답 시간 2084.24ms
+- 백엔드 테스트 85개 통과
+- 프론트엔드 테스트 10개 통과
+- 프론트엔드 Build / Lint 통과
+- 동시 접속 부하 테스트 및 실제 운영 환경 검증은 미실시

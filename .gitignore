@@ -31,5 +31,8 @@ Thumbs.db
 # Logs
 *.log
 
-.venv/
+
 backend/.venv/
+
+.env.*
+!.env.example

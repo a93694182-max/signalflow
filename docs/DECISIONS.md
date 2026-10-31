@@ -291,3 +291,21 @@
 - Signal Engine 실행 성공 및 실패 시 DB 세션 종료 보장 여부 검증
 - Scheduler Job 등록 주기는 기존 10분 유지
 - 기존 API Endpoint 및 데이터베이스 스키마 변경 없음
+
+---
+
+## Sprint 22
+
+- 백엔드 컨테이너는 Python 3.13 기반으로 구성
+- PostgreSQL은 Docker Compose에서 PostgreSQL 17 사용
+- 데이터 영속성은 Docker Named Volume으로 관리
+- Docker 전용 환경변수는 .env.docker로 분리
+- 실제 환경변수 파일은 Git에서 제외
+- 공유 가능한 환경변수 예시는 .env.example로 관리
+- Docker Compose 실행 시 --env-file 옵션 사용
+- PostgreSQL 준비 상태 확인 후 백엔드 실행
+- 백엔드와 DB에 restart: unless-stopped 적용
+- 백엔드 Healthcheck는 OpenAPI 응답을 기준으로 확인
+- 개발 환경의 백엔드 포트는 127.0.0.1:8000으로 제한
+- 실제 운영 배포 설정은 Sprint 23에서 별도 검토
+- 기존 API Endpoint 및 데이터베이스 스키마 변경 없음
