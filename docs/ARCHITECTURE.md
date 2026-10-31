@@ -734,3 +734,36 @@ Flow Detail UI
 - 프론트엔드 Production Build 통과
 - 프론트엔드 ESLint 통과
 - Flow Detail 정상 및 오류 화면 검증
+
+---
+
+## Sprint 21
+
+### Testing & Reliability
+
+```text
+Frontend Tests
+  ├── Vitest
+  ├── API Client Tests
+  │     ├── GET / POST
+  │     ├── HTTP 404 / 500
+  │     └── Network Error
+  └── Flow Detail Tests
+        ├── Loading / Success / Error
+        ├── Invalid Flow ID
+        └── Stale Response Prevention
+
+Backend Tests
+  ├── Existing API / Service Tests
+  └── Scheduler Reliability Tests
+        ├── Successful Execution
+        ├── Failure Handling
+        └── Database Session Cleanup
+```
+
+### Validation
+
+- 프론트엔드 자동화 테스트 10개 통과
+- 백엔드 전체 테스트 85개 통과
+- 외부 API 및 실제 스케줄러 실행 없이 Mock 기반 검증
+- 기존 API 및 데이터베이스 스키마 변경 없음

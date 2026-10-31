@@ -276,3 +276,18 @@
 - 오류 상태에서 HTTP 상태별 사용자 메시지 유지
 - 기존 Explainability UI 및 Flow Timeline 유지
 - API Endpoint 및 데이터베이스 스키마 변경 없음
+
+---
+
+## Sprint 21
+
+- 프론트엔드 테스트 프레임워크는 Vitest 사용
+- React 컴포넌트 테스트는 React Testing Library 사용
+- DOM이 필요한 테스트는 jsdom 환경에서 실행
+- API Client는 fetch Mock을 활용하여 외부 서버 의존성 제거
+- Flow Detail 하위 컴포넌트는 Mock 처리하여 페이지 상태 관리 검증
+- Flow ID 변경 시 이전 비동기 응답이 화면에 반영되지 않는지 검증
+- Scheduler 테스트는 실제 작업 실행 대신 Mock 기반으로 검증
+- Signal Engine 실행 성공 및 실패 시 DB 세션 종료 보장 여부 검증
+- Scheduler Job 등록 주기는 기존 10분 유지
+- 기존 API Endpoint 및 데이터베이스 스키마 변경 없음

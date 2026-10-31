@@ -533,3 +533,29 @@
 - 기존 API 및 데이터베이스 구조 유지
 
 ---
+
+## 2026-10-31 | Sprint 21 진행
+
+- Vitest 기반 프론트엔드 테스트 환경 구축
+- React Testing Library 및 jsdom 도입
+- API Client GET / POST 정상 응답 테스트 추가
+- HTTP 404 / 500 오류 처리 테스트 추가
+- 네트워크 오류 전달 테스트 추가
+- Flow Detail 로딩 및 정상 응답 테스트 추가
+- Flow Detail 404 오류 및 잘못된 ID 테스트 추가
+- Flow ID 변경 시 이전 비동기 응답 무시 테스트 추가
+- Scheduler 정상 실행 시 DB 세션 종료 테스트 추가
+- Scheduler 오류 발생 시 DB 세션 종료 테스트 추가
+- Scheduler 10분 간격 Job 등록 테스트 추가
+- 프론트엔드 테스트 10개 통과
+- 백엔드 전체 테스트 85개 통과
+
+### Sprint 21 완료 ✅
+
+- 프론트엔드 자동화 테스트 환경 구축
+- API Client 및 Flow Detail 주요 동작 검증
+- 비동기 요청의 데이터 일관성 검증
+- Scheduler 실행 및 DB 세션 관리 검증
+- 기존 API 및 데이터베이스 구조 유지
+
+---
