@@ -647,3 +647,45 @@ Why Analysis API
 - Primary Cause 일관성 검증
 - 백엔드 전체 테스트 82개 통과
 - 기존 API 및 데이터베이스 구조 유지
+
+
+---
+
+## Sprint 19
+
+### Analysis Reliability & UX
+
+```text
+Flow Detail Page
+  ↓
+Why Analysis API
+  ↓
+Analysis Reliability UI
+  ├── Confidence Breakdown
+  │     ├── Confidence Level Description
+  │     └── Insufficient Evidence Warning
+  ├── Cause Ranking
+  │     ├── Ranking Reason
+  │     └── Equal Score Badge
+  └── Flow Detail Error Handling
+        ├── Invalid Flow ID
+        ├── HTTP 404
+        ├── HTTP 5xx
+        └── Network Error
+```
+
+### 주요 변경 사항
+
+- Confidence Level별 해석 안내 추가
+- Evidence 0~1개인 경우 근거 부족 경고 표시
+- Cause Ranking의 동일 점수 후보 표시
+- `ApiError`를 통한 HTTP 상태 코드 전달
+- Flow Detail 페이지의 오류 유형별 메시지 구분
+- 기존 API 응답 및 데이터베이스 구조 유지
+
+### Validation
+
+- 프론트엔드 Production Build 통과
+- 프론트엔드 ESLint 통과
+- Flow Detail 오류 화면 검증
+- 백엔드 전체 테스트 82개 통과

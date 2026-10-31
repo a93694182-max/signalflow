@@ -2467,3 +2467,42 @@
   color: #1d4ed8;
   font-weight: 600;
 }
+
+.confidence-breakdown__description {
+  margin: 12px 0 20px;
+  color: #64748b;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.confidence-breakdown__warning {
+  padding: 14px 16px;
+  margin-bottom: 20px;
+  border: 1px solid #fbbf24;
+  border-radius: 10px;
+  background: #fffbeb;
+  color: #92400e;
+}
+
+.confidence-breakdown__warning strong {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 14px;
+}
+
+.confidence-breakdown__warning p {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.cause-ranking__tie {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 9px;
+  border-radius: 999px;
+  background: #fef3c7;
+  color: #92400e;
+  font-size: 12px;
+  font-weight: 600;
+}

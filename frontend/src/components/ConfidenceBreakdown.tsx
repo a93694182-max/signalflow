@@ -23,6 +23,19 @@ function ConfidenceBreakdown({ confidence }: ConfidenceBreakdownProps) {
     low: '낮음',
   }
 
+  const levelDescriptions = {
+    high: '근거 품질과 충족도가 상대적으로 높은 분석입니다.',
+    medium: '일정 수준의 근거가 있지만 추가 검증이 필요합니다.',
+    low: '근거가 부족하거나 분석 점수가 낮아 신중한 해석이 필요합니다.',
+  }
+
+  const evidenceWarning =
+    evidence_count === 0
+      ? '분석 가능한 근거가 없어 신뢰도를 평가하기 어렵습니다.'
+      : evidence_count === 1
+        ? '근거가 1개뿐이므로 분석 결과를 신중하게 해석해야 합니다.'
+        : null
+
   return (
     <section className="confidence-breakdown">
       <div className="section-heading">
@@ -37,6 +50,17 @@ function ConfidenceBreakdown({ confidence }: ConfidenceBreakdownProps) {
           <strong>{Math.round(confidence_score * 100)}점</strong>
           <span>{levelLabels[confidence_level]}</span>
         </div>
+
+        <p className="confidence-breakdown__description">
+          {levelDescriptions[confidence_level]}
+        </p>
+
+        {evidenceWarning && (
+          <div className="confidence-breakdown__warning" role="status">
+            <strong>⚠️ 근거 부족</strong>
+            <p>{evidenceWarning}</p>
+          </div>
+        )}
 
         <div className="confidence-breakdown__formula">
           <p>

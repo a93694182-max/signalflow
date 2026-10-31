@@ -246,3 +246,19 @@
 - Evidence가 없는 Flow는 Primary Cause를 생성하지 않음
 - 기존 Confidence Score 계산 정책 유지
 - 기존 API 응답 구조 및 데이터베이스 스키마 유지
+
+---
+
+## Sprint 19
+
+- 분석 신뢰도는 인과관계 확정 여부와 구분하여 표시
+- Confidence Level별 설명을 프론트엔드에서 제공
+- Evidence 0개인 경우 분석 근거 부족 안내
+- Evidence 1개인 경우 신중한 해석 안내
+- Evidence 2개 이상은 기존 Confidence 표시 방식 유지
+- Cause Ranking 동점 여부는 API 원본 점수 기준으로 판단
+- 동점 원인 후보는 동일 점수 배지로 구분
+- Cause Ranking 선정 이유는 기존 API 응답을 재사용
+- API 오류는 `ApiError` 클래스로 HTTP 상태 코드 전달
+- Flow Detail 페이지에서 404, 서버 오류, 네트워크 오류를 구분
+- 기존 API Endpoint 및 데이터베이스 스키마 유지

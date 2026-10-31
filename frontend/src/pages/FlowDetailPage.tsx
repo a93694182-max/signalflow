@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
+import { ApiError } from '../api/client'
 
 import {
     getFlowTrace,
@@ -46,8 +47,18 @@ function FlowDetailPage() {
                 setWhyAnalysis(whyData)
                 setWhyTrail(trailData)
             })
-            .catch(() => {
-                setError('Flow 상세 데이터를 불러오지 못했습니다.')
+            .catch((error: unknown) => {
+                if (error instanceof ApiError) {
+                    if (error.status === 404) {
+                        setError('요청한 Flow를 찾을 수 없습니다.')
+                    } else if (error.status >= 500) {
+                        setError('서버 오류가 발생했습니다. 잠시 후 다시 시도해 주세요.')
+                    } else {
+                        setError(`Flow 데이터를 불러오지 못했습니다. (${error.status})`)
+                    }
+                } else {
+                    setError('서버에 연결할 수 없습니다. 네트워크 상태를 확인해 주세요.')
+                }
             })
             .finally(() => {
                 setIsLoading(false)
