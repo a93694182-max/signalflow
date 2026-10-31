@@ -72,14 +72,64 @@ export interface WhyCause {
   evidence_count: number
 }
 
+export interface EvidenceScoreBreakdown {
+  evidence_id: number
+  title: string
+  total_score: number
+  scores: {
+    relation: number
+    impact: number
+    time: number
+    reliability: number
+  }
+  weights: {
+    relation: number
+    impact: number
+    time: number
+    reliability: number
+  }
+  weighted_scores: {
+    relation: number
+    impact: number
+    time: number
+    reliability: number
+  }
+}
+
+export interface ConfidenceBreakdown {
+  quality_score: number
+  coverage_score: number
+  quality_weight: number
+  coverage_weight: number
+  evidence_count: number
+  raw_score: number
+  confidence_cap: number | null
+  confidence_score: number
+  confidence_level: 'high' | 'medium' | 'low'
+}
+
+export interface CauseRankingItem {
+  rank: number
+  node_id: number
+  title: string
+  score: number
+  evidence_count: number
+  reason: string
+}
+
 export interface FlowWhyAnalysis {
   flow_id: number
   title: string
   target_asset: string
   summary: string
+  confidence_score: number
+  confidence_level: 'high' | 'medium' | 'low'
   primary_cause: WhyCause | null
   causes: WhyCause[]
   external_causes: unknown[]
+  evidence_breakdowns: EvidenceScoreBreakdown[]
+  confidence_breakdown: ConfidenceBreakdown
+  cause_ranking: CauseRankingItem[]
 }
 
 

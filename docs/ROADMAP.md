@@ -188,3 +188,16 @@
 - Backend Tests (75 Passed)
 
 ---
+
+✅ Sprint 17
+
+- Explainability UI
+- Evidence Score Breakdown UI
+- Confidence Score Breakdown UI
+- Cause Ranking UI
+- Flow Detail Integration
+- Error / Empty State Validation
+- Frontend Build / Lint Passed
+- Backend Tests (75 Passed)
+
+---

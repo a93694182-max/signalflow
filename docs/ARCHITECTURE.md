@@ -576,3 +576,27 @@ Why API Response Validation
 ```
 
 ---
+
+## Sprint 17
+
+### Explainability UI
+
+```text
+Flow Detail Page
+  ↓
+GET /api/flows/{flow_id}/why
+  ↓
+FlowWhyAnalysis
+  ├── Why Analysis
+  ├── Evidence Breakdown
+  │     ├── Original Scores
+  │     ├── Score Weights
+  │     └── Weighted Contributions
+  ├── Confidence Breakdown
+  │     ├── Quality Score
+  │     ├── Coverage Score
+  │     └── Confidence Cap
+  └── Cause Ranking
+        ├── Rank
+        ├── Evidence Count
+        └── Ranking Reason

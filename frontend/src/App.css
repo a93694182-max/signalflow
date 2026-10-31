@@ -2298,3 +2298,172 @@
   background: #f1f5f9;
   color: #475569;
 }
+
+/* Evidence Breakdown */
+
+.evidence-breakdown {
+  margin-top: 32px;
+}
+
+.evidence-breakdown__list {
+  display: grid;
+  gap: 16px;
+}
+
+.evidence-breakdown__card {
+  padding: 24px;
+  border: 1px solid #e5e7eb;
+  border-radius: 16px;
+  background: #fff;
+}
+
+.evidence-breakdown__header,
+.score-row__label {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+}
+
+.evidence-breakdown__header {
+  margin-bottom: 20px;
+}
+
+.evidence-breakdown__header h3 {
+  margin: 0;
+}
+
+.score-row {
+  margin-top: 16px;
+}
+
+.score-row__label {
+  margin-bottom: 8px;
+  font-size: 14px;
+}
+
+.score-row__track {
+  height: 8px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: #e5e7eb;
+}
+
+.score-row__fill {
+  height: 100%;
+  border-radius: inherit;
+  background: #2563eb;
+}
+
+.score-row__contribution {
+  margin: 6px 0 0;
+  font-size: 12px;
+  color: #64748b;
+}
+
+/* Confidence Breakdown */
+
+.confidence-breakdown {
+  margin-top: 32px;
+}
+
+.confidence-breakdown__card {
+  padding: 24px;
+  border: 1px solid #e5e7eb;
+  border-radius: 16px;
+  background: #fff;
+}
+
+.confidence-breakdown__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.confidence-breakdown__header strong {
+  font-size: 32px;
+  color: #2563eb;
+}
+
+.confidence-breakdown__header span {
+  font-weight: 600;
+}
+
+.confidence-breakdown__formula {
+  padding: 16px;
+  border-radius: 12px;
+  background: #f8fafc;
+}
+
+.confidence-breakdown__formula p {
+  margin: 8px 0;
+}
+
+.confidence-breakdown__details {
+  margin-top: 16px;
+}
+
+.confidence-breakdown__note {
+  margin-top: 20px;
+  font-size: 13px;
+  color: #64748b;
+  line-height: 1.6;
+}
+
+/* Cause Ranking */
+
+.cause-ranking {
+  margin-top: 32px;
+}
+
+.cause-ranking__list {
+  display: grid;
+  gap: 16px;
+}
+
+.cause-ranking__card {
+  padding: 24px;
+  border: 1px solid #e5e7eb;
+  border-radius: 16px;
+  background: #fff;
+}
+
+.cause-ranking__header,
+.cause-ranking__meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
+.cause-ranking__rank {
+  font-weight: 700;
+  color: #2563eb;
+}
+
+.cause-ranking__header strong {
+  font-size: 20px;
+}
+
+.cause-ranking__card h3 {
+  margin: 16px 0 8px;
+}
+
+.cause-ranking__reason {
+  color: #64748b;
+  line-height: 1.6;
+}
+
+.cause-ranking__meta {
+  margin-top: 16px;
+  font-size: 13px;
+}
+
+.cause-ranking__primary {
+  padding: 5px 10px;
+  border-radius: 999px;
+  background: #dbeafe;
+  color: #1d4ed8;
+  font-weight: 600;
+}

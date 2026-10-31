@@ -426,3 +426,29 @@
 - 기존 데이터베이스 구조 유지
 
 ---
+
+## 2026-10-31 | Sprint 17 진행
+
+- Flow Detail Explainability UI 구현
+- Evidence Score Breakdown 컴포넌트 추가
+- Evidence별 원본 점수, 가중치 및 기여도 시각화
+- Confidence Score Breakdown 컴포넌트 추가
+- Quality Score와 Coverage Score 계산 과정 표시
+- Confidence Score 상한 및 등급 표시
+- Cause Ranking 컴포넌트 추가
+- 원인 후보 순위, 점수, 근거 개수 및 선정 이유 표시
+- 기존 Why Analysis API 응답 재사용
+- 잘못된 Flow ID 및 API 요청 실패 화면 확인
+- 실제 Flow 상세 페이지에서 Explainability UI 검증
+- 프론트엔드 ESLint 및 Production Build 통과
+- 백엔드 전체 테스트 75개 통과
+
+### Sprint 17 완료 ✅
+
+- Evidence Score 계산 과정 시각화
+- Confidence Score 계산 근거 시각화
+- Cause Ranking 선정 이유 표시
+- Flow Detail Explainability UI 통합
+- 기존 API 및 데이터베이스 구조 유지
+
+---

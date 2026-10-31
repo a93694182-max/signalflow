@@ -9,6 +9,9 @@ import {
 import WhyAnalysis from '../components/WhyAnalysis'
 import WhyTrail from '../components/WhyTrail'
 import AskFlow from '../components/AskFlow'
+import EvidenceBreakdown from '../components/EvidenceBreakdown'
+import ConfidenceBreakdown from '../components/ConfidenceBreakdown'
+import CauseRanking from '../components/CauseRanking'
 import type {
     FlowTrace,
     FlowWhyAnalysis,
@@ -93,6 +96,18 @@ function FlowDetailPage() {
             </header>
 
             {whyAnalysis && <WhyAnalysis analysis={whyAnalysis} />}
+
+            {whyAnalysis && (
+              <EvidenceBreakdown evidences={whyAnalysis.evidence_breakdowns} />
+            )}
+
+            {whyAnalysis && (
+              <ConfidenceBreakdown confidence={whyAnalysis.confidence_breakdown} />
+            )}
+
+            {whyAnalysis && (
+              <CauseRanking causes={whyAnalysis.cause_ranking} />
+            )}
 
             {whyTrail && <WhyTrail trail={whyTrail} />}
 

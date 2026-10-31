@@ -218,3 +218,16 @@
 - 새로운 데이터베이스 테이블 및 컬럼 추가 없음
 
 ---
+
+## Sprint 17
+
+- Explainability UI는 기존 Flow Detail 페이지에 통합
+- Evidence Breakdown은 원본 점수, 가중치, 최종 기여도를 함께 표시
+- Confidence Breakdown은 계산식, 최종 점수, 등급 및 상한을 표시
+- Cause Ranking은 순위, 근거 개수 및 선정 이유를 표시
+- 분석 신뢰도는 인과관계 확정 여부와 구분하여 안내
+- 기존 Why Analysis API 응답을 재사용
+- Explainability 응답 타입은 `types/flow.ts`에서 관리
+- 새로운 백엔드 API Endpoint 및 데이터베이스 스키마 추가 없음
+
+---
