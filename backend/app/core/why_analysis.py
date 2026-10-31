@@ -103,27 +103,64 @@ def calculate_confidence_breakdown(
     }
 
 
+def rank_causes(causes: list[WhyCause]) -> list[WhyCause]:
+    return sorted(
+        causes,
+        key=lambda cause: (
+            -cause.score,
+            -cause.evidence_count,
+            cause.node_id,
+        ),
+    )
+
+
 def explain_cause_ranking(
     causes: list[WhyCause],
 ) -> list[dict]:
-    ranked_causes = sorted(
-        causes,
-        key=lambda cause: (
-            cause.score,
-            cause.evidence_count,
-        ),
-        reverse=True,
-    )
+    ranked_causes = rank_causes(causes)
 
     explanations = []
 
     for rank, cause in enumerate(ranked_causes, start=1):
+        previous_cause = (
+            ranked_causes[rank - 2]
+            if rank > 1
+            else None
+        )
+
         if cause.evidence_count == 0:
             reason = "분석 가능한 Evidence 없음"
+
+        elif (
+            previous_cause is not None
+            and cause.score == previous_cause.score
+            and cause.evidence_count == previous_cause.evidence_count
+        ):
+            reason = "Evidence 평균 점수와 근거 개수가 동일하여 Node ID 기준 정렬"
+
+        elif (
+            previous_cause is not None
+            and cause.score == previous_cause.score
+        ):
+            reason = "Evidence 평균 점수가 동일하여 근거 개수 기준 정렬"
+
         elif rank == 1:
-            reason = "Evidence 평균 점수가 가장 높은 원인 후보"
+            next_cause = (
+                ranked_causes[1]
+                if len(ranked_causes) > 1
+                else None
+            )
+
+            if next_cause is not None and cause.score == next_cause.score:
+                if cause.evidence_count == next_cause.evidence_count:
+                    reason = "Evidence 평균 점수와 근거 개수가 동일하여 Node ID 기준 1위"
+                else:
+                    reason = "Evidence 평균 점수가 동일하여 근거 개수 기준 1위"
+            else:
+                reason = "Evidence 평균 점수가 가장 높은 원인 후보"
+
         else:
-            reason = "Evidence 평균 점수와 근거 개수를 기준으로 정렬"
+            reason = "Evidence 평균 점수 기준 정렬"
 
         explanations.append(
             {
@@ -182,13 +219,7 @@ def analyze_flow(flow: Flow) -> WhyAnalysisResult:
         for node in flow.nodes
     ]
 
-    causes.sort(
-        key=lambda cause: (
-            cause.score,
-            cause.evidence_count,
-        ),
-        reverse=True,
-    )
+    causes = rank_causes(causes)
 
     scored_causes = [
         cause

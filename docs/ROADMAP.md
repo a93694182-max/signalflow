@@ -200,4 +200,20 @@
 - Frontend Build / Lint Passed
 - Backend Tests (75 Passed)
 
+
+---
+
+✅ Sprint 18
+
+- Analysis Accuracy & Consistency
+- Shared Cause Ranking
+- Evidence Score-based Sorting
+- Evidence Count Tie-breaker
+- Node ID Tie-breaker
+- Cause Ranking Explanation Enhancement
+- Primary Cause Consistency Validation
+- Input Order Independence Tests
+- No-evidence Flow Validation
+- Backend Tests (82 Passed)
+
 ---

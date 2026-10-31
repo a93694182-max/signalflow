@@ -258,4 +258,215 @@ def test_confidence_breakdown_matches_analysis():
 
     assert breakdown["confidence_score"] == analysis.confidence_score
     assert breakdown["confidence_level"] == analysis.confidence_level
-    
+
+
+def test_cause_ranking_same_score_and_evidence_count():
+    causes = [
+        WhyCause(
+            node_id=30,
+            title="원인 C",
+            category="market",
+            description=None,
+            score=0.85,
+            evidence_count=4,
+        ),
+        WhyCause(
+            node_id=10,
+            title="원인 A",
+            category="market",
+            description=None,
+            score=0.85,
+            evidence_count=4,
+        ),
+        WhyCause(
+            node_id=20,
+            title="원인 B",
+            category="market",
+            description=None,
+            score=0.85,
+            evidence_count=4,
+        ),
+    ]
+
+    explanations = explain_cause_ranking(causes)
+
+    assert [item["node_id"] for item in explanations] == [
+        10, 20, 30
+    ]
+
+    assert explanations[1]["reason"] == (
+        "Evidence 평균 점수와 근거 개수가 동일하여 Node ID 기준 정렬"
+    )
+
+
+def test_cause_ranking_same_score_different_evidence_count():
+    causes = [
+        WhyCause(
+            node_id=1,
+            title="원인 A",
+            category="market",
+            description=None,
+            score=0.8,
+            evidence_count=1,
+        ),
+        WhyCause(
+            node_id=2,
+            title="원인 B",
+            category="market",
+            description=None,
+            score=0.8,
+            evidence_count=3,
+        ),
+    ]
+
+    explanations = explain_cause_ranking(causes)
+
+    assert explanations[0]["node_id"] == 2
+    assert explanations[1]["node_id"] == 1
+
+    assert explanations[1]["reason"] == (
+        "Evidence 평균 점수가 동일하여 근거 개수 기준 정렬"
+    )
+
+
+def test_cause_ranking_input_order_independence():
+    causes = [
+        WhyCause(
+            node_id=node_id,
+            title=f"원인 {node_id}",
+            category="market",
+            description=None,
+            score=0.9,
+            evidence_count=2,
+        )
+        for node_id in [3, 1, 2]
+    ]
+
+    original = explain_cause_ranking(causes)
+    reversed_result = explain_cause_ranking(
+        list(reversed(causes))
+    )
+
+    assert original == reversed_result
+    assert [item["node_id"] for item in original] == [
+        1, 2, 3
+    ]
+
+def test_cause_ranking_first_place_tie_breaker():
+    causes = [
+        WhyCause(
+            node_id=20,
+            title="원인 B",
+            category="market",
+            description=None,
+            score=0.85,
+            evidence_count=3,
+        ),
+        WhyCause(
+            node_id=10,
+            title="원인 A",
+            category="market",
+            description=None,
+            score=0.85,
+            evidence_count=3,
+        ),
+    ]
+
+    explanations = explain_cause_ranking(causes)
+
+    assert explanations[0]["node_id"] == 10
+    assert explanations[0]["reason"] == (
+        "Evidence 평균 점수와 근거 개수가 동일하여 Node ID 기준 1위"
+    )
+
+
+def test_cause_ranking_first_place_evidence_count():
+    causes = [
+        WhyCause(
+            node_id=1,
+            title="원인 A",
+            category="market",
+            description=None,
+            score=0.85,
+            evidence_count=2,
+        ),
+        WhyCause(
+            node_id=2,
+            title="원인 B",
+            category="market",
+            description=None,
+            score=0.85,
+            evidence_count=4,
+        ),
+    ]
+
+    explanations = explain_cause_ranking(causes)
+
+    assert explanations[0]["node_id"] == 2
+    assert explanations[0]["reason"] == (
+        "Evidence 평균 점수가 동일하여 근거 개수 기준 1위"
+    )
+
+def test_primary_cause_matches_ranking_with_tied_scores():
+    flow = Flow(
+        id=100,
+        title="동점 원인 분석",
+        target_asset="^KS11",
+    )
+
+    flow.nodes.extend(
+        [
+            create_node(
+                node_id=20,
+                title="원인 B",
+                scores=[(0.8, 0.8, 0.8, 0.8)],
+            ),
+            create_node(
+                node_id=10,
+                title="원인 A",
+                scores=[(0.8, 0.8, 0.8, 0.8)],
+            ),
+        ]
+    )
+
+    analysis = analyze_flow(flow)
+    ranking = explain_cause_ranking(analysis.causes)
+
+    assert analysis.primary_cause is not None
+    assert analysis.primary_cause.node_id == 10
+    assert ranking[0]["node_id"] == 10
+    assert analysis.primary_cause.node_id == ranking[0]["node_id"]
+
+
+def test_primary_cause_without_evidence():
+    flow = Flow(
+        id=101,
+        title="근거 없는 원인 분석",
+        target_asset="^KS11",
+    )
+
+    flow.nodes.extend(
+        [
+            create_node(
+                node_id=20,
+                title="원인 B",
+                scores=[],
+            ),
+            create_node(
+                node_id=10,
+                title="원인 A",
+                scores=[],
+            ),
+        ]
+    )
+
+    analysis = analyze_flow(flow)
+    ranking = explain_cause_ranking(analysis.causes)
+
+    assert analysis.primary_cause is None
+    assert analysis.confidence_score == 0.0
+    assert [item["node_id"] for item in ranking] == [10, 20]
+    assert all(
+        item["reason"] == "분석 가능한 Evidence 없음"
+        for item in ranking
+    )

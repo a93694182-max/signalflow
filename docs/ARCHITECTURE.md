@@ -600,3 +600,50 @@ FlowWhyAnalysis
         ├── Rank
         ├── Evidence Count
         └── Ranking Reason
+```
+
+
+---
+
+## Sprint 18
+
+### Analysis Accuracy & Consistency
+
+```text
+Flow / FlowNode / Evidence
+  ↓
+Why Analysis Engine
+  ↓
+Cause Score Calculation
+  ↓
+Shared Cause Ranking
+  ├── Evidence Average Score DESC
+  ├── Evidence Count DESC
+  └── Node ID ASC
+  ↓
+Primary Cause Selection
+  ↓
+Cause Ranking Explanation
+  ├── Score-based Ranking
+  ├── Evidence Count Tie-breaker
+  └── Node ID Tie-breaker
+  ↓
+Why Analysis API
+```
+
+### Analysis Consistency
+
+- `rank_causes()`를 공통 정렬 함수로 사용
+- `analyze_flow()`와 `explain_cause_ranking()`의 정렬 기준 통일
+- 점수와 근거 개수가 동일한 경우 Node ID 오름차순 정렬
+- Primary Cause와 Cause Ranking 1위의 일관성 유지
+- Evidence가 없는 경우 Primary Cause를 생성하지 않음
+
+### Validation
+
+- Cause Ranking 동점 처리 검증
+- 입력 순서에 따른 Ranking 결과 일관성 검증
+- Ranking 1위 선정 이유 검증
+- Primary Cause 일관성 검증
+- 백엔드 전체 테스트 82개 통과
+- 기존 API 및 데이터베이스 구조 유지

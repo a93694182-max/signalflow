@@ -452,3 +452,32 @@
 - 기존 API 및 데이터베이스 구조 유지
 
 ---
+
+---
+
+## 2026-10-31 | Sprint 18 진행
+
+- Cause Ranking 공통 정렬 함수 `rank_causes()` 구현
+- Why Analysis와 Cause Ranking의 정렬 기준 통합
+- Evidence 평균 점수 기준 내림차순 정렬
+- Evidence 개수 기준 동점 처리
+- Node ID 기준 최종 동점 처리
+- Cause Ranking 선정 이유 개선
+- Ranking 1위 동점 선정 이유 개선
+- 입력 순서 독립성 테스트 추가
+- Evidence 개수 동점 처리 테스트 추가
+- Node ID 동점 처리 테스트 추가
+- Ranking 1위 선정 이유 테스트 추가
+- Primary Cause와 Ranking 1위 일관성 테스트 추가
+- Evidence가 없는 Flow의 Primary Cause 검증
+- 백엔드 전체 테스트 82개 통과
+
+### Sprint 18 완료 ✅
+
+- Cause Ranking 정렬 기준 통합
+- 동점 처리 결과의 일관성 확보
+- 실제 정렬 기준에 맞는 Ranking 선정 이유 제공
+- Primary Cause와 Cause Ranking 일관성 검증
+- 기존 API 및 데이터베이스 구조 유지
+
+---

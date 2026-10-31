@@ -231,3 +231,18 @@
 - 새로운 백엔드 API Endpoint 및 데이터베이스 스키마 추가 없음
 
 ---
+
+
+## Sprint 18
+
+- Cause Ranking 정렬 기준을 공통 함수 `rank_causes()`로 통합
+- Cause Ranking은 Evidence 평균 점수 내림차순으로 정렬
+- 평균 점수가 동일하면 Evidence 개수 내림차순으로 정렬
+- 평균 점수와 Evidence 개수가 동일하면 Node ID 오름차순으로 정렬
+- 입력 순서와 관계없이 동일한 Ranking 결과 유지
+- Ranking 선정 이유는 실제 동점 처리 기준에 따라 구분
+- Ranking 1위에도 동점 처리 기준을 반영
+- Primary Cause는 Evidence가 존재하는 원인 중 Ranking 최상위 후보로 선정
+- Evidence가 없는 Flow는 Primary Cause를 생성하지 않음
+- 기존 Confidence Score 계산 정책 유지
+- 기존 API 응답 구조 및 데이터베이스 스키마 유지
