@@ -262,3 +262,17 @@
 - API 오류는 `ApiError` 클래스로 HTTP 상태 코드 전달
 - Flow Detail 페이지에서 404, 서버 오류, 네트워크 오류를 구분
 - 기존 API Endpoint 및 데이터베이스 스키마 유지
+
+---
+
+## Sprint 20
+
+- Flow Detail 데이터는 기존 3개 API를 병렬 요청
+- 이전 요청의 결과 반영 여부는 `isActive` 플래그로 제어
+- Flow ID가 변경되면 이전 Flow의 응답을 화면에 반영하지 않음
+- 현재 URL의 Flow ID와 요청 상태의 Flow ID를 비교하여 로딩 화면 결정
+- Flow Detail 요청 상태를 `loading`, `success`, `error`로 통합
+- 성공 상태에서 Flow Trace, Why Analysis, Why Trail을 함께 관리
+- 오류 상태에서 HTTP 상태별 사용자 메시지 유지
+- 기존 Explainability UI 및 Flow Timeline 유지
+- API Endpoint 및 데이터베이스 스키마 변경 없음

@@ -19,15 +19,27 @@ import type {
     FlowWhyTrail,
 } from '../types/flow'
 
+type FlowDetailState =
+    | { status: 'loading'; flowId: number }
+    | {
+          status: 'success'
+          flowId: number
+          flow: FlowTrace
+          whyAnalysis: FlowWhyAnalysis
+          whyTrail: FlowWhyTrail
+      }
+    | {
+          status: 'error'
+          flowId: number
+          message: string
+      }
+
 function FlowDetailPage() {
     const { flowId } = useParams()
-    const [flow, setFlow] = useState<FlowTrace | null>(null)
-    const [whyAnalysis, setWhyAnalysis] =
-        useState<FlowWhyAnalysis | null>(null)
-    const [whyTrail, setWhyTrail] =
-        useState<FlowWhyTrail | null>(null)
-    const [isLoading, setIsLoading] = useState(true)
-    const [error, setError] = useState('')
+    const [detailState, setDetailState] = useState<FlowDetailState>({
+        status: 'loading',
+        flowId: -1,
+    })
 
     const id = Number(flowId)
     const isInvalidFlowId = !Number.isInteger(id) || id <= 0
@@ -37,32 +49,51 @@ function FlowDetailPage() {
             return
         }
 
+        let isActive = true
+
         Promise.all([
             getFlowTrace(id),
             getFlowWhy(id),
             getFlowTrail(id),
         ])
             .then(([traceData, whyData, trailData]) => {
-                setFlow(traceData)
-                setWhyAnalysis(whyData)
-                setWhyTrail(trailData)
+                if (!isActive) return
+
+                setDetailState({
+                    status: 'success',
+                    flowId: id,
+                    flow: traceData,
+                    whyAnalysis: whyData,
+                    whyTrail: trailData,
+                })
             })
             .catch((error: unknown) => {
+                if (!isActive) return
+
+                let message: string
+
                 if (error instanceof ApiError) {
                     if (error.status === 404) {
-                        setError('요청한 Flow를 찾을 수 없습니다.')
+                        message = '요청한 Flow를 찾을 수 없습니다.'
                     } else if (error.status >= 500) {
-                        setError('서버 오류가 발생했습니다. 잠시 후 다시 시도해 주세요.')
+                        message = '서버 오류가 발생했습니다. 잠시 후 다시 시도해 주세요.'
                     } else {
-                        setError(`Flow 데이터를 불러오지 못했습니다. (${error.status})`)
+                        message = `Flow 데이터를 불러오지 못했습니다. (${error.status})`
                     }
                 } else {
-                    setError('서버에 연결할 수 없습니다. 네트워크 상태를 확인해 주세요.')
+                    message = '서버에 연결할 수 없습니다. 네트워크 상태를 확인해 주세요.'
                 }
+
+                setDetailState({
+                    status: 'error',
+                    flowId: id,
+                    message,
+                })
             })
-            .finally(() => {
-                setIsLoading(false)
-            })
+
+        return () => {
+            isActive = false
+        }
     }, [id, isInvalidFlowId])
 
     if (isInvalidFlowId) {
@@ -74,22 +105,24 @@ function FlowDetailPage() {
         )
     }
 
-    if (isLoading) {
+    if (detailState.flowId !== id || detailState.status === 'loading') {
         return <p>Flow 상세 데이터를 불러오는 중입니다.</p>
     }
 
-    if (error) {
+    if (detailState.status === 'error') {
         return (
             <section>
                 <Link to="/">← 홈으로</Link>
-                <p>{error}</p>
+                <p>{detailState.message}</p>
             </section>
         )
     }
 
-    if (!flow) {
-        return <p>Flow 데이터가 없습니다.</p>
-    }
+    const {
+        flow,
+        whyAnalysis,
+        whyTrail,
+    } = detailState
 
     return (
         <section className="flow-detail">
@@ -106,7 +139,7 @@ function FlowDetailPage() {
                 <p>{flow.summary}</p>
             </header>
 
-            {whyAnalysis && <WhyAnalysis analysis={whyAnalysis} />}
+            <WhyAnalysis analysis={whyAnalysis} />
 
             {whyAnalysis && (
               <EvidenceBreakdown evidences={whyAnalysis.evidence_breakdowns} />

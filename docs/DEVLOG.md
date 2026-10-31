@@ -509,3 +509,27 @@
 - 기존 API 및 데이터베이스 구조 유지
 
 ---
+
+## 2026-10-31 | Sprint 20 진행
+
+- Flow Detail 비동기 요청 처리 구조 점검
+- Flow ID 변경 시 이전 요청 결과 반영 방지
+- `isActive` 기반 요청 생명주기 관리
+- 현재 URL과 로딩된 Flow ID의 일치 여부 검증
+- `loadedFlowId`를 활용한 중간 로딩 상태 개선
+- Flow Detail 상태를 `FlowDetailState`로 통합
+- 로딩, 성공, 오류 상태 분리
+- 기존 개별 상태 관리 코드 제거
+- 기존 HTTP 오류 메시지 처리 유지
+- Why Analysis, Why Trail 및 Explainability UI 유지
+- 프론트엔드 ESLint 및 Production Build 통과
+- Flow Detail 정상 및 오류 화면 검증
+
+### Sprint 20 완료 ✅
+
+- Flow ID 변경 시 데이터 일관성 개선
+- 이전 비동기 요청에 의한 화면 충돌 방지
+- Flow Detail 상태 관리 구조 단순화
+- 기존 API 및 데이터베이스 구조 유지
+
+---

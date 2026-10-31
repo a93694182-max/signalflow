@@ -689,3 +689,48 @@ Analysis Reliability UI
 - 프론트엔드 ESLint 통과
 - Flow Detail 오류 화면 검증
 - 백엔드 전체 테스트 82개 통과
+
+---
+
+## Sprint 20
+
+### Flow Detail State Management
+
+```text
+Flow ID 변경
+  ↓
+Flow ID Validation
+  ↓
+Parallel API Requests
+  ├── Flow Trace
+  ├── Why Analysis
+  └── Why Trail
+  ↓
+Request Lifecycle Validation
+  ├── Active Request → State Update
+  └── Inactive Request → Ignore
+  ↓
+FlowDetailState
+  ├── Loading
+  ├── Success
+  └── Error
+  ↓
+Flow ID Consistency Check
+  ↓
+Flow Detail UI
+```
+
+### 주요 변경 사항
+
+- 이전 API 요청 결과가 새로운 Flow 화면을 덮어쓰지 않도록 방지
+- 현재 URL의 Flow ID와 로딩된 데이터의 Flow ID 비교
+- 로딩, 성공, 오류 상태를 `FlowDetailState`로 통합
+- 여러 API 응답을 하나의 성공 상태로 관리
+- 기존 HTTP 오류 처리 및 Explainability UI 유지
+- 백엔드 API 및 데이터베이스 스키마 변경 없음
+
+### Validation
+
+- 프론트엔드 Production Build 통과
+- 프론트엔드 ESLint 통과
+- Flow Detail 정상 및 오류 화면 검증
